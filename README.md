@@ -11,18 +11,6 @@ The service currently exposes four endpoints:
 
 ## Developer Info
 
-### Reading logs
-
-```bash
-# this is for integration, make obvious changes as needed for other environments
-ssh gas
-become scm
-cd /disks/scm/jenkins/jobs/Dataset_Search_Services_VM_1a_Provision_Integration/workspace/
-vagrant status integration
-vagrant ssh integration
-cd /opt/search_services/run/log
-```
-
 ### Unit tests
 
 Run the unit tests with `rake spec:unit`.
@@ -30,7 +18,7 @@ Run the unit tests with `rake spec:unit`.
 ### Acceptance tests
 
 Acceptance tests are a little trickier.  One way to run them on your local dev machine is thus:
-1. Change `config/app_config.rb` and set the `development`:`solr_url` to point to the same as the `integration`:`solr_url` (it's a url on liquid)
+1. Change `config/app_config.rb` and set the `development`:`solr_url` to point to the same as the `integration`:`solr_url` (it's a url on liquid for NSIDC internal use)
 2. Run `rake run` to get the service running locally
 3. Run `rake spec:acceptance`
 
@@ -182,7 +170,6 @@ Invoking a search:
 ### How to add a new facet
 * Add a the facet field to SOLR first, be careful with the datatype.
 * Add the new facet field to the facet fields array in the configuration file
-
 
 ### How to contact NSIDC
 
