@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+#
+# init.d script for puma.
+
+set -e
+set -x
+
+sig () {
+  test -s "$PID" && kill -$1 `cat "$PID"`
+}
+ 
+oldsig () {
+  test -s "$OLD_PID" && kill -$1 `cat "$OLD_PID"`
+}
+ 
+cmd () {
+ 
+  case $1 in
+    start)
+      echo "Starting"
+      start_server
+      ;;  
+    stop)
+      stop_server
+      echo >&2 "Not running"
+      ;;  
+    restart)
+      stop_server
+      sleep 5
+      start_server
+      ;;
+    *)  
+      echo >&2 "Usage: $0 <start|stop|restart|upgrade|rotate|force-stop>"
+      exit 1
+      ;;  
+    esac
+}
+
+start_server () {
+  ls
+  ls $SCRIPT_PATH/webapps/dataset-search-services
+  pumactl --config-file $CONFIG start
+}
+
+stop_server () {
+  pumactl --config-file $CONFIG stop
+}
+ 
+setup () {
+  # absolute path to this script directory (without script name)
+  SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+  export RUBY_BIN=/opt/ruby19-local/bin/
+  export GEM_HOME=$SCRIPT_PATH/gem
+  export GEM_PATH=$GEM_HOME/bin
+  export PATH=$GEM_PATH:$RUBY_BIN:/sbin:/bin:/usr/bin:/usr/sbin
+
+  source $SCRIPT_PATH/env
+
+  cd $SCRIPT_PATH/webapps/dataset-search-services
+}
+
+setup $1
+cmd $1

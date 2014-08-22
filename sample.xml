@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sample>
+ <entryTs>2013-01-01T01:51:35.994-0600</entryTs>
+ <ipAddress>128.138.135.105</ipAddress>
+ <userAgent>test</userAgent>
+ <metrics>
+  <name>LicenseType</name>
+  <value>cc0</value>
+</metrics>
+ <metrics>
+  <name>TestField</name>
+  <value>test</value>
+ </metrics>
+ </sample>

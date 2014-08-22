@@ -1,0 +1,5 @@
+.idea/*
+.bundle/*
+.project
+*.iml
+results.xml

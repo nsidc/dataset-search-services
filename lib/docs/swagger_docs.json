@@ -1,0 +1,329 @@
+{
+  "apiVersion":"1.0.0",
+	"swaggerVersion":"1.2",
+	"basePath":"http://nsidc.org/api/dataset/2",
+	"info":{
+		"title":"Dataset Search Services",
+		"description":"Dataset Search Services provides multiple endpoints used by the Arctic Data Explorer and NSIDC Search to perform searches on a Solr backend. Different endpoints provide searches for datasets, facet information for a dataset search, and suggested search terms based on a partially entered keyword."
+	},
+  "apis":[
+    {
+      "path":"/OpenSearchDescription",
+      "operations":[
+        {
+          "method":"GET",
+          "summary":"Describes the web interface of NSIDC's data search engine",
+          "notes":"",
+          "type":"string",
+          "produces": [
+            "application/opensearchdescription+xml"
+          ],
+          "nickname":"opensearch description",
+          "parameters":[],
+          "responseMessages":[
+            {
+              "code": 200,
+              "message": "Success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/OpenSearch",
+      "operations":[
+        {
+          "method":"GET",
+          "summary":"Search documents using the OpenSearch 1.1 Specification",
+          "notes":"",
+          "type":"string",
+          "nickname":"open search",
+          "exampleRequests":[
+            { "queryString":"?count=25&startIndex=1&spatial=-180.0%2C-90.0%2C180.0%2C90.0&sortKeys=score%2C%2Cdesc&source=NSIDC" },
+            { "queryString":"?searchTerms=snow&count=15&startIndex=1&spatial=-90.0%2C-1100.0%2C90.0%2C110.0&sortKeys=score%2C%2Cdesc&startDate=2005-06-01&endDate=2007-08-01&source=ADE" }
+          ],
+          "notes":"This endpoint uses parameters from the OpenSearch 1.1 specification, as well as parameters from the OpenSearch Geo (1.0) and SRU (1.0) extensions.",
+          "produces":[
+            "application/atom+xml"
+          ],
+          "parameters":[
+            {
+              "name":"searchTerms",
+              "description":"URL-encoded keyword or keywords desired by the client; OpenSearch 1.1",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"count",
+              "description":"The number of search results per page desired by the client; OpenSearch 1.1",
+              "required":false,
+              "type":"integer",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue": 25
+            },
+            {
+              "name":"startIndex",
+              "description":"First search result desired by the search client; OpenSearch 1.1",
+              "required":false,
+              "type":"integer",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue": 1
+            },
+            {
+              "name":"spatial",
+              "description":"4 comma separated values - W, S, E, N; OpenSearch-Geo 1.0, \"box\" parameter",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue": "-180.0,-90.0,180.0,90.0"
+            },
+            {
+              "name":"sortKeys",
+              "description":"Sort the results by most relevant (default), smallest or largest spatial area, shortest or longest temporal duration, or most recently updated; partial implementation of OpenSearch SRU 1.0",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue":"score,,desc",
+              "enum":[
+                "score,,desc",
+                "spatial_area,,asc",
+                "spatial_area,,desc",
+                "temporal_duration,,asc",
+                "temporal_duration,,desc",
+                "updated,,desc"
+              ]
+            },
+            {
+              "name":"startDate",
+              "description":"The start date in yyyy-mm-dd format",
+              "required":false,
+              "type":"date",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"endDate",
+              "description":"The end date in yyyy-mm-dd format",
+              "required":false,
+              "type":"date",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"facetFilters",
+              "description":"Describes faceted restrictions on the search. A URL-encoded JSON object where the keys are the names of the facet, and the values are arrays of the selected facet values",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"source",
+              "description":"Custom parameter for selecting which source to use; the Arctic Data Explorer (ADE) uses data aggregated from many sources, including, but not limited to, NSIDC",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue":"NSIDC",
+              "enum": ["NSIDC", "ADE"]
+            }
+          ],
+          "responseMessages":[
+            {
+              "code":400,
+              "message":"Bad request"
+            },
+            {
+              "code":500,
+              "message":"Internal server error"
+            },
+            {
+              "code":200,
+              "message":"OK"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/Facets",
+      "operations":[
+        {
+          "method":"GET",
+          "summary":"View the facet information corresponding to a search",
+          "notes":"",
+          "type":"string",
+          "nickname":"facets",
+          "exampleRequests":[
+            { "queryString":"?count=25&startIndex=1&spatial=-180.0%2C-90.0%2C180.0%2C90.0&sortKeys=score%2C%2Cdesc&source=NSIDC" }
+          ],
+          "notes": "In the NSIDC Search and Arctic Data Explorer interfaces, this endpoint is used in conjunction with /OpenSearch whenever a user submits a new search. Consequently, it has the same parameters as /OpenSearch.",
+          "produces": [
+            "application/nsidcfacets+xml"
+          ],
+          "parameters":[
+            {
+              "name":"searchTerms",
+              "description":"URL-encoded keyword or keywords desired by the client; OpenSearch 1.1",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"count",
+              "description":"The number of search results per page desired by the client; OpenSearch 1.1",
+              "required":false,
+              "type":"integer",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue": 25
+            },
+            {
+              "name":"startIndex",
+              "description":"First search result desired by the search client; OpenSearch 1.1",
+              "required":false,
+              "type":"integer",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue": 1
+            },
+            {
+              "name":"spatial",
+              "description":"4 comma separated values - W, S, E, N; OpenSearch-Geo 1.0, \"box\" parameter",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue": "-180.0,-90.0,180.0,90.0"
+            },
+            {
+              "name":"sortKeys",
+              "description":"Sort the results by most relevant (default), smallest or largest spatial area, shortest or longest temporal duration, or most recently updated; partial implementation of OpenSearch SRU 1.0",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue":"score,,desc",
+              "enum":[
+                "score,,desc",
+                "spatial_area,,asc",
+                "spatial_area,,desc",
+                "temporal_duration,,asc",
+                "temporal_duration,,desc",
+                "updated,,desc"
+              ]
+            },
+            {
+              "name":"startDate",
+              "description":"The start date in yyyy-mm-dd format",
+              "required":false,
+              "type":"date",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"endDate",
+              "description":"The end date in yyyy-mm-dd format",
+              "required":false,
+              "type":"date",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"facetFilters",
+              "description":"Describes faceted restrictions on the search. A URL-encoded JSON object where the keys are the names of the facet, and the values are arrays of the selected facet values",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"source",
+              "description":"Custom parameter for selecting which source to use; the Arctic Data Explorer (ADE) uses data aggregated from many sources, including, but not limited to, NSIDC",
+              "required":false,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue":"NSIDC",
+              "enum": ["NSIDC", "ADE"]
+            }
+          ],
+          "responseMessages":[
+            {
+              "code":400,
+              "message":"Bad request"
+            },
+            {
+              "code":500,
+              "message":"Internal server error"
+            },
+            {
+              "code":200,
+              "message":"OK"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/suggest",
+      "operations":[
+        {
+          "method":"GET",
+          "summary":"Suggest search terms based on a partial query",
+          "notes":"In NSIDC Search and the Arctic Data Explorer, this endpoint is queried whenever the user types into the search terms box, and the returned suggestions are displayed in a dropdown beneath the search terms box. The q parameter and returned JSON follow the specifications of the OpenSearch Suggestions 1.0 extension.",
+          "type":"string",
+          "nickname":"id",
+          "exampleRequests": [
+            { "queryString":"?q=snow&source=NSIDC" }
+          ],
+          "produces": [
+            "application/x-suggestions+json"
+          ],
+          "parameters":[
+            {
+              "name":"q",
+              "description":"Search terms typed into the interface (minimum two characters)",
+              "required":true,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false
+            },
+            {
+              "name":"source",
+              "description":"Custom parameter for selecting which source to use; the Arctic Data Explorer (ADE) uses data aggregated from many sources, including, but not limited to, NSIDC",
+              "required":true,
+              "type":"string",
+              "paramType":"query",
+              "allowMultiple":false,
+              "defaultValue":"NSIDC",
+              "enum":["NSIDC", "ADE"]
+            }
+          ],
+          "responseMessages":[
+            {
+              "code":400,
+              "message":"Bad request"
+            },
+            {
+              "code":500,
+              "message":"Internal server error"
+            },
+            {
+              "code":200,
+              "message":"OK"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "models":{}
+}
