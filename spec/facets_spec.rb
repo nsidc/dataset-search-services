@@ -7,7 +7,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
   let(:default_search_expectations) {
     {
       'q' => '*:*',
-      'qf' => 'title^15 parameters^3 summary^5 topics keywords^3 platforms^2 sensors^2 normalized_authoritative_id^100 authors',
+      'qf' => 'authoritative_id title^15 parameters^3 summary^5 topics keywords^3 platforms^2 sensors^2 normalized_authoritative_id^100 authors',
       'pf' => 'title^25 parameters^5 summary^25 keywords^5',
       'ps' => 1,
       'rows' => '0',
