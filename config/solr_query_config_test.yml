@@ -1,5 +1,6 @@
 NSIDC:
   query_fields:
+    - authoritative_id
     - title
     - parameters
     - summary
