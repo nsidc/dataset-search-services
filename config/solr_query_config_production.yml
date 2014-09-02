@@ -1,6 +1,5 @@
 NSIDC:
   query_fields:
-    - authoritative_id
     - title
     - parameters
     - summary
@@ -61,7 +60,6 @@ NSIDC:
   boost: product(popularity,query({!type=edismax qf=$qf pf=$pf ps=$ps bq=$bq bf=sum(1,product(tan(div(popularity,8)),50))^55 v=$q boost=})) #scale documents by how well they satisfy the query and their popularity
 ADE:
   query_fields:
-    - authoritative_id
     - title
     - summary
     - keywords
