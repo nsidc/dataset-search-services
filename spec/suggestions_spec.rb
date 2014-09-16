@@ -3,15 +3,15 @@ require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dat
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchSuggest do
 
-  let(:base_search_parameters) {
+  let(:base_search_parameters) do
     {
-        queryType: 'suggestions'
+      queryType: 'suggestions'
     }
-  }
+  end
 
-  let(:solr_response) {
+  let(:solr_response) do
     double('entries', entries: ['sea ice', 'sea ice concentration', 'seasonally frozen ground']) # Make this look like solr_suggestion in the parser
-  }
+  end
 
   let(:rsolr) { double('rsolr', get: solr_response) }
   let(:query_config) { YAML.load_file File.join(File.dirname(__FILE__), '..', 'config', 'solr_query_config_test.yml') }

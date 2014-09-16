@@ -57,7 +57,7 @@ module NsidcOpenSearch
                 { name: 'search_terms', value: search_terms },
                 { name: 'query_string', value: query_string },
                 { name: 'requested_with', value: requested_with }
-            ]
+              ]
             )
           rescue => e
             puts 'Could not send metrics information to libre_metrics'

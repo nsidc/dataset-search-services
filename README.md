@@ -48,7 +48,11 @@ Don't check these changes in though!
 [RuboCop](https://github.com/bbatsov/rubocop) is a style checker for Ruby,
 designed to enforce rules specified in the community-driven
 [Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide). Settings are
-configured in `.rubocop.yml`. It can be run simply with `rubocop`.
+configured in the central
+[.rubocop.yml](https://bitbucket.org/nsidc/lint-test-tools/src/master/Ruby/.rubocop.yml)
+and in `.rubocop_todo.yml` (settings in here are tech debt; the settings should
+be deleted from the file, then the source files changed so that RuboCop reports
+no violations). It can be run with `bundle exec rake rubocop`.
 
 ### Guard
 
@@ -220,17 +224,17 @@ Invoking a search:
 
 ### How to contact NSIDC
 
-User Services and general information:  
-Support: http://support.nsidc.org  
-Email: nsidc@nsidc.org  
+User Services and general information:
+Support: http://support.nsidc.org
+Email: nsidc@nsidc.org
 
-Phone: +1 303.492.6199  
-Fax: +1 303.492.2468  
+Phone: +1 303.492.6199
+Fax: +1 303.492.2468
 
-Mailing address:  
-National Snow and Ice Data Center  
-CIRES, 449 UCB  
-University of Colorado  
+Mailing address:
+National Snow and Ice Data Center
+CIRES, 449 UCB
+University of Colorado
 Boulder, CO 80309-0449 USA
 
 ### License

@@ -54,7 +54,7 @@ desc "Create and deploy this app's environment config file to the target directo
 task deploy_config_file: :init_server_env do
   setting_overrides = DeploymentConfig[:env_vars]
   settings = {
-      'RACK_ENV' => @target_env
+    'RACK_ENV' => @target_env
   }.merge(setting_overrides)
 
   filename = 'env'
@@ -93,7 +93,7 @@ def create_env_file(filename, settings)
   `echo "### This file provides TARGET_ENVIRONMENTal variables to init.\n" > #{filename}`
 
   settings.each do |setting, value|
-    command = "export #{setting.to_s}='#{value}'"
+    command = "export #{setting}='#{value}'"
     puts "Adding line to env file: #{command}"
     `echo "#{command}" >> #{filename}`
   end
