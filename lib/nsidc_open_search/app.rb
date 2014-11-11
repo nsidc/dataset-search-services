@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/config_file'
 require 'sinatra/cross_origin'
+require 'sinatra/advanced_routes'
 require 'libre_metrics_client'
 require File.join(File.dirname(__FILE__), '..', '..', 'config', 'app_config')
 require File.join(File.dirname(__FILE__), 'helpers', 'app_helpers')
@@ -14,6 +15,7 @@ require File.join(File.dirname(__FILE__), 'controllers', 'dataset_suggestions')
 module NsidcOpenSearch
   class App < Sinatra::Base
     register Sinatra::CrossOrigin
+    register Sinatra::AdvancedRoutes
 
     configure do
       AppConfig[environment].each { |k, v| set k, v }

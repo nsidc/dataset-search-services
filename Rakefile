@@ -29,6 +29,25 @@ task :run do
   sh 'puma -b tcp://0.0.0.0:3000 -t 1:1 -w 5 -e development -C "-"'
 end
 
+desc 'List all routes'
+task :routes do
+  # Figure out how to Get this path from the environment
+  # rather than hardcoding!
+  app_dir = 'lib/nsidc_open_search'
+  require ['.', app_dir, 'app.rb'].join('/')
+  root_path = [File.expand_path('../', __FILE__), app_dir].join('/')
+
+  NsidcOpenSearch::App.each_route do |r|
+    print r.verb.ljust(12)
+    print r.path.ljust(35) unless r.path.nil?
+    unless r.file.nil?
+      r.file.slice! root_path unless r.file.nil?
+      print "#{r.file} (#{r.line})"
+    end
+    puts ''
+  end
+end
+
 task default: 'spec:unit'
 
 namespace :spec do

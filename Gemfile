@@ -14,6 +14,7 @@ gem 'peach'
 gem 'puma'
 gem 'json'
 gem 'sinatra-cross_origin'
+gem 'sinatra-advanced-routes', :require => 'sinatra/advanced_routes'
 
 group :test do
   gem 'rspec', '=2.13.0'
