@@ -21,7 +21,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
             'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
 
             # keep these out of order so sorting can be tested
-            'temporal_coverages' => %w(2004-01-01, 1978-10-01,2014-05-23 1978-10-01,2011-12-31 2004-01-01,2005-01-01),
+            'temporal_coverages' => %w(2004-01-01, 1978-10-01,2014-05-23 1978-10-01,2011-12-31 2004-01-01,2005-01-01 ,),
 
             'distribution_formats' => %w(binary),
             'last_revision_date' => '20130528',
