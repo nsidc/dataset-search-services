@@ -47,14 +47,14 @@ module NsidcOpenSearch
         end
 
         def defined_sort(facet, facet_config)
-          result = facet.items.sort do |x, y|
+          result = facet.items.sort { |x, y|
             (facet_config['sort_order'].index { |element| element == x.value } || facet.items.size) <=>
             (facet_config['sort_order'].index { |element| element == y.value } || facet.items.size)
-          end
+          }
           RSolr::Ext::Response::Facets::FacetField.new(facet.name, result)
         end
 
-        def short_name_sort(facet, _facet_config)
+        def short_name_sort(facet, facet_config)
           result = facet.items.sort do |x, y|
             x_long_name, x_short_name = x.value.split(/ \| /)
             y_long_name, y_short_name = y.value.split(/ \| /)
@@ -69,7 +69,7 @@ module NsidcOpenSearch
         end
 
         # sort alphabetically with 'Not specified' last in the list
-        def not_specified_last(facet, _facet_config)
+        def not_specified_last(facet, facet_config)
           result = facet.items.sort do |x, y|
             if x.value == NOT_SPECIFIED
               1

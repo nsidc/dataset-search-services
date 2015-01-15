@@ -18,8 +18,8 @@ describe 'osdd dsl' do
 
     it 'outputs a valid OSDD Url element' do
       parameters = {
-        'st' => 'searchTerm',
-        'bbox' => 'bbox?'
+          'st' => 'searchTerm',
+          'bbox' => 'bbox?'
       }
       url = OpenSearchDsl::OpenSearchDescriptionDocument::Url.new do
         type 'atom'
@@ -79,8 +79,8 @@ describe 'osdd dsl' do
 
     it 'should output a valid OSDD Query element' do
       parameters = {
-        'st' => 'searchTerm',
-        'bbox' => 'bbox'
+          'st' => 'searchTerm',
+          'bbox' => 'bbox'
       }
 
       q = OpenSearchDsl::OpenSearchDescriptionDocument::Query.new do

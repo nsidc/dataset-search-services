@@ -20,7 +20,7 @@ module NsidcOpenSearch
         private
 
         # subclasses probably want to implement build_solr_params
-        def build_solr_params(search_params, _config)
+        def build_solr_params(search_params, config)
           search_params
         end
 

@@ -5,7 +5,7 @@ module NsidcOpenSearch
     module Search
       class SolrSearchRest < SolrSearchBase
         # override
-        def build_solr_params(search_params, _config)
+        def build_solr_params(search_params, config)
           # get a list of fields to query
           {
             :queries => { authoritative_id: "#{search_params[:id]}" },

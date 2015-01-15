@@ -21,7 +21,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
             'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
 
             # keep these out of order so sorting can be tested
-            'temporal_coverages' => %w(2004-01-01, 1978-10-01,2014-05-23 1978-10-01,2011-12-31 2004-01-01,2005-01-01 ,),
+            'temporal_coverages' => %w(2004-01-01, 1978-10-01,2014-05-23 1978-10-01,2011-12-31 2004-01-01,2005-01-01),
 
             'distribution_formats' => %w(binary),
             'last_revision_date' => '20130528',
@@ -38,9 +38,9 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
     @facet_config = {
       'NSIDC' => {
         'facets' => {
-          'name' => 'facet_temporal_duration',
-          'sort' => 'defined_sort',
-          'sort_order' => ['< 1 year', '1 -4 years', '5 - 9 years', 'Not specified']
+            'name' => 'facet_temporal_duration',
+            'sort' => 'defined_sort',
+            'sort_order' => ['< 1 year', '1 -4 years', '5 - 9 years', 'Not specified']
         }
       }
     }
@@ -115,7 +115,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
 
     it 'should set bounding box coordinates' do
       bbox = @entry.spatial_coverages[0]
-      west, south, east, north = bbox.split(',').map(&:to_f)
+      west, south, east, north = bbox.split(',').map { |c| c.to_f }
       west.should eql(-180.0)
       east.should eql 180.0
       north.should eql 90.0

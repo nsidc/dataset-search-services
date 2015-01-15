@@ -59,16 +59,16 @@ describe 'Nsidc OpenSearch App' do
 
   it 'should provide OpenSearch results at its dataset endpoint' do
     solr_response = {
-      'response' =>  {
-        'numFound' => 1,
-        'docs' => [
-          {
-            'authoritative_id' => '12345',
-            'title' => 'test',
-            'iso' => iso_document_fixture
-          }
-        ]
-      }
+        'response' =>  {
+            'numFound' => 1,
+            'docs' => [
+                {
+                    'authoritative_id' => '12345',
+                    'title' => 'test',
+                    'iso' => iso_document_fixture
+                }
+            ]
+        }
     }
 
     rsolr = double('rsolr', find: solr_response)

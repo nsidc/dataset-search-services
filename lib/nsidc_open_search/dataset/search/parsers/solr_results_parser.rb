@@ -49,21 +49,19 @@ module NsidcOpenSearch
           if coverages.nil?
             []
           else
-            mapped_coverages = []
-            coverages.each do |c|
+            mapped_coverages = coverages.map do |c|
               dates = c.split(',')
 
               start_date = parse_date(dates[0])
               end_date = parse_date(dates[1])
-              if(!start_date.nil? || !end_date.nil?)
-                mapped_coverages << NsidcOpenSearch::Dataset::Model::Search::DateRange.new(start_date: start_date, end_date: end_date)
-              end
-          end
+
+              NsidcOpenSearch::Dataset::Model::Search::DateRange.new(start_date: start_date, end_date: end_date)
+            end
 
             mapped_coverages.sort do |x, y|
               if x.start_date == y.start_date
 
-                # nil end_date means a continuous data set, treat those as if
+                # nil end_date means a continous data set, treat those as if
                 # their end dates are after all other end dates
                 if x.end_date.nil?
                   1

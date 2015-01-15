@@ -1,0 +1,30 @@
+inherit_from: rubocop-todo.yml
+
+AllCops:
+  Includes:
+    - tasks/*.rake
+    - Guardfile
+    - Rakefile
+  Excludes:
+    - 'gem/**/*'
+
+Encoding:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+RescueModifier:
+  Enabled: false
+
+Blocks:
+  Enabled: false
+
+Semicolon:
+  Enabled: false

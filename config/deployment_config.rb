@@ -19,26 +19,26 @@ module DeploymentConfig
   private
 
   ENVIRONMENTS = {
-    integration: 'liquid',
-    qa: 'brash',
-    staging: 'freeze',
-    production: 'frozen'
+      integration: 'liquid',
+      qa: 'brash',
+      staging: 'freeze',
+      production: 'frozen'
   }
 
   DEPLOYMENT_SETTINGS = {
-    app_name: AppConfig::APPLICATION_NAME,
-    deployment_directory: AppConfig::APPLICATION_NAME,
-    artifact_repo: "/disks/integration/san/INTRANET/REPO/#{AppConfig::APPLICATION_NAME}",
-    deployment_log: "/disks/integration/san/INTRANET/REPO/#{AppConfig::APPLICATION_NAME}/deployable_versions_vm",
-    deploy_dirs: %w(config lib config.ru Gemfile Gemfile.lock README.md deployment)
+      app_name: AppConfig::APPLICATION_NAME,
+      deployment_directory: AppConfig::APPLICATION_NAME,
+      artifact_repo: "/disks/integration/san/INTRANET/REPO/#{AppConfig::APPLICATION_NAME}",
+      deployment_log: "/disks/integration/san/INTRANET/REPO/#{AppConfig::APPLICATION_NAME}/deployable_versions_vm",
+      deploy_dirs: %w(config lib config.ru Gemfile Gemfile.lock README.md deployment)
   }
 
   DEPLOYMENT_LOG = {
-    compile_and_deploy: 'deployable_versions_integration',
-    integration: 'deployable_versions_qa',
-    qa: 'deployable_versions_staging',
-    staging: 'deployable_versions_production',
-    production: 'deployed_versions_production',
-    vm: 'deployable_versions_vm'
+      compile_and_deploy: 'deployable_versions_integration',
+      integration: 'deployable_versions_qa',
+      qa: 'deployable_versions_staging',
+      staging: 'deployable_versions_production',
+      production: 'deployed_versions_production',
+      vm: 'deployable_versions_vm'
   }
 end

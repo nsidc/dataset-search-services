@@ -11,7 +11,7 @@ module NsidcOpenSearch
           def to_json
             [
               query_string,
-              entries.map(&:completion)
+              entries.map { |suggestion| suggestion.completion }
             ].to_json
           end
         end

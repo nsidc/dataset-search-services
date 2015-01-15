@@ -4,7 +4,7 @@ require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dat
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
 
-  let(:default_search_expectations) do
+  let(:default_search_expectations) {
     {
       'q' => '*:*',
       'qf' => 'title^15 parameters^3 summary^5 topics keywords^3 platforms^2 sensors^2 normalized_authoritative_id^100 authors',
@@ -17,20 +17,20 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
       'facet.sort' => 'index',
       'facet.limit' => -1
     }
-  end
+  }
 
-  let(:base_search_parameters) do
+  let(:base_search_parameters) {
     {
       source: 'NSIDC',
       count: '0',
       startIndex: '1',
       queryType: 'facets'
     }
-  end
+  }
 
-  let(:solr_response) do
+  let(:solr_response) {
     double('facets', facets: [double('facet', name: 'Facet1', items: [double('item', value: 'dummy', hits: '12')])])
-  end
+  }
 
   let(:rsolr) { double('rsolr', find: solr_response) }
   let(:query_config) { YAML.load_file File.join(File.dirname(__FILE__), '..', 'config', 'solr_query_config_test.yml') }

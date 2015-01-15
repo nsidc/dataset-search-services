@@ -159,7 +159,7 @@ module NsidcOpenSearch
               "#{k}:#{format_query_term(v)}"
             end
           end
-          t.reject(&:nil?).join(" #{OPERATOR} ")
+          t.reject { |s| s.nil? }.join(" #{OPERATOR} ")
         end
 
         def format_query_term(term, include_params = true)
@@ -198,7 +198,7 @@ module NsidcOpenSearch
         end
 
         def operator_joined_terms(terms_arr)
-          terms_arr.reject(&:nil?).join(" #{OPERATOR} ")
+          terms_arr.reject { |s| s.nil? }.join(" #{OPERATOR} ")
         end
       end
     end
