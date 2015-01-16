@@ -1,0 +1,28 @@
+set -ex
+echo $DEPLOYMENT_ENV
+APP_HOME=/vagrant/search_services
+PUMA_CONFIG=/vagrant/search_services/deployment/puma.conf
+
+setup_upstart() {
+  # Configure puma for Upstart
+  vagrant ssh $DEPLOYMENT_ENV -c "sudo sh -c 'echo $APP_HOME/config.ru > /etc/puma.conf'"
+  vagrant ssh $DEPLOYMENT_ENV -c "sudo cp $PUMA_CONFIG /etc/init/"
+  vagrant ssh $DEPLOYMENT_ENV -c "mkdir -p $APP_HOME/run/log"
+}
+
+usage()
+{
+  echo "Usage: ${0##*/} {integration|qa|production} {NSIDC_SOLR_VERSION}"
+  exit 0
+}
+
+LOCAL_NSIDC_SOLR=/opt/nsidc-solr
+DEPLOYMENT_ENV=$1
+
+if [ -z "$DEPLOYMENT_ENV" ]
+then
+  echo "Please provide a target environment to set up Solr"
+  exit 1
+fi
+
+setup_upstart

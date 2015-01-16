@@ -3,3 +3,19 @@
 .project
 *.iml
 results.xml
+
+# begin vagrant-nsidc
+#
+# the following entries were added by the vagrant-nsidc plugin when you ran
+# `vagrant nsidc init`
+
+.vagrant*/
+
+.nsidc-project.yaml
+
+/puppet/.librarian/
+/puppet/.tmp/
+/puppet/Puppetfile.lock
+/puppet/modules/
+
+# end vagrant-nsidc

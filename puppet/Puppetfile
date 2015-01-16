@@ -1,0 +1,10 @@
+forge "http://forge.puppetlabs.com"
+
+# Module for access to NSIDC Enterprise storage
+mod "nsidc/nsidc_nfs",
+  :git => "git@bitbucket.org:/nsidc/puppet-nsidc-nfs.git"
+
+# Module for creating NSIDC Jenkins servers
+mod "nsidc/nsidc_jenkins",
+  :git => "git@bitbucket.org:/nsidc/puppet-nsidc-jenkins.git",
+  :ref => 'latest'
