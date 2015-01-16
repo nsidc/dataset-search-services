@@ -3,6 +3,7 @@ require('yaml')
 
 module AppConfig
   APPLICATION_NAME = 'dataset-search-services'
+  APP_PATH = '/vagrant'
 
   def self.[](key)
     key_sym = key.to_sym unless key.nil?
@@ -18,10 +19,10 @@ module AppConfig
     relative_url_root: '/api/dataset/2',
     port: '10680',
     num_workers: 5,
-    pidfile: '/opt/search_services/run/puma.pid',
-    state_path: '/opt/search_services/run/puma.state',
-    std_err_log: '/opt/search_services/run/log/puma.stderr.log',
-    std_out_log: '/opt/search_services/run/log/puma.stdout.log'
+    pidfile: File.join(APP_PATH, 'run/puma.pid'),
+    state_path: File.join(APP_PATH, 'run/puma.state'),
+    std_err_log: File.join(APP_PATH, 'run/log/puma.stderr.log'),
+    std_out_log: File.join(APP_PATH, 'run/log/puma.stdout.log')
   }
 
   APPLICATION_ENVIRONMENTS = {

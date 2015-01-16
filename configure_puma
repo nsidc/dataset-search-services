@@ -1,13 +1,14 @@
 set -ex
 echo $DEPLOYMENT_ENV
-APP_HOME=/vagrant/search_services
-PUMA_CONFIG=/vagrant/search_services/deployment/puma.conf
+APP_HOME=/vagrant
+PUMA_CONFIG=/vagrant/deployment/puma.conf
 
 setup_upstart() {
   # Configure puma for Upstart
-  vagrant ssh $DEPLOYMENT_ENV -c "sudo sh -c 'echo $APP_HOME/config.ru > /etc/puma.conf'"
-  vagrant ssh $DEPLOYMENT_ENV -c "sudo cp $PUMA_CONFIG /etc/init/"
-  vagrant ssh $DEPLOYMENT_ENV -c "mkdir -p $APP_HOME/run/log"
+  vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "sudo sh -c 'echo $APP_HOME/config.ru > /etc/puma.conf'"
+  vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "sudo cp $PUMA_CONFIG /etc/init/"
+  vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "mkdir -p $APP_HOME/run/log"
+  vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "sudo service puma start"
 }
 
 usage()

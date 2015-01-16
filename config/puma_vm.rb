@@ -2,10 +2,10 @@
 require File.join(File.dirname(__FILE__), 'app_config.rb')
 
 # Puma configuration file. See https://github.com/puma/puma for more information and example config files.
-directory '/opt/search_services'
+directory AppConfig::APP_PATH
 env = "#{ENV['RACK_ENV']}" || 'development'
 
-rackup '/opt/search_services/config.ru'
+rackup '/vagrant/config.ru'
 bind "tcp://0.0.0.0:#{AppConfig[env][:port]}"
 pidfile AppConfig[env][:pidfile]
 state_path AppConfig[env][:state_path]
