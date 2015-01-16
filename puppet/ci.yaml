@@ -56,7 +56,7 @@ nsidc_jenkins::jobs:
     trigger_job: "%{hiera('project')}_4_Check_Syntax"
 
   "%{hiera('project')}_4_Check_Syntax":
-    command: bundle exec rake rubocop
+    command: bundle exec rubocop
     workspace: /var/lib/jenkins/workspace
     trigger_job: "%{hiera('project')}_5_Run_Unit_Tests"
 

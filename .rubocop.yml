@@ -7,6 +7,7 @@ AllCops:
     - Rakefile
   Excludes:
     - 'gem/**/*'
+    - 'puppet/**/*'
 
 Encoding:
   Enabled: false
