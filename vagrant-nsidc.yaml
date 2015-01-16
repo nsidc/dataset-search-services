@@ -1,6 +1,6 @@
 project: dss
 vsphere:
-  template: precise64-nsidc
+  template: precise64
 
 virtualbox:
   box: precise64-nsidc
