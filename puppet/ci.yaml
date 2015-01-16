@@ -73,7 +73,9 @@ nsidc_jenkins::jobs:
     trigger_job: "%{hiera('project')}_7_Run_Integration_Tests"
 
   "%{hiera('project')}_7_Run_Integration_Tests":
-    command: bundle exec rake spec:acceptance
+    command: |
+      export TARGET_ENVIRONMENT=integration
+      bundle exec rake spec:acceptance
     workspace: /var/lib/jenkins/workspace
 
   # If your project builds a package, these jobs provide a template for the
