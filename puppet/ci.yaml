@@ -47,7 +47,7 @@ nsidc_jenkins::jobs:
       # Jenkins API to trigger the next job with curl. Just make sure the name
       # of the job in the curl command is correct:
       echo "Triggering a new build of %{hiera('project')}_3_Install_Dependencies"
-      curl localhost:8080/job/%{hiera('project')_3_Install_Dependencies}
+      curl localhost:8080/job/%{hiera('project')}_3_Install_Dependencies
     workspace: /var/lib/jenkins/workspace
 
   "%{hiera('project')}_3_Install_Dependencies":
