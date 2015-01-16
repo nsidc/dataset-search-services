@@ -8,6 +8,7 @@ setup_upstart() {
   vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "sudo sh -c 'echo $APP_HOME/config.ru > /etc/puma.conf'"
   vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "sudo cp $PUMA_CONFIG /etc/init/"
   vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "mkdir -p $APP_HOME/run/log"
+  vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "sudo chown vagrant $APP_HOME/config; echo '$DEPLOYMENT_ENV' > $APP_HOME/config/environment"
   vagrant nsidc ssh --env=$DEPLOYMENT_ENV -c "sudo service puma start"
 }
 
