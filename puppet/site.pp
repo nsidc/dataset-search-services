@@ -1,6 +1,16 @@
 # Load modules and classes
 hiera_include('classes')
 
+# Ensure the brightbox apt repository gets added before installing ruby
+include apt
+apt::ppa{'ppa:brightbox/ruby-ng':}
+class {'ruby':
+  require         => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
+}
+class {'ruby::dev':
+  require         => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
+}
+
 Exec { path => "/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:usr/sbin:/sbin:/usr/java/jdk/bin" }
 
 class update-package-manager {
