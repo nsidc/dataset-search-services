@@ -63,20 +63,17 @@ nsidc_jenkins::jobs:
   "%{hiera('project')}_5_Run_Unit_Tests":
     command: bundle exec rake spec:unit
     workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_6_Run_Integration_Tests"
+    trigger_job: "%{hiera('project')}_6_Provision_Integration"
 
-  "%{hiera('project')}_6_Run_Integration_Tests":
-    command:
+  "%{hiera('project')}_6_Provision_Integration":
+    command: |
+      (vagrant nsidc hijack --env=integration || true)
+      vagrant nsidc up --env=integration
     workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_7_Build_Snapshot"
+    trigger_job: "%{hiera('project')}_7_Run_Integration_Tests"
 
-  "%{hiera('project')}_7_Build_Snapshot":
-    command:
-    workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_8_Publish_Snapshot"
-
-  "%{hiera('project')}_8_Publish_Snapshot":
-    command:
+  "%{hiera('project')}_7_Run_Integration_Tests":
+    command: bundle exec rake spec:acceptance
     workspace: /var/lib/jenkins/workspace
 
   # If your project builds a package, these jobs provide a template for the
