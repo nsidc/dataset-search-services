@@ -6,6 +6,7 @@ require 'nsidc_deployment_helper/setup_auth_agents'
 require 'nsidc_deployment_helper/deployment_log'
 require 'nsidc_deployment_helper/tar_artifact'
 require File.join('.', 'config', 'deployment_config.rb')
+require File.join('.', 'config', 'app_config.rb')
 require File.join('.', 'lib', 'version.rb')
 
 Dir.glob('./tasks/*.rake').each { |r| import r }
@@ -60,3 +61,26 @@ namespace :spec do
     t.pattern = './spec/acceptance/**/*{.feature}'
   end
 end
+
+def run_vagrant_ssh(env, ssh_cmd)
+  cmd = "vagrant nsidc ssh --env=#{env} -c '#{ssh_cmd}'"
+  puts "Running #{cmd}"
+
+  `#{ cmd }`
+end
+
+task :configure_puma, [:env] do |_t, args|
+  puma_config = File.join(AppConfig::APP_PATH, 'deployment/puma.conf')
+
+  run_vagrant_ssh(args[:env], "sudo sh -c 'echo #{AppConfig::APP_PATH}/config.ru > /etc/puma.conf'") 
+  run_vagrant_ssh(args[:env], "sudo cp #{puma_config} /etc/init/") 
+  run_vagrant_ssh(args[:env], "mkdir -p #{File.join(AppConfig::APP_PATH, 'run/log')}")
+  run_vagrant_ssh(args[:env], "sudo chown vagrant #{File.join(AppConfig::APP_PATH, 'config')}")
+  run_vagrant_ssh(args[:env], "echo '#{args[:env]}' > #{File.join(AppConfig::APP_PATH, 'config/environment')}") 
+end
+
+task :start_puma, [:env] do |_t, args|
+  run_vagrant_ssh(args[:env], 'sudo service puma start') 
+end
+
+task start_puma: :configure_puma
