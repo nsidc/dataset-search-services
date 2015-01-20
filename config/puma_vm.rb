@@ -5,7 +5,7 @@ require File.join(File.dirname(__FILE__), 'app_config.rb')
 directory AppConfig::APP_PATH
 env = "#{ENV['RACK_ENV']}" || 'development'
 
-rackup '/vagrant/config.ru'
+rackup File.join(AppConfig::APP_PATH, 'config.ru')
 bind "tcp://0.0.0.0:#{AppConfig[env][:port]}"
 pidfile AppConfig[env][:pidfile]
 state_path AppConfig[env][:state_path]

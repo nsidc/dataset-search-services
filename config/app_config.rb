@@ -3,7 +3,7 @@ require('yaml')
 
 module AppConfig
   APPLICATION_NAME = 'dataset-search-services'
-  APP_PATH = '/vagrant'
+  APP_PATH = '/opt/search_services'
 
   def self.[](key)
     key_sym = key.to_sym unless key.nil?
