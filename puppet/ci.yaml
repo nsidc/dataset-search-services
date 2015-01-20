@@ -28,7 +28,7 @@ nsidc_jenkins::plugins:
 nsidc_jenkins::jobs:
   # clone the project into the shared workspace
   "%{hiera('project')}_01_Checkout_Project":
-    gitrepo: %{hiera('gitrepo')}
+    gitrepo: "%{hiera('gitrepo')}"
     workspace: /var/lib/jenkins/workspace
     trigger_job: "%{hiera('project')}_02_Configure_System"
 
@@ -209,16 +209,17 @@ nsidc_jenkins::jobs:
       - type: string
         name: branch
         description: git branch to checkout and tag
-        default: v1.0.0
+        default: master
       - type: choice
-        name: version_type
+        name: version_part
         choices:
         - patch
         - minor
         - major
     command: |
       (git clone %{hiera('gitrepo')} . || true)
-      git checkout refs/heads/$branch
+      git fetch origin $branch
+      git checkout $branch
 
       bundle install
       bundle exec rake jenkins:release:bump[$version_part]

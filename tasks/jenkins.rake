@@ -1,5 +1,3 @@
-require 'bundler/gem_tasks'
-
 def version_rb
   File.expand_path('../../lib/version.rb', __FILE__)
 end
@@ -61,7 +59,8 @@ namespace :jenkins do
 
     desc 'git-push the release changes (the version bump commit and the version tag)'
     task :push do
-      sh 'git push origin master --tags'
+      current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
+      sh "git push origin master #{ current_branch } --tags"
     end
   end
 end
