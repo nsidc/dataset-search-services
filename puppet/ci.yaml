@@ -72,9 +72,6 @@ nsidc_jenkins::jobs:
 
       (vagrant nsidc hijack --env=$ENV || true)
       vagrant nsidc up --env=$ENV
-      vagrant nsidc ssh --env=$ENV -c 'sudo mkdir -p /opt/search_services'
-      vagrant nsidc ssh --env=$ENV -c 'sudo cp -R /vagrant/* /opt/search_services'
-      vagrant nsidc ssh --env=$ENV -c 'sudo chown -R vagrant /opt/search_services'
       bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace
     trigger_job: "%{hiera('project')}_07_Run_Integration_Tests"
@@ -122,9 +119,6 @@ nsidc_jenkins::jobs:
 
       (vagrant nsidc hijack --env=$ENV || true)
       vagrant nsidc up --env=$ENV
-      vagrant nsidc ssh --env=$ENV -c 'sudo mkdir -p /opt/search_services'
-      vagrant nsidc ssh --env=$ENV -c 'sudo cp -R /vagrant/* /opt/search_services'
-      vagrant nsidc ssh --env=$ENV -c 'sudo chown -R vagrant /opt/search_services'
       bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace-qa
     trigger_job: "%{hiera('project')}_13_QA_Run_Integration_Tests"
@@ -172,9 +166,6 @@ nsidc_jenkins::jobs:
 
       (vagrant nsidc hijack --env=$ENV || true)
       vagrant nsidc up --env=$ENV
-      vagrant nsidc ssh --env=$ENV -c 'sudo mkdir -p /opt/search_services'
-      vagrant nsidc ssh --env=$ENV -c 'sudo cp -R /vagrant/* /opt/search_services'
-      vagrant nsidc ssh --env=$ENV -c 'sudo chown -R vagrant /opt/search_services'
       bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace-staging
     trigger_job: "%{hiera('project')}_19_Staging_Run_Integration_Tests"
