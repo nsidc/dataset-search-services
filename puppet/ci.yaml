@@ -46,7 +46,7 @@ nsidc_jenkins::jobs:
       # normal methods (ie, using the trigger_job param), but we can use the
       # Jenkins API to trigger the next job with curl. Just make sure the name
       # of the job in the curl command is correct:
-      sleep 10
+      sleep 15
       echo "Triggering a new build of %{hiera('project')}_3_Install_Dependencies"
       curl localhost:8080/job/%{hiera('project')}_3_Install_Dependencies
     workspace: /var/lib/jenkins/workspace
@@ -68,12 +68,14 @@ nsidc_jenkins::jobs:
 
   "%{hiera('project')}_6_Provision_Integration":
     command: |
-      (vagrant nsidc hijack --env=integration || true)
-      vagrant nsidc up --env=integration
-      vagrant nsidc ssh --env=integration -c 'sudo mkdir -p /opt/search_services'
-      vagrant nsidc ssh --env=integration -c 'sudo cp -R /vagrant/* /opt/search_services'
-      vagrant nsidc ssh --env=integration -c 'sudo chown -R vagrant /opt/search_services'
-      bundle exec rake start_puma[integration]
+      ENV=integration
+
+      (vagrant nsidc hijack --env=$ENV || true)
+      vagrant nsidc up --env=$ENV
+      vagrant nsidc ssh --env=$ENV -c 'sudo mkdir -p /opt/search_services'
+      vagrant nsidc ssh --env=$ENV -c 'sudo cp -R /vagrant/* /opt/search_services'
+      vagrant nsidc ssh --env=$ENV -c 'sudo chown -R vagrant /opt/search_services'
+      bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace
     trigger_job: "%{hiera('project')}_7_Run_Integration_Tests"
 
@@ -82,6 +84,100 @@ nsidc_jenkins::jobs:
       export TARGET_ENVIRONMENT=integration
       bundle exec rake spec:acceptance
     workspace: /var/lib/jenkins/workspace
+
+  "%{hiera('project')}_QA_Checkout_Project":
+    parameters:
+      - type: string
+        name: tag
+        description: git tag to checkout
+        default: v1.0.0
+    command: |
+      (git clone git@bitbucket.org:nsidc/dataset-search-services.git . || true)
+      git checkout $tag
+    workspace: /var/lib/jenkins/workspace-qa
+    trigger_job: "%{hiera('project')}_QA_Install_Dependencies"
+
+  "%{hiera('project')}_QA_Install_Dependencies":
+    command: bundle install
+    workspace: /var/lib/jenkins/workspace-qa
+    trigger_job: "%{hiera('project')}_QA_Check_Syntax"
+
+  "%{hiera('project')}_QA_Check_Syntax":
+    command: bundle exec rubocop
+    workspace: /var/lib/jenkins/workspace-qa
+    trigger_job: "%{hiera('project')}_QA_Run_Unit_Tests"
+
+  "%{hiera('project')}_QA_Run_Unit_Tests":
+    command: bundle exec rake spec:unit
+    workspace: /var/lib/jenkins/workspace-qa
+    trigger_job: "%{hiera('project')}_QA_Provision"
+
+  "%{hiera('project')}_QA_Provision":
+    command: |
+      ENV=qa
+
+      (vagrant nsidc hijack --env=$ENV || true)
+      vagrant nsidc up --env=$ENV
+      vagrant nsidc ssh --env=$ENV -c 'sudo mkdir -p /opt/search_services'
+      vagrant nsidc ssh --env=$ENV -c 'sudo cp -R /vagrant/* /opt/search_services'
+      vagrant nsidc ssh --env=$ENV -c 'sudo chown -R vagrant /opt/search_services'
+      bundle exec rake start_puma[$ENV]
+    workspace: /var/lib/jenkins/workspace-qa
+    trigger_job: "%{hiera('project')}_QA_Run_Integration_Tests"
+
+  "%{hiera('project')}_QA_Run_Integration_Tests":
+    command: |
+      export TARGET_ENVIRONMENT=qa
+      bundle exec rake spec:acceptance
+    workspace: /var/lib/jenkins/workspace-qa
+
+  "%{hiera('project')}_Staging_Checkout_Project":
+    parameters:
+      - type: string
+        name: tag
+        description: git tag to checkout
+        default: v1.0.0
+    command: |
+      (git clone git@bitbucket.org:nsidc/dataset-search-services.git . || true)
+      git checkout $tag
+    workspace: /var/lib/jenkins/workspace-staging
+    trigger_job: "%{hiera('project')}_Staging_Install_Dependencies"
+
+  "%{hiera('project')}_Staging_Install_Dependencies":
+    command: bundle install
+    workspace: /var/lib/jenkins/workspace-staging
+    trigger_job: "%{hiera('project')}_Staging_Check_Syntax"
+
+  "%{hiera('project')}_Staging_Check_Syntax":
+    command: bundle exec rubocop
+    workspace: /var/lib/jenkins/workspace-staging
+    trigger_job: "%{hiera('project')}_Staging_Run_Unit_Tests"
+
+  "%{hiera('project')}_Staging_Run_Unit_Tests":
+    command: bundle exec rake spec:unit
+    workspace: /var/lib/jenkins/workspace-staging
+    trigger_job: "%{hiera('project')}_Staging_Provision"
+
+  "%{hiera('project')}_Staging_Provision":
+    command: |
+      ENV=staging
+
+      (vagrant nsidc hijack --env=$ENV || true)
+      vagrant nsidc up --env=$ENV
+      vagrant nsidc ssh --env=$ENV -c 'sudo mkdir -p /opt/search_services'
+      vagrant nsidc ssh --env=$ENV -c 'sudo cp -R /vagrant/* /opt/search_services'
+      vagrant nsidc ssh --env=$ENV -c 'sudo chown -R vagrant /opt/search_services'
+      bundle exec rake start_puma[$ENV]
+    workspace: /var/lib/jenkins/workspace-staging
+    trigger_job: "%{hiera('project')}_Staging_Run_Integration_Tests"
+
+  "%{hiera('project')}_Staging_Run_Integration_Tests":
+    command: |
+      export TARGET_ENVIRONMENT=staging
+      bundle exec rake spec:acceptance
+    workspace: /var/lib/jenkins/workspace-staging
+
+
 
   # If your project builds a package, these jobs provide a template for the
   # release pipeline for your package. Just replace the commented-out rake
