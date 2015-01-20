@@ -1,4 +1,5 @@
 project: dss
+gitrepo: git@bitbucket.org:nsidc/dataset-search-services.git
 vsphere:
   template: precise64
 

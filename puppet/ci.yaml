@@ -28,7 +28,7 @@ nsidc_jenkins::plugins:
 nsidc_jenkins::jobs:
   # clone the project into the shared workspace
   "%{hiera('project')}_01_Checkout_Project":
-    gitrepo: git@bitbucket.org:nsidc/dataset-search-services.git
+    gitrepo: %{hiera('gitrepo')}
     workspace: /var/lib/jenkins/workspace
     trigger_job: "%{hiera('project')}_02_Configure_System"
 
@@ -92,7 +92,7 @@ nsidc_jenkins::jobs:
         description: git tag to checkout
         default: v1.0.0
     command: |
-      (git clone git@bitbucket.org:nsidc/dataset-search-services.git . || true)
+      (git clone %{hiera('gitrepo')} . || true)
       git checkout $tag
 
       # temp, rm below this
@@ -142,7 +142,7 @@ nsidc_jenkins::jobs:
         description: git tag to checkout
         default: v1.0.0
     command: |
-      (git clone git@bitbucket.org:nsidc/dataset-search-services.git . || true)
+      (git clone %{hiera('gitrepo')} . || true)
       git checkout $tag
 
       # temp, rm below this
@@ -185,37 +185,46 @@ nsidc_jenkins::jobs:
       bundle exec rake spec:acceptance
     workspace: /var/lib/jenkins/workspace-staging
 
+  "%{hiera('project')}_20_Blue_Provision":
+    parameters:
+      - type: string
+        name: tag
+        description: git tag to checkout and deploy
+        default: v1.0.0
+    command: |
+      ENV=blue
+
+      (git clone %{hiera('gitrepo')} . || true)
+      git checkout $tag
+
+      bundle install
+
+      vagrant nsidc up --env=$ENV
+      bundle exec rake start_puma[$ENV]
+    workspace: /var/lib/jenkins/workspace-blue
 
 
-  # If your project builds a package, these jobs provide a template for the
-  # release pipeline for your package. Just replace the commented-out rake
-  # commands with your own project's task runner.
-  "%{hiera('project')}_Release_1_Bump_Version":
-    choice_parameter:
-      name: version_type
-      choices:
-      - patch
-      - minor
-      - major
-    command: # echo $version_type
-    workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_Release_2_Tag"
+  "%{hiera('project')}_Release_01_Bump_Version":
+    parameters:
+      - type: string
+        name: branch
+        description: git branch to checkout and tag
+        default: v1.0.0
+      - type: choice
+        name: version_type
+        choices:
+        - patch
+        - minor
+        - major
+    command: |
+      (git clone %{hiera('gitrepo')} . || true)
+      git checkout refs/heads/$branch
 
-  "%{hiera('project')}_Release_2_Tag":
-    command:
-    workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_Release_3_Build_Release_Package"
+      bundle install
+      bundle exec rake jenkins:release:bump[$version_part]
+    workspace: /var/lib/jenkins/workspace-release
+    trigger_job: "%{hiera('project')}_Release_02_Push_to_Git"
 
-  "%{hiera('project')}_Release_3_Build_Release_Package":
-    command:
-    workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_Release_4_Publish_Release_Package"
-
-  "%{hiera('project')}_Release_4_Publish_Release_Package":
-    command:
-    workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_Release_5_Push_to_Git"
-
-  "%{hiera('project')}_Release_5_Push_to_Git":
-    command:
-    workspace: /var/lib/jenkins/workspace
+  "%{hiera('project')}_Release_02_Push_to_Git":
+    command: bundle exec rake jenkins:release:push
+    workspace: /var/lib/jenkins/workspace-release

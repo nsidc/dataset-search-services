@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 source 'http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/ruby/nsidc/'
 
+gem 'bump', '~> 0.5'
 gem 'rake'
 gem 'rsolr'
 gem 'rsolr-ext'
