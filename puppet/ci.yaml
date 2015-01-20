@@ -46,6 +46,7 @@ nsidc_jenkins::jobs:
       # normal methods (ie, using the trigger_job param), but we can use the
       # Jenkins API to trigger the next job with curl. Just make sure the name
       # of the job in the curl command is correct:
+      sleep 10
       echo "Triggering a new build of %{hiera('project')}_3_Install_Dependencies"
       curl localhost:8080/job/%{hiera('project')}_3_Install_Dependencies
     workspace: /var/lib/jenkins/workspace
@@ -69,8 +70,9 @@ nsidc_jenkins::jobs:
     command: |
       (vagrant nsidc hijack --env=integration || true)
       vagrant nsidc up --env=integration
-      mkdir -p /opt/search_services
-      cp -R /vagrant/* /opt/search_services
+      vagrant nsidc ssh --env=integration -c 'sudo mkdir -p /opt/search_services'
+      vagrant nsidc ssh --env=integration -c 'sudo cp -R /vagrant/* /opt/search_services'
+      vagrant nsidc ssh --env=integration -c 'sudo chown -R vagrant /opt/search_services'
       bundle exec rake start_puma[integration]
     workspace: /var/lib/jenkins/workspace
     trigger_job: "%{hiera('project')}_7_Run_Integration_Tests"
