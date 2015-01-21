@@ -38,4 +38,9 @@ package {"libxml2-dev":
 
 include update-package-manager
 
+user { 'vagrant':
+  groups  => ['syslog'],
+  ensure  => present
+}
+
 package { "emacs": }
