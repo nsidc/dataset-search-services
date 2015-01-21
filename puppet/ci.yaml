@@ -64,7 +64,7 @@ nsidc_jenkins::jobs:
   "%{hiera('project')}_A05_Integration_Run_Unit_Tests":
     command: bundle exec rake spec:unit
     workspace: /var/lib/jenkins/workspace
-    trigger_job: "%{hiera('project')}_A06_Integration_Provision_Integration"
+    trigger_job: "%{hiera('project')}_A06_Integration_Provision"
 
   "%{hiera('project')}_A06_Integration_Provision":
     command: |
