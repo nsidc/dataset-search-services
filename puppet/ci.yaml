@@ -29,7 +29,7 @@ nsidc_jenkins::jobs:
   # clone the project into the shared workspace
   "%{hiera('project')}_A01_Integration_Checkout_Project":
     gitrepo: "%{hiera('gitrepo')}"
-    workspace: /var/lib/jenkins/workspace
+    workspace: /var/lib/jenkins/workspaces/integration
     trigger_job: "%{hiera('project')}_A02_Integration_Configure_System"
 
   # use puppet to install system dependencies, such as Bundler
@@ -49,21 +49,21 @@ nsidc_jenkins::jobs:
       sleep 15
       echo "Triggering a new build of %{hiera('project')}_A03_Integration_Install_Dependencies"
       curl localhost:8080/job/%{hiera('project')}_A03_Integration_Install_Dependencies
-    workspace: /var/lib/jenkins/workspace
+    workspace: /var/lib/jenkins/workspaces/integration
 
   "%{hiera('project')}_A03_Integration_Install_Dependencies":
     command: bundle install
-    workspace: /var/lib/jenkins/workspace
+    workspace: /var/lib/jenkins/workspaces/integration
     trigger_job: "%{hiera('project')}_A04_Integration_Check_Syntax"
 
   "%{hiera('project')}_A04_Integration_Check_Syntax":
     command: bundle exec rubocop
-    workspace: /var/lib/jenkins/workspace
+    workspace: /var/lib/jenkins/workspaces/integration
     trigger_job: "%{hiera('project')}_A05_Integration_Run_Unit_Tests"
 
   "%{hiera('project')}_A05_Integration_Run_Unit_Tests":
     command: bundle exec rake spec:unit
-    workspace: /var/lib/jenkins/workspace
+    workspace: /var/lib/jenkins/workspaces/integration
     trigger_job: "%{hiera('project')}_A06_Integration_Provision"
 
   "%{hiera('project')}_A06_Integration_Provision":
@@ -75,14 +75,14 @@ nsidc_jenkins::jobs:
 
       bundle exec rake jenkins:release:tag_deployment[$ENV]
       bundle exec rake deploy:start_puma[$ENV]
-    workspace: /var/lib/jenkins/workspace
+    workspace: /var/lib/jenkins/workspaces/integration
     trigger_job: "%{hiera('project')}_A07_Integration_Run_Acceptance_Tests"
 
   "%{hiera('project')}_A07_Integration_Run_Acceptance_Tests":
     command: |
       export TARGET_ENVIRONMENT=integration
       bundle exec rake spec:acceptance
-    workspace: /var/lib/jenkins/workspace
+    workspace: /var/lib/jenkins/workspaces/integration
 
   "%{hiera('project')}_B01_QA_Checkout_Project":
     parameters:
@@ -97,12 +97,12 @@ nsidc_jenkins::jobs:
       # temp, rm below this
       git fetch origin ci-ize-it
       git checkout ci-ize-it
-    workspace: /var/lib/jenkins/workspace-qa
+    workspace: /var/lib/jenkins/workspaces/qa
     trigger_job: "%{hiera('project')}_B02_QA_Install_Dependencies"
 
   "%{hiera('project')}_B02_QA_Install_Dependencies":
     command: bundle install
-    workspace: /var/lib/jenkins/workspace-qa
+    workspace: /var/lib/jenkins/workspaces/qa
     trigger_job: "%{hiera('project')}_B03_QA_Provision"
 
   "%{hiera('project')}_B03_QA_Provision":
@@ -114,14 +114,14 @@ nsidc_jenkins::jobs:
 
       bundle exec rake jenkins:release:tag_deployment[$ENV]
       bundle exec rake deploy:start_puma[$ENV]
-    workspace: /var/lib/jenkins/workspace-qa
+    workspace: /var/lib/jenkins/workspaces/qa
     trigger_job: "%{hiera('project')}_B04_QA_Run_Acceptance_Tests"
 
   "%{hiera('project')}_B04_QA_Run_Acceptance_Tests":
     command: |
       export TARGET_ENVIRONMENT=qa
       bundle exec rake spec:acceptance
-    workspace: /var/lib/jenkins/workspace-qa
+    workspace: /var/lib/jenkins/workspaces/qa
 
   "%{hiera('project')}_C01_Staging_Checkout_Project":
     parameters:
@@ -136,12 +136,12 @@ nsidc_jenkins::jobs:
       # temp, rm below this
       git fetch origin ci-ize-it
       git checkout ci-ize-it
-    workspace: /var/lib/jenkins/workspace-staging
+    workspace: /var/lib/jenkins/workspaces/staging
     trigger_job: "%{hiera('project')}_C02_Staging_Install_Dependencies"
 
   "%{hiera('project')}_C02_Staging_Install_Dependencies":
     command: bundle install
-    workspace: /var/lib/jenkins/workspace-staging
+    workspace: /var/lib/jenkins/workspaces/staging
     trigger_job: "%{hiera('project')}_C03_Staging_Provision"
 
   "%{hiera('project')}_C03_Staging_Provision":
@@ -153,14 +153,14 @@ nsidc_jenkins::jobs:
 
       bundle exec rake jenkins:release:tag_deployment[$ENV]
       bundle exec rake deploy:start_puma[$ENV]
-    workspace: /var/lib/jenkins/workspace-staging
+    workspace: /var/lib/jenkins/workspaces/staging
     trigger_job: "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests"
 
   "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests":
     command: |
       export TARGET_ENVIRONMENT=staging
       bundle exec rake spec:acceptance
-    workspace: /var/lib/jenkins/workspace-staging
+    workspace: /var/lib/jenkins/workspaces/staging
 
   "%{hiera('project')}_D01_Blue_Provision":
     parameters:
@@ -180,7 +180,7 @@ nsidc_jenkins::jobs:
 
       bundle exec rake jenkins:release:tag_deployment[$ENV]
       bundle exec rake deploy:start_puma[$ENV]
-    workspace: /var/lib/jenkins/workspace-blue
+    workspace: /var/lib/jenkins/workspaces/blue
 
   "%{hiera('project')}_E01_Release_Bump_Version":
     parameters:
@@ -201,9 +201,9 @@ nsidc_jenkins::jobs:
 
       bundle install
       bundle exec rake jenkins:release:bump[$version_part]
-    workspace: /var/lib/jenkins/workspace-release
+    workspace: /var/lib/jenkins/workspaces/release
     trigger_job: "%{hiera('project')}_E02_Release_Push_to_Git"
 
   "%{hiera('project')}_E02_Release_Push_to_Git":
     command: bundle exec rake jenkins:release:push
-    workspace: /var/lib/jenkins/workspace-release
+    workspace: /var/lib/jenkins/workspaces/release
