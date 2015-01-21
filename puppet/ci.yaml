@@ -72,6 +72,8 @@ nsidc_jenkins::jobs:
 
       (vagrant nsidc hijack --env=$ENV || true)
       vagrant nsidc up --env=$ENV
+
+      bundle exec rake tag_deployment[$ENV]
       bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace
     trigger_job: "%{hiera('project')}_A07_Integration_Run_Acceptance_Tests"
@@ -109,6 +111,8 @@ nsidc_jenkins::jobs:
 
       (vagrant nsidc hijack --env=$ENV || true)
       vagrant nsidc up --env=$ENV
+
+      bundle exec rake tag_deployment[$ENV]
       bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace-qa
     trigger_job: "%{hiera('project')}_B04_QA_Run_Acceptance_Tests"
@@ -146,6 +150,8 @@ nsidc_jenkins::jobs:
 
       (vagrant nsidc hijack --env=$ENV || true)
       vagrant nsidc up --env=$ENV
+
+      bundle exec rake tag_deployment[$ENV]
       bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace-staging
     trigger_job: "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests"
@@ -171,6 +177,8 @@ nsidc_jenkins::jobs:
       bundle install
 
       vagrant nsidc up --env=$ENV
+
+      bundle exec rake tag_deployment[$ENV]
       bundle exec rake start_puma[$ENV]
     workspace: /var/lib/jenkins/workspace-blue
 
