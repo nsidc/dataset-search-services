@@ -123,10 +123,10 @@ nsidc_jenkins::jobs:
       - type: string
         name: tag
         description: git tag to checkout
-        default: v1.0.0
+        default: qa
     command: |
       (git clone %{hiera('gitrepo')} . || true)
-      git checkout $tag
+      git checkout refs/tags/$tag
     workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
     trigger_job: "%{hiera('project')}_C02_Staging_Install_Dependencies"
 
@@ -158,12 +158,12 @@ nsidc_jenkins::jobs:
       - type: string
         name: tag
         description: git tag to checkout and deploy
-        default: v1.0.0
+        default: staging
     command: |
       ENV=blue
 
       (git clone %{hiera('gitrepo')} . || true)
-      git checkout $tag
+      git checkout refs/tags/$tag
 
       bundle install
 
