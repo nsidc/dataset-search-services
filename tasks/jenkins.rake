@@ -65,10 +65,8 @@ namespace :jenkins do
 
     desc 'Update git with a tag to show which ref is deployed to which environment'
     task :tag_deployment, [:env] do |_t, args|
-      sh "git tag -d #{ args[:env] } || true"
-      sh "git push origin :refs/tags/#{ args[:env] }"
-      sh "git tag #{ args[:env] }"
-      sh "git push origin refs/tags/#{ args[:env] }"
+      sh "git tag --force #{ args[:env] }"
+      sh "git push --force origin refs/tags/#{ args[:env] }"
     end
   end
 end
