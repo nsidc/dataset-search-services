@@ -23,8 +23,6 @@ package {"libxml2-dev":
   ensure => present
 }
 
-include update-package-manager
-
 # vagrant must be able to write to /var/log
 user { 'vagrant':
   groups  => ['syslog'],
