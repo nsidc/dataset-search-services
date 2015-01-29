@@ -19,10 +19,10 @@ module AppConfig
     relative_url_root: '/api/dataset/2',
     port: '10680',
     num_workers: 5,
-    pidfile: File.join(APP_PATH, 'run/puma.pid'),
-    state_path: File.join(APP_PATH, 'run/puma.state'),
-    std_err_log: File.join(APP_PATH, 'run/log/puma.stderr.log'),
-    std_out_log: File.join(APP_PATH, 'run/log/puma.stdout.log')
+    pidfile: '/var/run/puma/search_services.pid'),
+    state_path: '/var/run/puma/search_services.state'),
+    std_err_log: '/var/log/search_services.stderr.log'),
+    std_out_log: '/var/log/search_services.stdout.log')
   }
 
   APPLICATION_ENVIRONMENTS = {
