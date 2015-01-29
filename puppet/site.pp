@@ -13,10 +13,9 @@ class {'ruby::dev':
   require         => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
 }
 
-Exec { path => "/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:usr/sbin:/sbin:/usr/java/jdk/bin" }
-
 class update-package-manager {
   exec { "update":
+    path => "/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:usr/sbin:/sbin:/usr/java/jdk/bin",
     command => "apt-get -y update"
   }
   notify { "apt-get update complete":
