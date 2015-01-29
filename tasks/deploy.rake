@@ -14,7 +14,7 @@ namespace :deploy do
     run_vagrant_ssh(args[:env], "sudo chown -R vagrant #{ AppConfig::APP_PATH }")
   end
 
-  task :configure_puma, [:env] do |_t, args|
+  task :configure_puma, [:env] => :setup_machine do |_t, args|
     puma_config = File.join(AppConfig::APP_PATH, 'deployment/puma.conf')
 
     run_vagrant_ssh(args[:env], "sudo sh -c 'echo #{AppConfig::APP_PATH}/config.ru > /etc/puma.conf'")
@@ -23,10 +23,8 @@ namespace :deploy do
     run_vagrant_ssh(args[:env], "sudo chown vagrant #{File.join(AppConfig::APP_PATH, 'config')}")
     run_vagrant_ssh(args[:env], "echo '#{args[:env]}' > #{File.join(AppConfig::APP_PATH, 'config/environment')}")
   end
-  task configure_puma: :setup_machine
 
-  task :start_puma, [:env] do |_t, args|
+  task :start_puma, [:env] => :configure_puma do |_t, args|
     run_vagrant_ssh(args[:env], 'sudo service puma start')
   end
-  task start_puma: :configure_puma
 end
