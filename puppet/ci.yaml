@@ -179,7 +179,8 @@ nsidc_jenkins::jobs:
 
       bundle install
 
-      (vagrant nsidc hijack --env=$ENV || true)
+      vagrant nsidc hijack --env=$ENV || true
+      vagrant nsidc destroy --env=$ENV || true
       vagrant nsidc up --env=$ENV
 
       bundle exec rake deploy:start_puma[$ENV]
