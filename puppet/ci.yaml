@@ -204,8 +204,6 @@ nsidc_jenkins::jobs:
         - minor
         - major
     command: |
-      (git clone %{hiera('gitrepo')} . || true)
-      git fetch origin $branch
       git checkout $branch
 
       bundle install
