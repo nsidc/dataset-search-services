@@ -23,6 +23,7 @@ nsidc_jenkins::plugins:
   mailer: {}
   instant-messaging: {}
   jabber: {}
+  ansicolor: {}
 
 # Jenkins Jobs
 nsidc_jenkins::jobs:
