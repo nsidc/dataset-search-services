@@ -160,6 +160,7 @@ nsidc_jenkins::jobs:
       export TARGET_ENVIRONMENT=staging
       bundle exec rake spec:acceptance
     workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
+    trigger_job: "%{hiera('project')}_D01_Blue_Provision"
 
   "%{hiera('project')}_D01_Blue_Provision":
     git:
