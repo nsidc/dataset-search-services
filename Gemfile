@@ -33,7 +33,3 @@ group :test do
   gem 'awesome_print'
   gem 'racksh'
 end
-
-group :deploy do
-  gem 'nsidc_deployment_helper', '>=1.2.1'
-end
