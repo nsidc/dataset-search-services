@@ -29,4 +29,10 @@ user { 'vagrant':
   ensure  => present
 }
 
+file { '/var/log':
+  path => '/var/log',
+  ensure => directory,
+  group => 'syslog'
+}
+
 package { "emacs": }
