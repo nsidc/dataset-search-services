@@ -14,11 +14,10 @@ class {'ruby::dev':
 }
 
 ### BEGIN nokogiri deps
-#  note: if it still fails, add `sudo apt-get install libxml2 libxml2-dev libxslt1-dev` to exec
 class update-package-manager {
   exec { "update":
     path => "/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:usr/sbin:/sbin:/usr/java/jdk/bin",
-    command => "apt-get -y update"
+    command => "apt-get -y update; sudo apt-get -y install libxml2 libxml2-dev libxslt1-dev"
   }
   notify { "apt-get update complete":
     require => Exec['update']
