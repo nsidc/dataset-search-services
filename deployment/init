@@ -46,7 +46,7 @@ start_server () {
 }
 
 stop_server () {
-  if start-stop-daemon --stop --pidfile /var/run/puma/catalog_services.pid
+  if start-stop-daemon --stop --pidfile /var/run/puma/search_services.pid
   then
     rm -f /var/run/puma/*
     echo "Process killed"
