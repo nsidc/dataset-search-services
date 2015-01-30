@@ -13,6 +13,20 @@ class {'ruby::dev':
   require         => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
 }
 
+### BEGIN nokogiri deps
+class update-package-manager {
+  exec { "update":
+    path => "/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:usr/sbin:/sbin:/usr/java/jdk/bin",
+    command => "apt-get -y update"
+  }
+  notify { "apt-get update complete":
+    require => Exec['update']
+  }
+}
+
+Class['update-package-manager'] -> Package <| |>
+include update-package-manager
+
 package {"libssl-dev":
   ensure => present
 } ->
@@ -22,6 +36,7 @@ package {"build-essential":
 package {"libxml2-dev":
   ensure => present
 }
+### END nokogiri deps
 
 # vagrant must be able to write to /var/log
 user { 'vagrant':
