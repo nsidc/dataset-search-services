@@ -35,4 +35,9 @@ file { '/var/log':
   group => 'syslog'
 }
 
-package { "emacs": }
+file { '/var/run/puma':
+  path => '/var/run/puma',
+  ensure => directory,
+  mode => 775,
+  group => 'syslog'
+}

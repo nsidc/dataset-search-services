@@ -37,7 +37,6 @@ cmd () {
 }
 
 start_server () {
-  mkdir -p -m 775 /var/run/puma/; chgrp syslog /var/run/puma/
   if start-stop-daemon --start --chuid vagrant --exec "/usr/local/bin/bundle" --  exec /usr/local/bin/pumactl --config-file $SCRIPT_PATH/config/puma_vm.rb start 
   then
     echo "Startup Complete"
