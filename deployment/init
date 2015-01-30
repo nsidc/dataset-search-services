@@ -37,27 +37,30 @@ cmd () {
 }
 
 start_server () {
-  ls
-  ls $SCRIPT_PATH/webapps/dataset-search-services
-  pumactl --config-file $CONFIG start
+  if start-stop-daemon --start --chuid vagrant --exec "/usr/local/bin/bundle" --  exec /usr/local/bin/pumactl --config-file $SCRIPT_PATH/config/puma_vm.rb start 
+  then
+    echo "Startup Complete"
+  else
+    exit 1
+  fi
 }
 
 stop_server () {
-  pumactl --config-file $CONFIG stop
+  if start-stop-daemon --stop --pidfile /var/run/puma/search_services.pid
+  then
+    rm -f /var/run/puma/*
+    echo "Process killed"
+  else
+    echo "Nothing killed, server may not have been running"
+  fi
 }
- 
+
 setup () {
-  # absolute path to this script directory (without script name)
-  SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-  export RUBY_BIN=/opt/ruby19-local/bin/
-  export GEM_HOME=$SCRIPT_PATH/gem
-  export GEM_PATH=$GEM_HOME/bin
-  export PATH=$GEM_PATH:$RUBY_BIN:/sbin:/bin:/usr/bin:/usr/sbin
-
-  source $SCRIPT_PATH/env
-
-  cd $SCRIPT_PATH/webapps/dataset-search-services
+  SCRIPT_PATH='/opt/search_services'
+  export RACK_ENV=`cat $SCRIPT_PATH/config/environment`
+  export BUNDLE_GEMFILE=$SCRIPT_PATH/Gemfile
+  cd $SCRIPT_PATH
+  sudo -u vagrant bundle install
 }
 
 setup $1

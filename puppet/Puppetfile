@@ -1,0 +1,20 @@
+forge "http://forge.puppetlabs.com"
+
+# Module for installing packages from apt
+mod 'puppetlabs/apt'
+
+# Module for installing newer ruby from packages (using apt)
+mod "puppetlabs/ruby"
+
+# Module for access to NSIDC Enterprise storage
+mod "nsidc/nsidc_nfs",
+  :git => "git@bitbucket.org:/nsidc/puppet-nsidc-nfs.git"
+
+# Module for creating NSIDC Jenkins servers
+mod "nsidc/nsidc_jenkins",
+  :git => "git@bitbucket.org:/nsidc/puppet-nsidc-jenkins.git",
+  :ref => 'latest'
+
+mod "nsidc/nsidc_os_repo",
+  :git  => "git@bitbucket.org:/nsidc/puppet-nsidc-os-repo.git",
+  :ref  => "latest"

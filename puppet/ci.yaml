@@ -1,0 +1,213 @@
+# Puppet CI Resources
+
+classes:
+  - nsidc_jenkins
+  - nsidc_nfs
+
+# NFS Mounts
+nsidc_nfs::sharemounts:
+  /share/sw/packages:
+    project: sw
+    share: packages
+
+# Jenkins Plugins
+nsidc_jenkins::plugins:
+  git: {}
+  git-client: {}
+  git-parameter: {}
+  scm-api: {}
+  credentials: {}
+  ssh-credentials: {}
+  greenballs: {}
+  jobConfigHistory: {}
+  mailer: {}
+  instant-messaging: {}
+  jabber: {}
+  ansicolor: {}
+
+# Jenkins Jobs
+nsidc_jenkins::jobs:
+  # clone the project into the shared workspace
+  "%{hiera('project')}_A01_Integration_Checkout_Project":
+    git:
+      repo: "%{hiera('gitrepo')}"
+      poll_scm: true
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+    trigger_job: "%{hiera('project')}_A02_Integration_Configure_System"
+
+  # use puppet to install system dependencies, such as Bundler
+  "%{hiera('project')}_A02_Integration_Configure_System":
+    command: |
+      cd puppet
+      librarian-puppet clean
+      librarian-puppet update
+      cd -
+      sudo puppet apply --environment=ci --debug --verbose --modulepath=./puppet/modules --hiera_config=./puppet/hiera.yaml ./puppet/site.pp
+
+      # Because running `puppet apply` modifies the config.xml for each job
+      # defined in ci.yaml, Jenkins has trouble triggering the next job through
+      # normal methods (ie, using the trigger_job param), but we can use the
+      # Jenkins API to trigger the next job with curl. Just make sure the name
+      # of the job in the curl command is correct:
+      echo "Triggering a new build of %{hiera('project')}_A03_Integration_Install_Dependencies"
+      curl localhost:8080/job/%{hiera('project')}_A03_Integration_Install_Dependencies/build
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+
+  "%{hiera('project')}_A03_Integration_Install_Dependencies":
+    command: bundle install
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+    trigger_job: "%{hiera('project')}_A04_Integration_Check_Syntax"
+
+  "%{hiera('project')}_A04_Integration_Check_Syntax":
+    command: bundle exec rubocop
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+    trigger_job: "%{hiera('project')}_A05_Integration_Run_Unit_Tests"
+
+  "%{hiera('project')}_A05_Integration_Run_Unit_Tests":
+    command: bundle exec rake spec:unit
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+    trigger_job: "%{hiera('project')}_A06_Integration_Provision"
+
+  "%{hiera('project')}_A06_Integration_Provision":
+    command: |
+      ENV=integration
+
+      (vagrant nsidc hijack --env=$ENV || true)
+      vagrant nsidc up --env=$ENV
+
+      bundle exec rake deploy:start_puma[$ENV]
+      bundle exec rake jenkins:release:tag_deployment[$ENV]
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+    trigger_job: "%{hiera('project')}_A07_Integration_Run_Acceptance_Tests"
+
+  "%{hiera('project')}_A07_Integration_Run_Acceptance_Tests":
+    command: |
+      export TARGET_ENVIRONMENT=integration
+      bundle exec rake spec:acceptance
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+
+  "%{hiera('project')}_B01_QA_Checkout_Project":
+    git:
+      repo: "%{hiera('gitrepo')}"
+      wipe_workspace: true
+    parameters:
+      - type: string
+        name: ref
+        description: git ref (branch, tag, or SHA) to checkout
+        default: master
+    command: |
+      git checkout $ref
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
+    trigger_job: "%{hiera('project')}_B02_QA_Install_Dependencies"
+
+  "%{hiera('project')}_B02_QA_Install_Dependencies":
+    command: bundle install
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
+    trigger_job: "%{hiera('project')}_B03_QA_Provision"
+
+  "%{hiera('project')}_B03_QA_Provision":
+    command: |
+      ENV=qa
+
+      (vagrant nsidc hijack --env=$ENV || true)
+      vagrant nsidc up --env=$ENV
+
+      bundle exec rake deploy:start_puma[$ENV]
+      bundle exec rake jenkins:release:tag_deployment[$ENV]
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
+    trigger_job: "%{hiera('project')}_B04_QA_Run_Acceptance_Tests"
+
+  "%{hiera('project')}_B04_QA_Run_Acceptance_Tests":
+    command: |
+      export TARGET_ENVIRONMENT=qa
+      bundle exec rake spec:acceptance
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
+
+  "%{hiera('project')}_C01_Staging_Checkout_Project":
+    git:
+      repo: "%{hiera('gitrepo')}"
+      wipe_workspace: true
+    parameters:
+      - type: string
+        name: ref
+        description: git ref (branch, tag, or SHA) to checkout
+        default: qa
+    command: |
+      git checkout $ref
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
+    trigger_job: "%{hiera('project')}_C02_Staging_Install_Dependencies"
+
+  "%{hiera('project')}_C02_Staging_Install_Dependencies":
+    command: bundle install
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
+    trigger_job: "%{hiera('project')}_C03_Staging_Provision"
+
+  "%{hiera('project')}_C03_Staging_Provision":
+    command: |
+      ENV=staging
+
+      (vagrant nsidc hijack --env=$ENV || true)
+      vagrant nsidc up --env=$ENV
+
+      bundle exec rake deploy:start_puma[$ENV]
+      bundle exec rake jenkins:release:tag_deployment[$ENV]
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
+    trigger_job: "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests"
+
+  "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests":
+    command: |
+      export TARGET_ENVIRONMENT=staging
+      bundle exec rake spec:acceptance
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
+    trigger_job: "%{hiera('project')}_D01_Blue_Provision"
+
+  "%{hiera('project')}_D01_Blue_Provision":
+    git:
+      repo: "%{hiera('gitrepo')}"
+      wipe_workspace: true
+    parameters:
+      - type: string
+        name: ref
+        description: git ref (branch, tag, or SHA) to checkout
+        default: staging
+    command: |
+      ENV=blue
+
+      git checkout $ref
+
+      bundle install
+
+      vagrant nsidc hijack --env=$ENV || true
+      vagrant nsidc destroy --env=$ENV || true
+      vagrant nsidc up --env=$ENV
+
+      bundle exec rake deploy:start_puma[$ENV]
+      bundle exec rake jenkins:release:tag_deployment[$ENV]
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/blue
+
+  "%{hiera('project')}_E01_Release_Bump_Version":
+    git:
+      repo: "%{hiera('gitrepo')}"
+      wipe_workspace: true
+    parameters:
+      - type: string
+        name: branch
+        description: git branch to checkout and tag
+        default: master
+      - type: choice
+        name: version_part
+        choices:
+        - patch
+        - minor
+        - major
+    command: |
+      git checkout $branch
+
+      bundle install
+      bundle exec rake jenkins:release:bump[$version_part]
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/release
+    trigger_job: "%{hiera('project')}_E02_Release_Push_to_Git"
+
+  "%{hiera('project')}_E02_Release_Push_to_Git":
+    command: bundle exec rake jenkins:release:push
+    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/release

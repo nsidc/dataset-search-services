@@ -1,11 +1,7 @@
 require 'bundler/setup'
 require 'rspec/core/rake_task'
-require 'nsidc_deployment_helper'
-require 'nsidc_deployment_helper/jetty'
-require 'nsidc_deployment_helper/setup_auth_agents'
-require 'nsidc_deployment_helper/deployment_log'
-require 'nsidc_deployment_helper/tar_artifact'
 require File.join('.', 'config', 'deployment_config.rb')
+require File.join('.', 'config', 'app_config.rb')
 require File.join('.', 'lib', 'version.rb')
 
 Dir.glob('./tasks/*.rake').each { |r| import r }

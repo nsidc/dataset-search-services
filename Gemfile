@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 source 'http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/ruby/nsidc/'
 
+gem 'bump', '~> 0.5'
 gem 'rake'
 gem 'rsolr'
 gem 'rsolr-ext'
@@ -31,8 +32,4 @@ group :test do
   gem 'turnip_formatter', '=0.1.0'
   gem 'awesome_print'
   gem 'racksh'
-end
-
-group :deploy do
-  gem 'nsidc_deployment_helper', '>=1.2.1'
 end
