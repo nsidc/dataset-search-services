@@ -14,6 +14,7 @@ class {'ruby::dev':
 }
 
 ### BEGIN nokogiri deps
+#  note: if it still fails, add `sudo apt-get install libxml2 libxml2-dev libxslt1-dev` to exec
 class update-package-manager {
   exec { "update":
     path => "/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:usr/sbin:/sbin:/usr/java/jdk/bin",
@@ -25,7 +26,6 @@ class update-package-manager {
 }
 
 Class['update-package-manager'] -> Package <| |>
-include update-package-manager
 
 package {"libssl-dev":
   ensure => present
@@ -36,6 +36,8 @@ package {"build-essential":
 package {"libxml2-dev":
   ensure => present
 }
+
+include update-package-manager
 ### END nokogiri deps
 
 # vagrant must be able to write to /var/log
