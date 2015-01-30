@@ -129,11 +129,11 @@ nsidc_jenkins::jobs:
       wipe_workspace: true
     parameters:
       - type: string
-        name: tag
-        description: git tag to checkout
+        name: ref
+        description: git ref (branch, tag, or SHA) to checkout
         default: qa
     command: |
-      git checkout refs/tags/$tag
+      git checkout $ref
     workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
     trigger_job: "%{hiera('project')}_C02_Staging_Install_Dependencies"
 
@@ -167,13 +167,13 @@ nsidc_jenkins::jobs:
       wipe_workspace: true
     parameters:
       - type: string
-        name: tag
-        description: git tag to checkout and deploy
+        name: ref
+        description: git ref (branch, tag, or SHA) to checkout
         default: staging
     command: |
       ENV=blue
 
-      git checkout refs/tags/$tag
+      git checkout $ref
 
       bundle install
 
