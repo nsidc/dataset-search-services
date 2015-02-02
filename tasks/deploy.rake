@@ -21,7 +21,11 @@ namespace :deploy do
     run_vagrant_ssh(args[:env], "sudo cp #{puma_config} /etc/init/")
     run_vagrant_ssh(args[:env], "mkdir -p #{File.join(AppConfig::APP_PATH, 'run/log')}")
     run_vagrant_ssh(args[:env], "sudo chown vagrant #{File.join(AppConfig::APP_PATH, 'config')}")
-    run_vagrant_ssh(args[:env], "echo '#{args[:env]}' > #{File.join(AppConfig::APP_PATH, 'config/environment')}")
+    run_vagrant_ssh(
+      args[:env],
+      # Blue should think it's production.
+      "echo '#{args[:env].eql?('blue') ? 'production' : args[:env]}' > #{File.join(AppConfig::APP_PATH, 'config/environment')}"
+    )
   end
 
   task :start_puma, [:env] => :configure_puma do |_t, args|
