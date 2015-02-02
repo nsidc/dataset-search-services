@@ -60,7 +60,7 @@ namespace :jenkins do
     desc 'git-push the release changes (the version bump commit and the version tag)'
     task :push do
       current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
-      sh "git push origin master #{ current_branch } --tags"
+      sh "git push origin #{ current_branch } --tags"
     end
 
     desc 'Update git with a tag to show which ref is deployed to which environment'
