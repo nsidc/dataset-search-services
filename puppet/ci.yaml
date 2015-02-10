@@ -24,6 +24,7 @@ nsidc_jenkins::plugins:
   instant-messaging: {}
   jabber: {}
   ansicolor: {}
+  simple-theme-plugin: {}
 
 # Jenkins Jobs
 nsidc_jenkins::jobs:
