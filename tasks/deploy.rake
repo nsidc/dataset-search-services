@@ -1,8 +1,16 @@
+require_relative '../config/app_config'
+
 def run_vagrant_ssh(env, ssh_cmd)
   cmd = "vagrant nsidc ssh --env=#{env} -c '#{ssh_cmd}'"
   puts "Running #{cmd}"
 
   `#{ cmd }`
+end
+
+# I want to run `vagrant nsidc up --env=blue` and
+# make the app think its env=='production'
+def app_env(args_env)
+  args_env == 'blue' ? 'production' : args_env
 end
 
 namespace :deploy do
@@ -12,6 +20,8 @@ namespace :deploy do
     run_vagrant_ssh(args[:env], "sudo mkdir -p #{ AppConfig::APP_PATH }")
     run_vagrant_ssh(args[:env], "sudo cp -R /vagrant/* #{ AppConfig::APP_PATH }")
     run_vagrant_ssh(args[:env], "sudo chown -R vagrant #{ AppConfig::APP_PATH }")
+
+    run_vagrant_ssh(args[:env], "cd #{ AppConfig::APP_PATH }; bundle install")
   end
 
   task :configure_puma, [:env] => :setup_machine do |_t, args|
@@ -22,8 +32,7 @@ namespace :deploy do
     run_vagrant_ssh(args[:env], "sudo chown vagrant #{File.join(AppConfig::APP_PATH, 'config')}")
     run_vagrant_ssh(
       args[:env],
-      # Blue should think it's production.
-      "echo '#{args[:env].eql?('blue') ? 'production' : args[:env]}' > #{File.join(AppConfig::APP_PATH, 'config/environment')}"
+      "echo '#{ app_env(args[:env]) }' > #{File.join(AppConfig::APP_PATH, 'config/environment')}"
     )
   end
 
