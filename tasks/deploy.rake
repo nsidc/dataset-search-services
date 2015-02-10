@@ -17,7 +17,6 @@ namespace :deploy do
   task :configure_puma, [:env] => :setup_machine do |_t, args|
     puma_config = File.join(AppConfig::APP_PATH, 'deployment/puma.conf')
 
-    run_vagrant_ssh(args[:env], "sudo sh -c 'echo #{AppConfig::APP_PATH}/config.ru > /etc/puma.conf'")
     run_vagrant_ssh(args[:env], "sudo cp #{puma_config} /etc/init/")
     run_vagrant_ssh(args[:env], "mkdir -p #{File.join(AppConfig::APP_PATH, 'run/log')}")
     run_vagrant_ssh(args[:env], "sudo chown vagrant #{File.join(AppConfig::APP_PATH, 'config')}")
