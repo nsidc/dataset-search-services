@@ -8,7 +8,8 @@ mod "puppetlabs/ruby"
 
 # Module for access to NSIDC Enterprise storage
 mod "nsidc/nsidc_nfs",
-  :git => "git@bitbucket.org:/nsidc/puppet-nsidc-nfs.git"
+  :git => "git@bitbucket.org:/nsidc/puppet-nsidc-nfs.git",
+  :ref => 'latest'
 
 # Module for creating NSIDC Jenkins servers
 mod "nsidc/nsidc_jenkins",
