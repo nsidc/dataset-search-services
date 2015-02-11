@@ -8,6 +8,7 @@ past versions of the README, see:
 
 * [v1.0.0](https://bitbucket.org/nsidc/dataset-search-services/src/v1.0.0/?at=v1.0.0)
 * [v1.0.1](https://bitbucket.org/nsidc/vagrant-nsidc-plugin/src/v1.0.1/?at=v1.0.1)
+* [v1.0.2](https://bitbucket.org/nsidc/vagrant-nsidc-plugin/src/v1.0.2/?at=v1.0.2)
 
 Nsidc OpenSearch web service (yet another OpenSearch)
 
