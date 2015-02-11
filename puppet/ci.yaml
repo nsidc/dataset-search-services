@@ -212,3 +212,40 @@ nsidc_jenkins::jobs:
   "%{hiera('project')}_E02_Release_Push_to_Git":
     command: bundle exec rake jenkins:release:push
     workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/release
+
+  "%{hiera('project')}_Z01_Destroy_Non_Production_Deployed_VMs":
+    description: |
+      Clean up non-production VMs that are not needed while the project is not
+      in development.
+    parameters:
+      - type: boolean
+        name: integration
+        description: destroy the machine deployed to integration
+        default: true
+
+      - type: boolean
+        name: qa
+        description: destroy the machine deployed to qa
+        default: true
+
+      - type: boolean
+        name: staging
+        description: destroy the machine deployed to staging
+        default: true
+
+    command: |
+      hijack_and_destroy () {
+        vagrant nsidc hijack --env=$1 --project=%{hiera('project')} && vagrant nsidc destroy --env=$1 --project=%{hiera('project')} || true
+      }
+
+      if $integration; then
+        hijack_and_destroy integration
+      fi
+
+      if $qa; then
+        hijack_and_destroy qa
+      fi
+
+      if $staging; then
+        hijack_and_destroy staging
+      fi
