@@ -58,7 +58,7 @@ Feature: Open Search Definition Basics
 
   Scenario: Investigator query gets correct datasets for a data contributor of any type.
     When I make a request with investigator "paden"
-    Then I get a valid response with 3 entries
+    Then I get a valid response with 4 entries
     And The entries contain IRKUB1B
     And The entries contain IRMCR1B
     And The entries contain BRMCR1B

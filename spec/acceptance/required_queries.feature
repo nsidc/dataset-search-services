@@ -26,7 +26,7 @@ Feature: Must-not-break search scenarios
   Scenario: Sea ice concentration
     When I perform a text search for "sea ice concentration"
     Then The entries contain NSIDC-0051 in the top 8
-    And The entries contain NSIDC-0192 in the top 9
+    And The entries contain NSIDC-0192 in the top 10
     And The entries contain NSIDC-0081 in the top 8
     And The entries contain NSIDC-0079 in the top 8
     And The entries contain AE_SI12 in the top 8
