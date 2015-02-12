@@ -1,3 +1,11 @@
+## Unreleased
+
+Bugfixes:
+
+  - Fix problem with X-Forwaded-For header processing
+    which ultimately caused failures to send to Libre
+    metrics
+
 ## v1.0.2 (2015-02-11)
 
 Bugfixes:
