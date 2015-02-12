@@ -14,6 +14,17 @@ require File.join(File.dirname(__FILE__), 'controllers', 'dataset_suggestions')
 
 module NsidcOpenSearch
   class App < Sinatra::Base
+    # The X-Forwarded-For header is of the format:
+    # 'client, proxy1, proxy2, ... , proxyN', where client can
+    # be 'unknown' or a real ip address.  The list of proxies
+    # may be empty as well.
+    def remote_ip(env, request)
+      forwarded_for = env['HTTP_X_FORWARDED_FOR'].split(',').map(&:strip)
+      forwarded_for.delete_if { |addr| addr =~ /unknown/i }
+
+      forwarded_for.first || request.ip
+    end
+
     register Sinatra::CrossOrigin
     register Sinatra::AdvancedRoutes
 
@@ -41,7 +52,7 @@ module NsidcOpenSearch
 
       # note that Puma does not play nice here, it overrides rack default env methods.
       # request.env will only be used for the tests or if the app is running with other server.
-      remote_ip = env['HTTP_X_FORWARDED_FOR'] || request.ip
+      remote_ip = remote_ip(env, request)
       requested_with = env['HTTP_X_REQUESTED_WITH'] || request.env['X-Requested-With']
 
       if query_string.length > 0 && requested_with != 'spec_test' && !request.path.include?('suggest')
