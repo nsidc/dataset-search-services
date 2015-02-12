@@ -19,7 +19,7 @@ module NsidcOpenSearch
     # be 'unknown' or a real ip address.  The list of proxies
     # may be empty as well.
     def remote_ip(env, request)
-      forwarded_for = env['HTTP_X_FORWARDED_FOR'].split(',').map(&:strip)
+      forwarded_for = (env['HTTP_X_FORWARDED_FOR'] || '').split(',').map(&:strip)
       forwarded_for.delete_if { |addr| addr =~ /unknown/i }
 
       forwarded_for.first || request.ip
