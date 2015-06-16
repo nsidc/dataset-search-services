@@ -28,7 +28,7 @@ This project uses a gem that is hosted internally at NSIDC for metrics
 collection. If you are working on this project outside of NSIDC's intranet, you
 will need to remove the line in `Gemfile` that installs the gem
 `libre_metrics_client` before running `bundle install`. No other changes are
-required; the logic in `lib/nsidc_open_search/app.rb` is setup to gracefully
+required; the logic in `lib/nsidc_open_search/app.rb` is set up to gracefully
 handle a failure to import the gem.
 
 ## Unit tests
