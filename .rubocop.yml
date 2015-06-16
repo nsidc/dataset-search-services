@@ -8,6 +8,7 @@ AllCops:
   Excludes:
     - 'gem/**/*'
     - 'puppet/**/*'
+    - vendor/bundle/**/*
 
 Encoding:
   Enabled: false
