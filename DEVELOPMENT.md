@@ -11,10 +11,6 @@ Development on this project uses
 4. Push to the branch (`git push -u origin my-new-feature`)
 5. [Create a new Pull Request](https://bitbucket.org/nsidc/set-search-services/pull-request/new)
 
-## Unit tests
-
-Run the unit tests with `rake spec:unit`.
-
 ## Libre Metrics Client gem
 
 This project uses a gem that is hosted internally at NSIDC for metrics
@@ -23,6 +19,10 @@ will need to remove the line in `Gemfile` that installs the gem
 `libre_metrics_client` before running `bundle install`. No other changes are
 required; the logic in `lib/nsidc_open_search/app.rb` is setup to gracefully
 handle a failure to import the gem.
+
+## Unit tests
+
+Run the unit tests with `rake spec:unit`.
 
 ## Acceptance tests
 
