@@ -9,10 +9,10 @@ Nsidc OpenSearch web service (yet another OpenSearch)
 
 The service currently exposes four endpoints:
 
-* /OpenSearchDescription - OpenSearch Description Document
-* /OpenSearch - dataset search, used by NSIDC Search and the ADE
-* /Facets - facets to go with the dataset search
-* /suggest - retrieve suggested phrase completions for auto-suggest/auto-complete
+* `/OpenSearchDescription` - OpenSearch Description Document
+* `/OpenSearch` - dataset search, used by NSIDC Search and the ADE
+* `/Facets` - facets to go with the dataset search
+* `/suggest` - retrieve suggested phrase completions for auto-suggest/auto-complete
 
 ## Developer Info
 
