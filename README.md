@@ -3,13 +3,7 @@
 NOTE: this README is up to date with the master branch, meaning it may contain
 information for an unreleased version of **dataset-search-services**. For details on what
 may have changed since the version you are using, see the
-[Changelog](https://bitbucket.org/nsidc/dataset-search-services/src/master/CHANGELOG.md). For
-past versions of the README, see:
-
-* [v1.0.0](https://bitbucket.org/nsidc/dataset-search-services/src/v1.0.0/?at=v1.0.0)
-* [v1.0.1](https://bitbucket.org/nsidc/vagrant-nsidc-plugin/src/v1.0.1/?at=v1.0.1)
-* [v1.0.2](https://bitbucket.org/nsidc/vagrant-nsidc-plugin/src/v1.0.2/?at=v1.0.2)
-* [v1.0.3](https://bitbucket.org/nsidc/vagrant-nsidc-plugin/src/v1.0.3/?at=v1.0.3)
+[Changelog](https://bitbucket.org/nsidc/dataset-search-services/src/master/CHANGELOG.md).
 
 Nsidc OpenSearch web service (yet another OpenSearch)
 

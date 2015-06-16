@@ -29,29 +29,6 @@ namespace :jenkins do
       sh %(sed -i "s/^## Unreleased$/## v#{version} (#{date})/" #{changelog_md})
       sh %(git add #{changelog_md})
 
-      # add a link to the src of the new version in README so that plugin users
-      # can easily find the correct version of the documentation
-      readme_md = File.expand_path('../../README.md', __FILE__)
-      repo_src_url = 'https://bitbucket.org/nsidc/vagrant-nsidc-plugin/src'
-
-      # link to the version being released
-      new_line = %(* [v#{version}](#{repo_src_url}/v#{version}/?at=v#{version}))
-
-      # find where to add the new link - get the index of the latest version
-      # link in the list
-      lines_reversed = File.read(readme_md).split("\n").reverse
-      index = lines_reversed.find_index do |line|
-        line =~ %r{^\* \[v.*\]\(https://bitbucket\.org.*\)$}
-      end
-
-      # insert the new link, write the new file
-      lines_reversed.insert(index, new_line)
-      new_lines = lines_reversed.reverse.join("\n")
-      File.open(readme_md, 'w') { |f| f.puts new_lines }
-
-      # stage README.md with the new link
-      sh %(git add #{readme_md})
-
       # commit changes and tag
       sh %(git commit -m "v#{version}")
       sh %(git tag v#{version})
