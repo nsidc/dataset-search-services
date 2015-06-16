@@ -1,6 +1,5 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'app')
-require 'libre_metrics_client'
 
 describe 'Nsidc OpenSearch App' do
   include Rack::Test::Methods

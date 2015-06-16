@@ -15,6 +15,15 @@ Development on this project uses
 
 Run the unit tests with `rake spec:unit`.
 
+## Libre Metrics Client gem
+
+This project uses a gem that is hosted internally at NSIDC for metrics
+collection. If you are working on this project outside of NSIDC's intranet, you
+will need to remove the line in `Gemfile` that installs the gem
+`libre_metrics_client` before running `bundle install`. No other changes are
+required; the logic in `lib/nsidc_open_search/app.rb` is setup to gracefully
+handle a failure to import the gem.
+
 ## Acceptance tests
 
 Acceptance tests are a little trickier.  One way to run them on your local dev machine is thus:
@@ -36,3 +45,4 @@ Guard can be used to automatically restart the puma server or run RuboCop and un
 * `rake guard:specs` - automatically re-run unit tests
 * `rake guard:puma` - automatically restart the puma server
 * `rake guard` - automatically re-run RuboCop and the unit tests
+

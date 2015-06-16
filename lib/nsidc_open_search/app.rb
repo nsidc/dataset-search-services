@@ -2,7 +2,6 @@ require 'sinatra/base'
 require 'sinatra/config_file'
 require 'sinatra/cross_origin'
 require 'sinatra/advanced_routes'
-require 'libre_metrics_client'
 require File.join(File.dirname(__FILE__), '..', '..', 'config', 'app_config')
 require File.join(File.dirname(__FILE__), 'helpers', 'app_helpers')
 require File.join(File.dirname(__FILE__), 'controllers', 'dataset_osdd')
@@ -43,7 +42,12 @@ module NsidcOpenSearch
     end
 
     if defined? settings.metrics_url
-      libre_metrics = LibreMetricsClient::LibreMetrics.new(settings.metrics_url)
+      begin
+        require 'libre_metrics_client'
+        libre_metrics = LibreMetricsClient::LibreMetrics.new(settings.metrics_url)
+      rescue LoadError
+        puts 'Failed to load libre_metrics_client gem; continuing without Libre metrics.'
+      end
     end
 
     before do
