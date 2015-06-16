@@ -35,7 +35,10 @@ Don't check these changes in though!
 
 ## RuboCop
 
-[RuboCop](https://github.com/bbatsov/rubocop) is a style checker for Ruby, designed to enforce rules specified in the community-driven [Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide). Settings are configured in `.rubocop.yml`. It can be run simply with `rubocop`.
+[RuboCop](https://github.com/bbatsov/rubocop) is a style checker for Ruby,
+designed to enforce rules specified in the community-driven
+[Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide). Settings are
+configured in `.rubocop.yml`. It can be run simply with `bundle exec rubocop`.
 
 ## Guard
 
