@@ -7,7 +7,10 @@ bundler`). Then, to install dependencies and run the server:
 
 The settings in `config/app_config.rb` define (among other things) the URL of
 the Solr backend that Dataset Search Services will access to fulfill the user's
-search request.
+search request. A local solr can be set up using
+[search-solr](https://bitbucket.org/nsidc/search-solr), with
+[search-solr-tools](https://bitbucket.org/nsidc/search-solr-tools) to harvest
+data into that local solr instance.
 
 ## Git workflow
 
