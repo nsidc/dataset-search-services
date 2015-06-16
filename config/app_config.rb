@@ -29,8 +29,8 @@ module AppConfig
     development: {
       enricher_thread_count: 5,
       relative_url_root: '/',
-      solr_url: 'http://localhost:9283/solr/nsidc_oai',
-      solr_auto_suggest_url: 'http://localhost:9283/solr/auto_suggest',
+      solr_url: 'http://localhost:8983/solr/nsidc_oai',
+      solr_auto_suggest_url: 'http://localhost:8983/solr/auto_suggest',
       dataset_catalog_services_url: 'http://integration.nsidc.org/api/dataset/metadata',
       metrics_url: 'http://liquid.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/integration',
       query_config: YAML.load_file(File.join(File.dirname(__FILE__), 'solr_query_config_integration.yml'))
