@@ -1,3 +1,14 @@
+To run Dataset Search Services locally, you will need a local installation of
+Ruby (check `.ruby-version` for the required version) and Bundler (`gem install
+bundler`). Then, to install dependencies and run the server:
+
+    bundle install
+    bundle exec rake run
+
+The settings in `config/app_config.rb` define (among other things) the URL of
+the Solr backend that Dataset Search Services will access to fulfill the user's
+search request.
+
 ## Git workflow
 
 Development on this project uses
