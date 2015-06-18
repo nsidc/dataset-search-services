@@ -3,6 +3,7 @@
 .project
 *.iml
 results.xml
+vendor/bundle/
 
 # begin vagrant-nsidc
 #
