@@ -142,7 +142,7 @@ DEPENDENCIES
   guard-rake
   guard-rubocop
   json
-  libre_metrics_client (~> 0.1.5)!
+  libre_metrics_client (~> 0.1.5)
   nokogiri
   peach
   puma
