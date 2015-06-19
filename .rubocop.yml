@@ -16,7 +16,7 @@ Metrics/AbcSize:
   - lib/nsidc_open_search/dataset_osdd.rb
 
 Metrics/LineLength:
-  Enabled: false
+  Max: 100
 
 Metrics/MethodLength:
   Max: 15

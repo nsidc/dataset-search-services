@@ -1,6 +1,6 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'search')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'model', 'search', 'open_search_response_builder')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/search'
+require_relative '../lib/nsidc_open_search/dataset/model/search/open_search_response_builder'
 
 describe NsidcOpenSearch::Search do
   let(:params) { { searchterms: 'sea ice' } }

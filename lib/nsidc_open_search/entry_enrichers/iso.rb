@@ -1,8 +1,8 @@
 require 'date'
 require 'nokogiri'
 require 'rest_client'
-require File.join(File.dirname(__FILE__), '..', 'dataset', 'model', 'search', 'data_access')
-require File.join(File.dirname(__FILE__), '..', '..', 'utils', 'nokogiri_xml_node_iso')
+require_relative '../dataset/model/search/data_access'
+require_relative '../../utils/nokogiri_xml_node_iso'
 
 module NsidcOpenSearch
   module EntryEnrichers
@@ -19,7 +19,14 @@ module NsidcOpenSearch
           return
         end
 
-        doc = Nokogiri::XML iso_document.sub(/<gmi:MI_Metadata version="1.0">/, '<gmi:MI_Metadata xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gmi="http://www.isotc211.org/2005/gmi" version="1.0">')
+        doc = Nokogiri::XML iso_document.sub(
+          /<gmi:MI_Metadata version="1.0">/,
+          '<gmi:MI_Metadata xmlns:gco="http://www.isotc211.org/2005/gco" '\
+          'xmlns:gmd="http://www.isotc211.org/2005/gmd" '\
+          'xmlns:gml="http://www.opengis.net/gml/3.2" '\
+          'xmlns:gts="http://www.isotc211.org/2005/gts" '\
+          'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '\
+          'xmlns:gmi="http://www.isotc211.org/2005/gmi" version="1.0">')
 
         entry.data_access = data_access doc
         entry.supporting_programs = supporting_programs doc
@@ -39,7 +46,12 @@ module NsidcOpenSearch
       end
 
       def supporting_programs(doc)
-        doc.xpath('//gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty[.//gmd:CI_RoleCode="custodian"]/gmd:organisationShortName').map(&:iso_character_string)
+        path = '//gmd:MD_DataIdentification/'\
+               'gmd:pointOfContact/'\
+               'gmd:CI_ResponsibleParty[.//gmd:CI_RoleCode="custodian"]/'\
+               'gmd:organisationShortName'
+
+        doc.xpath(path).map(&:iso_character_string)
       end
     end
   end

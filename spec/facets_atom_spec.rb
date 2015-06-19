@@ -1,7 +1,7 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'model', 'facets', 'facets_response_builder')
-require File.join(File.dirname(__FILE__), '..', 'lib',  'nsidc_open_search', 'dataset', 'model', 'facets', 'facet_entry')
-require File.join(File.dirname(__FILE__), '..', 'lib',  'nsidc_open_search', 'dataset', 'model', 'facets', 'facet_value')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/dataset/model/facets/facets_response_builder'
+require_relative '../lib/nsidc_open_search/dataset/model/facets/facet_entry'
+require_relative '../lib/nsidc_open_search/dataset/model/facets/facet_value'
 
 describe 'facets response' do
   describe 'result to atom' do
@@ -42,7 +42,10 @@ describe 'facets response' do
     end
 
     it 'should output a valid atom format' do
-      xml = @result.to_atom 'localhost/dataset?searchTerms=sea ice&facetFilters=' + @facet_filters, 'localhost'
+      xml = @result.to_atom(
+        "localhost/dataset?searchTerms=sea ice&facetFilters=#{@facet_filters}",
+        'localhost'
+      )
 
       expect(xml).to have_atom_root_element
       expect(xml).to have_atom_namespace

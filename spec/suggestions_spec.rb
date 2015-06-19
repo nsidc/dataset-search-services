@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'search', 'solr_search_suggest')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/dataset/search/solr_search_suggest'
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchSuggest do
   let(:base_search_parameters) {
@@ -8,13 +8,23 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchSuggest do
     }
   }
 
-  let(:solr_response) {
-    double('entries', entries: ['sea ice', 'sea ice concentration', 'seasonally frozen ground']) # Make this look like solr_suggestion in the parser
-  }
+  # Make this look like solr_suggestion in the parser
+  let(:solr_response) do
+    double('entries', entries: ['sea ice', 'sea ice concentration', 'seasonally frozen ground'])
+  end
 
   let(:rsolr) { double('rsolr', get: solr_response) }
-  let(:query_config) { YAML.load_file File.join(File.dirname(__FILE__), '..', 'config', 'solr_query_config_test.yml') }
-  let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrSuggestionsParser, NsidcOpenSearch::Dataset::Model::Suggestions::SuggestionsResponseBuilder, query_config }
+  let(:query_config) do
+    YAML.load_file File.join(File.dirname(__FILE__), '..', 'config', 'solr_query_config_test.yml')
+  end
+  let(:solr_search) do
+    described_class.new(
+      'localhost:8983',
+      NsidcOpenSearch::Dataset::Search::SolrSuggestionsParser,
+      NsidcOpenSearch::Dataset::Model::Suggestions::SuggestionsResponseBuilder,
+      query_config
+    )
+  end
 
   before :each do
     allow(RSolr).to receive(:connect).and_return(rsolr)

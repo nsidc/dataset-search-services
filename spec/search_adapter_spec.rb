@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'search_adapter')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/search_adapter'
 
 describe 'search mapper' do
   let(:params) { { searchterms: 'sea ice', bbox: '10 20 30 40' } }
@@ -9,7 +9,8 @@ describe 'search mapper' do
   let(:obj) { Object.new }
 
   before :each do
-    allow(search).to receive(:execute).with(params).and_return(double('results', total_results: 2, entries: []))
+    allow(search).to(
+      receive(:execute).with(params).and_return(double('results', total_results: 2, entries: [])))
     allow(param_factory).to receive(:construct).and_return(params)
 
     obj.class.send :include, NsidcOpenSearch::SearchAdapter

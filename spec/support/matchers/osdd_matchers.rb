@@ -49,15 +49,17 @@ end
 
 RSpec::Matchers.define :have_a_short_name do
   match do |actual|
+    shortname_xpath = '/xmlns:OpenSearchDescription/xmlns:ShortName'
     xml = get_xml actual
-    xml.xpath('/xmlns:OpenSearchDescription/xmlns:ShortName').length == 1 && xml.xpath('/xmlns:OpenSearchDescription/xmlns:ShortName').text.length >= 1
+    xml.xpath(shortname_xpath).length == 1 && xml.xpath(shortname_xpath).text.length >= 1
   end
 end
 
 RSpec::Matchers.define :have_a_description do
   match do |actual|
+    description_xpath = '/xmlns:OpenSearchDescription/xmlns:Description'
     xml = get_xml actual
-    xml.xpath('/xmlns:OpenSearchDescription/xmlns:Description').length == 1 && xml.xpath('/xmlns:OpenSearchDescription/xmlns:Description').text.length >= 1
+    xml.xpath(description_xpath).length == 1 && xml.xpath(description_xpath).text.length >= 1
   end
 end
 

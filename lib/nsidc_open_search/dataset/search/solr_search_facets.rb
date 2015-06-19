@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'solr_search_standard')
+require_relative 'solr_search_standard'
 
 module NsidcOpenSearch
   module Dataset
@@ -17,7 +17,9 @@ module NsidcOpenSearch
         end
 
         def get_configurable_parameters(config)
-          configurable_parameters = {}.merge(get_facet_override_parameters(config['facets'])) unless config['facets'].nil?
+          unless config['facets'].nil?
+            configurable_parameters = {}.merge(get_facet_override_parameters(config['facets']))
+          end
           configurable_parameters.merge!(get_default_facet_parameters(config['facet_defaults']))
         end
 

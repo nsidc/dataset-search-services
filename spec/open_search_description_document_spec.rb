@@ -1,19 +1,32 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'open_search_dsl', 'open_search_description_document')
+require_relative 'spec_helper'
+require_relative '../lib/open_search_dsl/open_search_description_document'
 
 describe 'osdd dsl' do
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Url::TemplateParameter do
     it 'cannont be created without name and replace val' do
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument::Url::TemplateParameter.new '', '' }.to raise_error(ArgumentError)
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument::Url::TemplateParameter.new '', ''
+      end.to raise_error(ArgumentError)
     end
   end
 
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Url do
     it 'cannot be contructed without type,  base url, and parameters' do
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument::Url.new }.to raise_error(ArgumentError)
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { type 'atom' } }.to raise_error(ArgumentError)
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { base_url 'url' } }.to raise_error(ArgumentError)
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { parameter 'name', 'val' } }.to raise_error(ArgumentError)
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new
+      end.to raise_error(ArgumentError)
+
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { type 'atom' }
+      end.to raise_error(ArgumentError)
+
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { base_url 'url' }
+      end.to raise_error(ArgumentError)
+
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { parameter 'name', 'val' }
+      end.to raise_error(ArgumentError)
     end
 
     it 'outputs a valid OSDD Url element' do
@@ -53,7 +66,9 @@ describe 'osdd dsl' do
 
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Image do
     it 'cannot be constructed without url' do
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument::Image.new '' }.to raise_error(ArgumentError)
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument::Image.new ''
+      end.to raise_error(ArgumentError)
     end
 
     it 'outputs a valid OSDD Image element' do
@@ -65,7 +80,9 @@ describe 'osdd dsl' do
 
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Query do
     it 'cannot be constructed without role' do
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument::Query.new '' }.to raise_error(ArgumentError)
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument::Query.new ''
+      end.to raise_error(ArgumentError)
     end
 
     it 'should allow multiple parameters' do
@@ -97,10 +114,27 @@ describe 'osdd dsl' do
 
   describe OpenSearchDsl::OpenSearchDescriptionDocument do
     it 'cannot be constructed without short name, description and url' do
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument.new }.to raise_error(ArgumentError)
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument.new { short_name 'Short Name' } }.to raise_error(ArgumentError)
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument.new { description 'Description' } }.to raise_error(ArgumentError)
-      expect { OpenSearchDsl::OpenSearchDescriptionDocument.new { url { type 'atom'; base_url 'url'; parameter 'name', 'val' } } }.to raise_error(ArgumentError)
+      url_block = lambda do
+        type 'atom'
+        base_url 'url'
+        parameter 'name', 'val'
+      end
+
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument.new
+      end.to raise_error(ArgumentError)
+
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument.new { short_name 'Short Name' }
+      end.to raise_error(ArgumentError)
+
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument.new { description 'Description' }
+      end.to raise_error(ArgumentError)
+
+      expect do
+        OpenSearchDsl::OpenSearchDescriptionDocument.new { url(&url_block) }
+      end.to raise_error(ArgumentError)
     end
 
     it 'should allow multiple languages' do

@@ -53,7 +53,20 @@ module NsidcOpenSearch
         end
 
         def self.valids
-          [{ required: [], optional: [:searchTerms, :spatial, :startDate, :endDate, :startIndex, :count, :source, :facetFilters, :sortKeys] }]
+          [{
+            required: [],
+            optional: [
+              :searchTerms,
+              :spatial,
+              :startDate,
+              :endDate,
+              :startIndex,
+              :count,
+              :source,
+              :facetFilters,
+              :sortKeys
+            ]
+          }]
         end
 
         private

@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'helpers', 'app_helpers')
+require_relative '../lib/nsidc_open_search/helpers/app_helpers'
 
 describe 'Nsidc OpenSearch App Helper' do
   class AppHelperTestClass

@@ -1,6 +1,6 @@
-require File.join(File.dirname(__FILE__), '..', 'open_search_dsl', 'open_search_description_document')
-require File.join(File.dirname(__FILE__), 'dataset', 'search', 'definitions', 'definition')
-require File.join(File.dirname(__FILE__), 'routes')
+require_relative '../open_search_dsl/open_search_description_document'
+require_relative 'dataset/search/definitions/definition'
+require_relative 'routes'
 
 module NsidcOpenSearch
   module DatasetOsdd
@@ -14,7 +14,10 @@ module NsidcOpenSearch
         namespace 'nsidc', 'http://nsidc.org/ns/opensearch/1.1/'
         short_name 'NSIDC Data Set OpenSearch Service'
         long_name 'Data set level OpenSearch interface for nsidc.org'
-        description 'OpenSearch description document that describes how to query our server for data set level information. This service is currently in incubation; it is publicly accessible but the interface is not yet stable and custom elements are not documented.'
+        description 'OpenSearch description document that describes how to query our server for'\
+                    'data set level information. This service is currently in incubation; it is'\
+                    'publicly accessible but the interface is not yet stable and custom elements'\
+                    'are not documented.'
         tags 'nsidc.org opensearch search data set geospatial temporal parameter'
         contact 'nsidc@nsidc.org'
         language 'en-us'

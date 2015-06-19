@@ -59,7 +59,9 @@ module NsidcOpenSearch
       remote_ip = remote_ip(env, request)
       requested_with = env['HTTP_X_REQUESTED_WITH'] || request.env['X-Requested-With']
 
-      if query_string.length > 0 && requested_with != 'spec_test' && !request.path.include?('suggest')
+      if (query_string.length > 0) &&
+         (requested_with != 'spec_test') &&
+         (!request.path.include?('suggest'))
 
         puts "New request from: #{remote_ip} requested with: #{requested_with}"
 

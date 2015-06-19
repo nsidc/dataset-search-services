@@ -1,7 +1,7 @@
 require 'json'
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'model', 'suggestions', 'suggestions_response_builder')
-require File.join(File.dirname(__FILE__), '..', 'lib',  'nsidc_open_search', 'dataset', 'model', 'suggestions', 'suggestion_entry')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/dataset/model/suggestions/suggestions_response_builder'
+require_relative '../lib/nsidc_open_search/dataset/model/suggestions/suggestion_entry'
 
 describe 'suggestions response' do
   describe 'result to json' do

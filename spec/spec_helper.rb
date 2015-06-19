@@ -6,7 +6,7 @@ Bundler.require(:default, :test)
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
 
 def iso_document_fixture
-  File.open(File.expand_path(File.join(File.dirname(__FILE__), 'fixtures/iso_document.xml')), 'rb')  do |iso_doc_file|
+  File.open(File.expand_path('../fixtures/iso_document.xml', __FILE__), 'rb')  do |iso_doc_file|
     begin
       iso_doc_file.read
     ensure

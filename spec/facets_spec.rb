@@ -1,21 +1,10 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'search', 'solr_search_facets')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'model', 'facets', 'facets_response_builder')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/dataset/search/solr_search_facets'
+require_relative '../lib/nsidc_open_search/dataset/model/facets/facets_response_builder'
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
   let(:default_search_expectations) {
-    {
-      'q' => '*:*',
-      'qf' => 'title^15 parameters^3 summary^5 topics keywords^3 platforms^2 sensors^2 normalized_authoritative_id^100 authors',
-      'pf' => 'title^25 parameters^5 summary^25 keywords^5',
-      'ps' => 1,
-      'rows' => '0',
-      'bq' => 'brokered:false^100 published_date:[NOW-2YEARS/DAY TO NOW/DAY]^15',
-      'boost' => 'product(popularity,query({!type=edismax qf=$qf pf=$pf ps=$ps bq=$bq bf=sum(1,product(tan(div(popularity,8)),50))^55 v=$q boost=}))',
-      'facet.mincount' => 1,
-      'facet.sort' => 'index',
-      'facet.limit' => -1
-    }
+    YAML.load_file(File.expand_path('../fixtures/default_facet_search_expectations.yaml', __FILE__))
   }
 
   let(:base_search_parameters) {
@@ -28,12 +17,27 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
   }
 
   let(:solr_response) {
-    double('facets', facets: [double('facet', name: 'Facet1', items: [double('item', value: 'dummy', hits: '12')])])
+    double(
+      'facets',
+      facets: [
+        double('facet', name: 'Facet1', items: [double('item', value: 'dummy', hits: '12')])
+      ]
+    )
   }
 
   let(:rsolr) { double('rsolr', find: solr_response) }
-  let(:query_config) { YAML.load_file File.join(File.dirname(__FILE__), '..', 'config', 'solr_query_config_test.yml') }
-  let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrFacetsParser, NsidcOpenSearch::Dataset::Model::Facets::FacetsResponseBuilder, query_config, RSolr::Ext }
+  let(:query_config) do
+    YAML.load_file(File.expand_path('../../config/solr_query_config_test.yml', __FILE__))
+  end
+  let(:solr_search) do
+    described_class.new(
+      'localhost:8983',
+      NsidcOpenSearch::Dataset::Search::SolrFacetsParser,
+      NsidcOpenSearch::Dataset::Model::Facets::FacetsResponseBuilder,
+      query_config,
+      RSolr::Ext
+    )
+  end
 
   before :each do
     allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
@@ -50,7 +54,8 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
       end
     end
 
-    # This is basically duplicating the normal query test, verifying that we use the same constraints but using a different parser/builder.
+    # This is basically duplicating the normal query test, verifying that we use
+    # the same constraints but using a different parser/builder.
 
     it 'generates default query with empty search' do
       get_should_receive_expectations default_search_expectations
@@ -99,7 +104,13 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
 
     it 'generates a date range query with start and end date search' do
       get_should_receive_expectations 'q' => 'temporal:[20.1001009,0 TO 90,20.1101011]'
-      solr_search.execute base_search_parameters.merge(startDate: '2010-01-01', endDate: '2011-01-01')
+
+      range = {
+        startDate: '2010-01-01',
+        endDate: '2011-01-01'
+      }
+
+      solr_search.execute base_search_parameters.merge(range)
     end
   end
 end

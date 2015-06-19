@@ -1,40 +1,11 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'search', 'parsers', 'solr_results_parser')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/dataset/search/parsers/solr_results_parser'
 
 describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
   before :each do
-    @solr_response = {
-      'response' =>  {
-        'numFound' => 2,
-        'start' => 0,
-        'docs' => [
-          {
-            'authoritative_id' => '12345',
-            'dataset_url' => 'http://nsidc.org/data/test',
-            'title' => 'test',
-            'summary' => 'Test Abstract',
-            'full_parameters' => ['EARTH SCIENCE > Cryosphere > Snow/Ice > Ice Extent > Coverage', 'EARTH SCIENCE > Terrestrial Hydrosphere > Snow/Ice > Ice Extent'],
-            'keywords' => %w(k1 k2 k3),
-            'data_access_urls' => %w(ftp://nsidc.org/data/test),
-            'authors' => ['John Doe', 'Jane Doe'],
-            'data_centers' => %w(NSIDC NOAA),
-            'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
-
-            # keep these out of order so sorting can be tested
-            'temporal_coverages' => %w(2004-01-01, 1978-10-01,2014-05-23 1978-10-01,2011-12-31 2004-01-01,2005-01-01),
-
-            'distribution_formats' => %w(binary),
-            'last_revision_date' => '20130528',
-            'temporal_duration' => '33',
-            'spatial_area' => '271.83'
-          },
-          {
-            'authoritative_id' => '23456',
-            'title' => 'test2'
-          }
-        ]
-      }
-    }
+    @solr_response = YAML.load_file(
+      File.expand_path('../fixtures/solr_response_unordered_temporal.yaml', __FILE__)
+    )
     @facet_config = {
       'NSIDC' => {
         'facets' => {
@@ -48,7 +19,10 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
 
   describe 'result entry' do
     before :each do
-      @entry = NsidcOpenSearch::Dataset::Search::SolrResultsParser.new(response: @solr_response, services_config: @facet_config).entries.first
+      @entry = NsidcOpenSearch::Dataset::Search::SolrResultsParser.new(
+        response: @solr_response,
+        services_config: @facet_config
+      ).entries.first
     end
     it 'should set id to response authoritative id' do
       expect(@entry.id).to be @solr_response['response']['docs'][0]['authoritative_id']

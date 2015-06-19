@@ -1,19 +1,11 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'search', 'solr_search_dataset')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'model', 'search', 'open_search_response_builder')
+require 'yaml'
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/dataset/search/solr_search_dataset'
+require_relative '../lib/nsidc_open_search/dataset/model/search/open_search_response_builder'
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
   let(:default_search_expectations) {
-    {
-      'q' => '*:*',
-      'qf' => 'title^15 parameters^3 summary^5 topics keywords^3 platforms^2 sensors^2 normalized_authoritative_id^100 authors',
-      'pf' => 'title^25 parameters^5 summary^25 keywords^5',
-      'ps' => 1,
-      'rows' => 25,
-      'bq' => 'brokered:false^100 published_date:[NOW-2YEARS/DAY TO NOW/DAY]^15',
-      'boost' => 'product(popularity,query({!type=edismax qf=$qf pf=$pf ps=$ps bq=$bq bf=sum(1,product(tan(div(popularity,8)),50))^55 v=$q boost=}))',
-      'sort' => 'score desc'
-    }
+    YAML.load_file(File.expand_path('../fixtures/default_search_expectations.yaml', __FILE__))
   }
 
   let(:base_search_parameters) {
@@ -26,41 +18,24 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
   }
 
   let(:solr_response) {
-    {
-      'response' =>  {
-        'numFound' => 2,
-        'start' => 0,
-        'docs' => [
-          {
-            'authoritative_id' => '12345',
-            'dataset_url' => 'http://nsidc.org/data/test',
-            'title' => 'test',
-            'summary' => 'Test Abstract',
-            'full_parameters' => ['EARTH SCIENCE > Cryosphere > Snow/Ice > Ice Extent > Coverage', 'EARTH SCIENCE > Terrestrial Hydrosphere > Snow/Ice > Ice Extent'],
-            'keywords' => %w(k1 k2 k3),
-            'data_access_urls' => %w(ftp://nsidc.org/data/test),
-            'authors' => ['John Doe', 'Jane Doe'],
-            'data_centers' => %w(NSIDC NOAA),
-            'supporting_programs' => ['Making Earth System Data Records for Use in Research Environments', 'NASA DAAC at the National Snow and Ice Data Center'],
-            'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
-            'temporal_coverages' => %w(1978-10-01,2011-12-31 2004-01-01,),
-            'distribution_formats' => %w(binary),
-            'last_revision_date' => '20130528'
-          },
-          {
-            'authoritative_id' => '23456',
-            'title' => 'test2'
-          }
-        ]
-      }
-    }
+    YAML.load_file(File.expand_path('../fixtures/solr_response.yaml', __FILE__))
   }
 
   let(:rsolr) { double('rsolr', find: solr_response) }
 
-  let(:query_config) { YAML.load_file File.join(File.dirname(__FILE__), '..', 'config', 'solr_query_config_test.yml') }
+  let(:query_config) do
+    YAML.load_file(File.expand_path('../../config/solr_query_config_test.yml', __FILE__))
+  end
 
-  let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrResultsParser, NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder, query_config, RSolr::Ext }
+  let(:solr_search) do
+    described_class.new(
+      'localhost:8983',
+      NsidcOpenSearch::Dataset::Search::SolrResultsParser,
+      NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder,
+      query_config,
+      RSolr::Ext
+    )
+  end
 
   before :each do
     allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
@@ -97,7 +72,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
       solr_search.execute base_search_parameters.merge(startIndex: '26')
     end
 
-    it 'generates a sort field containing the indexed field to sort on and which direction to sort' do
+    it 'generates a sort field with the indexed field to sort on and which direction to sort' do
       get_should_receive_expectations 'sort' => 'last_revision_date desc'
       solr_search.execute base_search_parameters.merge(sortKeys: 'updated,,0')
     end
@@ -112,7 +87,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
       solr_search.execute base_search_parameters.merge(searchTerms: '"sea ice"')
     end
 
-    it 'strips single character words/numbers from phrase strings with a keyword search because single characters are not indexed' do
+    it 'strips single character words/numbers from phrase strings with a keyword search' do
       get_should_receive_expectations 'q' => 'sea AND ice'
       solr_search.execute base_search_parameters.merge(searchTerms: '"a sea 4 ice"')
     end
@@ -138,18 +113,50 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
     end
 
     it 'generates filter query with facetFilters parameter' do
-      get_should_receive_expectations 'fq' => %w(source:NSIDC {!tag=facet_data_center}facet_data_center:("Norwegian%20Meteorological%20Institute"))
-      solr_search.execute base_search_parameters.merge(facetFilters: '{"facet_data_center":["Norwegian%20Meteorological%20Institute"]}')
+      data_center = 'Norwegian%20Meteorological%20Institute'
+
+      fq = [
+        'source:NSIDC',
+        %({!tag=facet_data_center}facet_data_center:("#{data_center}"))
+      ]
+
+      params = {
+        facetFilters: %({"facet_data_center":["#{data_center}"]})
+      }
+
+      get_should_receive_expectations 'fq' => fq
+      solr_search.execute base_search_parameters.merge(params)
     end
 
     it 'generates filter query with facetFilters with multiple filters' do
-      get_should_receive_expectations 'fq' => ['source:NSIDC', '{!tag=facet_data_center}facet_data_center:("Norwegian%20Meteorological%20Institute" "NSIDC")', '{!tag=facet_temporal_duration}facet_temporal_duration:("1-5")']
-      solr_search.execute base_search_parameters.merge(facetFilters: '{"facet_data_center":["Norwegian%20Meteorological%20Institute","NSIDC"],"facet_temporal_duration":["1-5"]}')
+      get_should_receive_expectations(
+        'fq' => [
+          'source:NSIDC',
+          '{!tag=facet_data_center}facet_data_center:'\
+            '("Norwegian%20Meteorological%20Institute" "NSIDC")',
+          '{!tag=facet_temporal_duration}facet_temporal_duration:("1-5")'
+        ]
+      )
+      params = {
+        facetFilters: {
+          facet_data_center: %w(Norwegian%20Meteorological%20Institute NSIDC),
+          facet_temporal_duration: %w(1-5)
+        }.to_json
+      }
+      solr_search.execute(base_search_parameters.merge(params))
     end
 
     it 'ignores the facetFilter parameter if it is not proper JSON, source is taken by default' do
-      get_should_receive_expectations 'fq' => %w(source:NSIDC)
-      solr_search.execute base_search_parameters.merge(facetFilters: '{"facet_data_center":["Norwegian%20Meteorological%20Institute","NSIDC"], $%#$%#% -> "dummy_value"]}')
+      get_should_receive_expectations('fq' => %w(source:NSIDC))
+
+      params = {
+        facetFilters: %({
+          "facet_data_center":["Norwegian%20Meteorological%20Institute","NSIDC"],
+          $%#$%#% -> "dummy_value"]
+        })
+      }
+
+      solr_search.execute(base_search_parameters.merge(params))
     end
 
     it 'generates a geo range query with a spatial search' do
@@ -163,8 +170,14 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
     end
 
     it 'generates a date range query with start and end date search' do
-      get_should_receive_expectations 'q' => 'temporal:[20.1001009,0 TO 90,20.1101011]'
-      solr_search.execute base_search_parameters.merge(startDate: '2010-01-01', endDate: '2011-01-01')
+      get_should_receive_expectations('q' => 'temporal:[20.1001009,0 TO 90,20.1101011]')
+
+      solr_search.execute(
+        base_search_parameters.merge(
+          startDate: '2010-01-01',
+          endDate: '2011-01-01'
+        )
+      )
     end
   end
 
@@ -197,41 +210,24 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
   }
 
   let(:solr_response) {
-    {
-      'response' =>  {
-        'numFound' => 2,
-        'start' => 0,
-        'docs' => [
-          {
-            'authoritative_id' => '12345',
-            'dataset_url' => 'http://nsidc.org/data/test',
-            'title' => 'test',
-            'summary' => 'Test Abstract',
-            'full_parameters' => ['EARTH SCIENCE > Cryosphere > Snow/Ice > Ice Extent > Coverage', 'EARTH SCIENCE > Terrestrial Hydrosphere > Snow/Ice > Ice Extent'],
-            'keywords' => %w(k1 k2 k3),
-            'data_access_urls' => %w(ftp://nsidc.org/data/test),
-            'authors' => ['John Doe', 'Jane Doe'],
-            'data_centers' => %w(NSIDC NOAA),
-            'supporting_programs' => ['Making Earth System Data Records for Use in Research Environments', 'NASA DAAC at the National Snow and Ice Data Center'],
-            'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
-            'temporal_coverages' => %w(1978-10-01,2011-12-31 2004-01-01,),
-            'distribution_formats' => %w(binary),
-            'last_revision_date' => '20130528'
-          },
-          {
-            'authoritative_id' => '23456',
-            'title' => 'test2'
-          }
-        ]
-      }
-    }
+    YAML.load_file(File.expand_path('../fixtures/solr_response.yaml', __FILE__))
   }
 
   let(:rsolr) { double('rsolr', find: solr_response) }
 
-  let(:query_config) { YAML.load_file File.join(File.dirname(__FILE__), '..', 'config', 'solr_query_config_test.yml') }
+  let(:query_config) do
+    YAML.load_file(File.expand_path('../../config/solr_query_config_test.yml', __FILE__))
+  end
 
-  let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrResultsParser, NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder, query_config, RSolr::Ext }
+  let(:solr_search) do
+    described_class.new(
+      'localhost:8983',
+      NsidcOpenSearch::Dataset::Search::SolrResultsParser,
+      NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder,
+      query_config,
+      RSolr::Ext
+    )
+  end
 
   before :each do
     allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
@@ -254,13 +250,20 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
     end
 
     it 'generates facet field string' do
-      get_should_receive_expectations 'facet.field' => query_config[base_search_parameters[:source]]['facets'].map { |facet| "{!ex=#{facet['name']}}#{facet['name']}" }
-      solr_search.execute base_search_parameters
+      facet_field = query_config[base_search_parameters[:source]]['facets'].map do |facet|
+        "{!ex=#{facet['name']}}#{facet['name']}"
+      end
+
+      get_should_receive_expectations('facet.field' => facet_field)
+      solr_search.execute(base_search_parameters)
     end
 
     it 'generates facet field options override strings' do
-      get_should_receive_expectations 'f.facet_spatial_coverage.facet.sort' => 'count', 'f.facet_spatial_coverage.facet.mincount' => 0
-      solr_search.execute base_search_parameters
+      get_should_receive_expectations(
+        'f.facet_spatial_coverage.facet.sort' => 'count',
+        'f.facet_spatial_coverage.facet.mincount' => 0
+      )
+      solr_search.execute(base_search_parameters)
     end
   end
 end

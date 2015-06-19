@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), '..', '..', 'model', 'facets', 'facet_entry')
-require File.join(File.dirname(__FILE__), '..', '..', 'model', 'facets', 'facet_value')
+require_relative '../../model/facets/facet_entry'
+require_relative '../../model/facets/facet_value'
 
 module NsidcOpenSearch
   module Dataset
@@ -47,10 +47,10 @@ module NsidcOpenSearch
         end
 
         def defined_sort(facet, facet_config)
-          result = facet.items.sort { |x, y|
-            (facet_config['sort_order'].index { |element| element == x.value } || facet.items.size) <=>
-            (facet_config['sort_order'].index { |element| element == y.value } || facet.items.size)
-          }
+          result = facet.items.sort do |x, y|
+            (facet_config['sort_order'].index { |el| el == x.value } || facet.items.size) <=>
+            (facet_config['sort_order'].index { |el| el == y.value } || facet.items.size)
+          end
           RSolr::Ext::Response::Facets::FacetField.new(facet.name, result)
         end
 
