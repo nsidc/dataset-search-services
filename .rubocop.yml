@@ -19,7 +19,9 @@ Metrics/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
-  Enabled: false
+  Max: 15
+  Exclude:
+  - lib/nsidc_open_search/dataset_osdd.rb
 
 Style/Documentation:
   Enabled: false
