@@ -1,17 +1,28 @@
 require 'sinatra/base'
 require 'uri'
-require File.join(File.dirname(__FILE__), '..', 'routes')
-require File.join(File.dirname(__FILE__), '..', 'dataset_rest')
+require_relative '../routes'
+require_relative '../dataset_rest'
 
 module NsidcOpenSearch
   module Controllers
     module DatasetRest
       def self.registered(app)
         app.get Routes.named(:dataset_rest), provides: [:atom, :xml] do
-          (status 404) if URI.escape(params[:splat].first).nil_or_whitespace?
-          dataset = NsidcOpenSearch::DatasetRest.new(settings.solr_url, settings.query_config).exec_rest(params)
-          dataset.entries.count == 1 ? dataset.to_atom(URI.escape(request.url), URI.escape(base_url)) : (status 404)
+          dataset = DatasetRest.dataset(settings, params)
+
+          if params[:splat].first.nil_or_whitespace? || dataset.total_results == 0
+            status 404
+          else
+            dataset.to_atom(URI.escape(request.url), URI.escape(base_url))
+          end
         end
+      end
+
+      def self.dataset(settings, params)
+        NsidcOpenSearch::DatasetRest.new(
+          settings.solr_url,
+          settings.query_config
+        ).exec_rest(params)
       end
     end
   end

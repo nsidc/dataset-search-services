@@ -1,6 +1,6 @@
-require File.join(File.dirname(__FILE__), '..', '..', 'model', 'search', 'result_entry')
-require File.join(File.dirname(__FILE__), '..', '..', 'model', 'search', 'date_range')
-require File.join(File.dirname(__FILE__), '..', '..', 'model', 'search', 'parameter')
+require_relative '../../model/search/result_entry'
+require_relative '../../model/search/date_range'
+require_relative '../../model/search/parameter'
 
 module NsidcOpenSearch
   module Dataset
@@ -18,24 +18,21 @@ module NsidcOpenSearch
 
         def parse_docs(docs)
           docs.map do |d|
-            NsidcOpenSearch::Dataset::Model::Search::ResultEntry.new(
+            entry = {
               id: d['authoritative_id'],
-              dataset_version: d['dataset_version'],
-              title: d['title'],
-              summary: d['summary'],
-              keywords: d['keywords'],
-              url: d['dataset_url'],
-              data_access_urls: d['data_access_urls'],
-              parameters: parse_parameters(d['full_parameters']),
-              authors: d['authors'],
-              data_centers: d['data_centers'],
-              spatial_coverages: d['spatial_coverages'],
-              temporal_coverages: parse_temporal_coverages(d['temporal_coverages']),
-              distribution_formats: d['distribution_formats'],
               last_revision_date: parse_revision_date(d['last_revision_date']),
-              temporal_duration: d['temporal_duration'],
-              spatial_area: d['spatial_area']
-            )
+              parameters: parse_parameters(d['full_parameters']),
+              temporal_coverages: parse_temporal_coverages(d['temporal_coverages']),
+              url: d['dataset_url']
+            }
+
+            %w(authors data_access_urls data_centers dataset_version distribution_formats
+               keywords spatial_area spatial_coverages summary temporal_duration
+               title).each do |key|
+              entry[key.to_sym] = d[key]
+            end
+
+            NsidcOpenSearch::Dataset::Model::Search::ResultEntry.new(entry)
           end
         end
 
@@ -45,37 +42,35 @@ module NsidcOpenSearch
           nil
         end
 
-        def parse_temporal_coverages(coverages)
-          if coverages.nil?
-            []
+        def sort_temporal_coverages(x, y)
+          if x.start_date == y.start_date
+
+            # nil end_date means a continous data set, treat those as if
+            # their end dates are after all other end dates
+            if x.end_date.nil?
+              1
+            elsif y.end_date.nil?
+              -1
+            else
+              x.end_date <=> y.end_date
+            end
+
           else
-            mapped_coverages = coverages.map do |c|
-              dates = c.split(',')
-
-              start_date = parse_date(dates[0])
-              end_date = parse_date(dates[1])
-
-              NsidcOpenSearch::Dataset::Model::Search::DateRange.new(start_date: start_date, end_date: end_date)
-            end
-
-            mapped_coverages.sort do |x, y|
-              if x.start_date == y.start_date
-
-                # nil end_date means a continous data set, treat those as if
-                # their end dates are after all other end dates
-                if x.end_date.nil?
-                  1
-                elsif y.end_date.nil?
-                  -1
-                else
-                  x.end_date <=> y.end_date
-                end
-
-              else
-                x.start_date <=> y.start_date
-              end
-            end
+            x.start_date <=> y.start_date
           end
+        end
+
+        def parse_temporal_coverages(coverages)
+          return [] if coverages.nil?
+
+          coverages.map do |coverage|
+            start_date, end_date = coverage.split(',').map(&method(:parse_date))
+
+            NsidcOpenSearch::Dataset::Model::Search::DateRange.new(
+              start_date: start_date,
+              end_date: end_date
+            )
+          end.sort(&method(:sort_temporal_coverages))
         end
 
         def parse_revision_date(date)
@@ -86,30 +81,23 @@ module NsidcOpenSearch
           end
         end
 
+        # parameters always follow this pattern:
+        # - category is always the first element
+        # - name is always the last element
+        # - topic is the second element if there are more than 2 elements
+        # - term is the third element if there are more than 3 element
+        # - variable 1-3 are fourth, fifth, and sixth elements if present
         def parse_parameters(parameters)
-          # parameters always follow this pattern:
-          # category is always the first element
-          # name is always the last element
-          # topic is the second element if there are more than 2 elements
-          # term is the thrid element if there are more than 3 element
-          # variable 1-3 are fourth, fifth, and sixth elements if present
-          if parameters.nil?
-            []
-          else
-            parameters.map do |p|
-              elements = p.split ' > '
-              parameter = NsidcOpenSearch::Dataset::Model::Search::Parameter.new(category: elements.first, name: elements.last)
+          parameters.to_a.map do |parameter|
+            attrs = {}
 
-              parameter.topic = elements[1] if elements.length >= 3
-              parameter.term = elements[2] if elements.length >= 4
-              if elements.length >= 5
-                (3..(elements.length - 2)).each do |i|
-                  parameter.send "variable_#{i - 2}=", elements[i]
-                end
-              end
+            attrs[:category], *optional, attrs[:name] = parameter.split(' > ')
 
-              parameter
-            end
+            attrs[:topic], attrs[:term], *variables = optional
+
+            attrs[:variable_1], attrs[:variable_2], attrs[:variable_3] = variables
+
+            NsidcOpenSearch::Dataset::Model::Search::Parameter.new(attrs)
           end
         end
       end

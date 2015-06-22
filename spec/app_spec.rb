@@ -8,29 +8,22 @@ describe 'Nsidc OpenSearch App' do
     @app ||= NsidcOpenSearch::App
   end
 
-  def get_stubbed_facets_from_hash(facets)
-    facet_stubs = []
-
-    facets.each do |facet|
-      fake_facet = {}
-      fake_facet_values = []
-
-      facet[:items].each do |item|
-        fake_facet_value = {}
-
-        allow(fake_facet_value).to receive(:value).and_return(item[:value])
-        allow(fake_facet_value).to receive(:hits).and_return(item[:hits])
-
-        fake_facet_values.push(fake_facet_value)
-      end
-
-      allow(fake_facet).to receive(:items).and_return(fake_facet_values)
-      allow(fake_facet).to receive(:name).and_return(facet[:name])
-
-      facet_stubs.push(fake_facet)
+  def stubbed_obj(obj = {}, **opts)
+    opts.each do |k, v|
+      allow(obj).to receive(k).and_return(v)
     end
 
-    facet_stubs
+    obj
+  end
+
+  def get_stubbed_facets_from_hash(facets)
+    facets.map do |facet|
+      fake_facet_values = facet[:items].map do |item|
+        stubbed_obj(value: item[:value], hits: item[:hits])
+      end
+
+      stubbed_obj(items: fake_facet_values, name: facet[:name])
+    end
   end
 
   def default_os_query_params

@@ -10,6 +10,11 @@ AllCops:
     - puppet/**/*
     - vendor/bundle/**/*
 
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+  - lib/nsidc_open_search/dataset_osdd.rb
+
 Metrics/LineLength:
   Enabled: false
 
