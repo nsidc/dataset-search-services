@@ -12,7 +12,9 @@ module OpenSearchDsl
           fail ArgumentError.new('Missing name') if name.nil_or_whitespace?
           fail ArgumentError.new('Missing replacement value') if replace_val.nil_or_whitespace?
 
-          @name, @replace_val, @required =  name, replace_val, required
+          @name = name
+          @replace_val = replace_val
+          @required = required
         end
       end
     end

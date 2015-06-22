@@ -2,10 +2,9 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'search', 'solr_search_suggest')
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchSuggest do
-
   let(:base_search_parameters) {
     {
-        queryType: 'suggestions'
+      queryType: 'suggestions'
     }
   }
 

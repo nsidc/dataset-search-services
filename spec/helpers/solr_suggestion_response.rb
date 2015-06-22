@@ -5,7 +5,7 @@ def solr_suggestion_response
       'QTime' => 1
     },
     'params' => {
-        'pf' => 'text_suggest_edge^50'
+      'pf' => 'text_suggest_edge^50'
     },
     'response' => { 'numFound' => 5, 'start' => 0, 'docs' => [
       { 'text_suggest' => 'sea ice' },

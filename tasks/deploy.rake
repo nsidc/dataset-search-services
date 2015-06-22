@@ -17,11 +17,11 @@ namespace :deploy do
   # Do some file system manipulation to make sure that the app exists in
   # the app path, and that puma is ready to configure and start up.
   task :setup_machine, [:env] do |_t, args|
-    run_vagrant_ssh(args[:env], "sudo mkdir -p #{ AppConfig::APP_PATH }")
-    run_vagrant_ssh(args[:env], "sudo cp -R /vagrant/* #{ AppConfig::APP_PATH }")
-    run_vagrant_ssh(args[:env], "sudo chown -R vagrant #{ AppConfig::APP_PATH }")
+    run_vagrant_ssh(args[:env], "sudo mkdir -p #{AppConfig::APP_PATH}")
+    run_vagrant_ssh(args[:env], "sudo cp -R /vagrant/* #{AppConfig::APP_PATH}")
+    run_vagrant_ssh(args[:env], "sudo chown -R vagrant #{AppConfig::APP_PATH}")
 
-    run_vagrant_ssh(args[:env], "cd #{ AppConfig::APP_PATH }; bundle install")
+    run_vagrant_ssh(args[:env], "cd #{AppConfig::APP_PATH}; bundle install")
   end
 
   task :configure_puma, [:env] => :setup_machine do |_t, args|
@@ -32,7 +32,7 @@ namespace :deploy do
     run_vagrant_ssh(args[:env], "sudo chown vagrant #{File.join(AppConfig::APP_PATH, 'config')}")
     run_vagrant_ssh(
       args[:env],
-      "echo '#{ app_env(args[:env]) }' > #{File.join(AppConfig::APP_PATH, 'config/environment')}"
+      "echo '#{app_env(args[:env])}' > #{File.join(AppConfig::APP_PATH, 'config/environment')}"
     )
   end
 

@@ -60,7 +60,6 @@ module NsidcOpenSearch
         end
 
         suggest_definition.valids.each do |terms|
-
           url do
             type 'application/x-suggestions+json'
             base_url "#{base_url}#{NsidcOpenSearch::Routes.named(:dataset_suggestions)}"

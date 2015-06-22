@@ -25,18 +25,18 @@ describe 'facets response' do
             ]
           ),
           NsidcOpenSearch::Dataset::Model::Facets::FacetEntry.new(
-              name: 'Author',
-              items: [
-                NsidcOpenSearch::Dataset::Model::Facets::FacetValue.new(name: 'a', hits: '100'),
-                NsidcOpenSearch::Dataset::Model::Facets::FacetValue.new(name: 'b', hits: '81')
-              ]
-            ),
+            name: 'Author',
+            items: [
+              NsidcOpenSearch::Dataset::Model::Facets::FacetValue.new(name: 'a', hits: '100'),
+              NsidcOpenSearch::Dataset::Model::Facets::FacetValue.new(name: 'b', hits: '81')
+            ]
+          ),
           NsidcOpenSearch::Dataset::Model::Facets::FacetEntry.new(
-              name: 'Spatial Scope',
-              items: [
-                NsidcOpenSearch::Dataset::Model::Facets::FacetValue.new(name: 'r', hits: '10')
-              ]
-            )
+            name: 'Spatial Scope',
+            items: [
+              NsidcOpenSearch::Dataset::Model::Facets::FacetValue.new(name: 'r', hits: '10')
+            ]
+          )
         ]
       )
     end

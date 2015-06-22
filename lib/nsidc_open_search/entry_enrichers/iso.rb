@@ -39,9 +39,7 @@ module NsidcOpenSearch
       end
 
       def supporting_programs(doc)
-        doc.xpath('//gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty[.//gmd:CI_RoleCode="custodian"]/gmd:organisationShortName').map do |e|
-          e.iso_character_string
-        end
+        doc.xpath('//gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty[.//gmd:CI_RoleCode="custodian"]/gmd:organisationShortName').map(&:iso_character_string)
       end
     end
   end

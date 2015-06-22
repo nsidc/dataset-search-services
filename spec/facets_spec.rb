@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dat
 require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'model', 'facets', 'facets_response_builder')
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
-
   let(:default_search_expectations) {
     {
       'q' => '*:*',

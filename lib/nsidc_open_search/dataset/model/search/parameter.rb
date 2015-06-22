@@ -4,7 +4,7 @@ module NsidcOpenSearch
   module Dataset
     module Model
       module Search
-        class Parameter <  AutoInitializer
+        class Parameter < AutoInitializer
           attr_accessor :category, :topic, :term, :variable_1, :variable_2, :variable_3, :name
         end
       end

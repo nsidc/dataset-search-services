@@ -4,9 +4,9 @@ require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'val
 describe 'validator' do
   before :each do
     @definition = double('dsl definition', valids: [
-                           { required: [:searchterms], optional: [:bbox] },
-                           { required: [:searchterms], optional: [:loc] }
-                         ])
+      { required: [:searchterms], optional: [:bbox] },
+      { required: [:searchterms], optional: [:loc] }
+    ])
 
     @obj = Object.new
     @obj.class.send :include, NsidcOpenSearch::Validator
@@ -28,7 +28,6 @@ describe 'validator' do
       @obj.validate! loc: '10 20 30 40'
       expect(@obj.valid?).to be false
     end
-
   end
 
   describe 'valid terms' do

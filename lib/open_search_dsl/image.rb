@@ -10,7 +10,10 @@ module OpenSearchDsl
       def initialize(url, height = nil, width = nil, type = nil)
         fail ArgumentError.new('Missing url') if url.nil_or_whitespace?
 
-        @url, @height, @width, @type = url, height, width, type
+        @url = url
+        @height = height
+        @width = width
+        @type = type
       end
     end
   end

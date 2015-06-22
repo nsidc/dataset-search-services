@@ -58,16 +58,16 @@ describe 'Nsidc OpenSearch App' do
 
   it 'should provide OpenSearch results at its dataset endpoint' do
     solr_response = {
-        'response' =>  {
-            'numFound' => 1,
-            'docs' => [
-                {
-                    'authoritative_id' => '12345',
-                    'title' => 'test',
-                    'iso' => iso_document_fixture
-                }
-            ]
-        }
+      'response' =>  {
+        'numFound' => 1,
+        'docs' => [
+          {
+            'authoritative_id' => '12345',
+            'title' => 'test',
+            'iso' => iso_document_fixture
+          }
+        ]
+      }
     }
 
     rsolr = double('rsolr', find: solr_response)
@@ -84,7 +84,6 @@ describe 'Nsidc OpenSearch App' do
   end
 
   it 'should provide Facets results at its facets endpoint' do
-
     facets_hash = [
       {
         name: 'data_center',
@@ -134,5 +133,4 @@ describe 'Nsidc OpenSearch App' do
     expect(last_response).to be_ok
     expect(last_response.header['Content-Type']).to match '^application/nsidcfacets\+xml'
   end
-
 end

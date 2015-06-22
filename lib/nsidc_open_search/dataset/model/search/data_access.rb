@@ -4,7 +4,7 @@ module NsidcOpenSearch
   module Dataset
     module Model
       module Search
-        class DataAccess <  AutoInitializer
+        class DataAccess < AutoInitializer
           attr_accessor :url, :name, :description, :type
         end
       end

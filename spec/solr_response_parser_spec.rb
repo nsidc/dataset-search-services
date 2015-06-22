@@ -38,13 +38,12 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
     @facet_config = {
       'NSIDC' => {
         'facets' => {
-            'name' => 'facet_temporal_duration',
-            'sort' => 'defined_sort',
-            'sort_order' => ['< 1 year', '1 -4 years', '5 - 9 years', 'Not specified']
+          'name' => 'facet_temporal_duration',
+          'sort' => 'defined_sort',
+          'sort_order' => ['< 1 year', '1 -4 years', '5 - 9 years', 'Not specified']
         }
       }
     }
-
   end
 
   describe 'result entry' do
@@ -115,7 +114,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
 
     it 'should set bounding box coordinates' do
       bbox = @entry.spatial_coverages[0]
-      west, south, east, north = bbox.split(',').map { |c| c.to_f }
+      west, south, east, north = bbox.split(',').map(&:to_f)
       expect(west).to eql(-180.0)
       expect(east).to eql 180.0
       expect(north).to eql 90.0

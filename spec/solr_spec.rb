@@ -32,24 +32,24 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
         'start' => 0,
         'docs' => [
           {
-              'authoritative_id' => '12345',
-              'dataset_url' => 'http://nsidc.org/data/test',
-              'title' => 'test',
-              'summary' => 'Test Abstract',
-              'full_parameters' => ['EARTH SCIENCE > Cryosphere > Snow/Ice > Ice Extent > Coverage', 'EARTH SCIENCE > Terrestrial Hydrosphere > Snow/Ice > Ice Extent'],
-              'keywords' => %w(k1 k2 k3),
-              'data_access_urls' => %w(ftp://nsidc.org/data/test),
-              'authors' => ['John Doe', 'Jane Doe'],
-              'data_centers' => %w(NSIDC NOAA),
-              'supporting_programs' => ['Making Earth System Data Records for Use in Research Environments', 'NASA DAAC at the National Snow and Ice Data Center'],
-              'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
-              'temporal_coverages' => %w(1978-10-01,2011-12-31 2004-01-01,),
-              'distribution_formats' => %w(binary),
-              'last_revision_date' => '20130528'
+            'authoritative_id' => '12345',
+            'dataset_url' => 'http://nsidc.org/data/test',
+            'title' => 'test',
+            'summary' => 'Test Abstract',
+            'full_parameters' => ['EARTH SCIENCE > Cryosphere > Snow/Ice > Ice Extent > Coverage', 'EARTH SCIENCE > Terrestrial Hydrosphere > Snow/Ice > Ice Extent'],
+            'keywords' => %w(k1 k2 k3),
+            'data_access_urls' => %w(ftp://nsidc.org/data/test),
+            'authors' => ['John Doe', 'Jane Doe'],
+            'data_centers' => %w(NSIDC NOAA),
+            'supporting_programs' => ['Making Earth System Data Records for Use in Research Environments', 'NASA DAAC at the National Snow and Ice Data Center'],
+            'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
+            'temporal_coverages' => %w(1978-10-01,2011-12-31 2004-01-01,),
+            'distribution_formats' => %w(binary),
+            'last_revision_date' => '20130528'
           },
           {
-              'authoritative_id' => '23456',
-              'title' => 'test2'
+            'authoritative_id' => '23456',
+            'title' => 'test2'
           }
         ]
       }
@@ -203,24 +203,24 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
         'start' => 0,
         'docs' => [
           {
-              'authoritative_id' => '12345',
-              'dataset_url' => 'http://nsidc.org/data/test',
-              'title' => 'test',
-              'summary' => 'Test Abstract',
-              'full_parameters' => ['EARTH SCIENCE > Cryosphere > Snow/Ice > Ice Extent > Coverage', 'EARTH SCIENCE > Terrestrial Hydrosphere > Snow/Ice > Ice Extent'],
-              'keywords' => %w(k1 k2 k3),
-              'data_access_urls' => %w(ftp://nsidc.org/data/test),
-              'authors' => ['John Doe', 'Jane Doe'],
-              'data_centers' => %w(NSIDC NOAA),
-              'supporting_programs' => ['Making Earth System Data Records for Use in Research Environments', 'NASA DAAC at the National Snow and Ice Data Center'],
-              'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
-              'temporal_coverages' => %w(1978-10-01,2011-12-31 2004-01-01,),
-              'distribution_formats' => %w(binary),
-              'last_revision_date' => '20130528'
+            'authoritative_id' => '12345',
+            'dataset_url' => 'http://nsidc.org/data/test',
+            'title' => 'test',
+            'summary' => 'Test Abstract',
+            'full_parameters' => ['EARTH SCIENCE > Cryosphere > Snow/Ice > Ice Extent > Coverage', 'EARTH SCIENCE > Terrestrial Hydrosphere > Snow/Ice > Ice Extent'],
+            'keywords' => %w(k1 k2 k3),
+            'data_access_urls' => %w(ftp://nsidc.org/data/test),
+            'authors' => ['John Doe', 'Jane Doe'],
+            'data_centers' => %w(NSIDC NOAA),
+            'supporting_programs' => ['Making Earth System Data Records for Use in Research Environments', 'NASA DAAC at the National Snow and Ice Data Center'],
+            'spatial_coverages' => %w(-180.0,30.98,180.0,90.0 90,90,-90,-90),
+            'temporal_coverages' => %w(1978-10-01,2011-12-31 2004-01-01,),
+            'distribution_formats' => %w(binary),
+            'last_revision_date' => '20130528'
           },
           {
-              'authoritative_id' => '23456',
-              'title' => 'test2'
+            'authoritative_id' => '23456',
+            'title' => 'test2'
           }
         ]
       }
@@ -262,6 +262,5 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
       get_should_receive_expectations 'f.facet_spatial_coverage.facet.sort' => 'count', 'f.facet_spatial_coverage.facet.mincount' => 0
       solr_search.execute base_search_parameters
     end
-
   end
 end
