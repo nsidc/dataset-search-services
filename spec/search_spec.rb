@@ -44,6 +44,6 @@ describe NsidcOpenSearch::Search do
   it 'should raise an error if the parameters are invalid' do
     obj.stub(:valid?).and_return(false)
 
-    expect { obj.exec params }.to raise_error
+    expect { obj.exec(params) }.to raise_error(ArgumentError)
   end
 end
