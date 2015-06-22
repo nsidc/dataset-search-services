@@ -26,50 +26,71 @@ nsidc_jenkins::plugins:
   ansicolor: {}
   simple-theme-plugin: {}
 
+job_integration_checkout: "%{hiera('project')}_A01_Integration_Checkout_Project"
+job_integration_install_deps: "%{hiera('project')}_A02_Integration_Install_Dependencies"
+job_integration_syntax: "%{hiera('project')}_A03_Integration_Check_Syntax"
+job_integration_unit_tests: "%{hiera('project')}_A04_Integration_Run_Unit_Tests"
+job_integration_provision: "%{hiera('project')}_A05_Integration_Provision"
+job_integration_acceptance: "%{hiera('project')}_A06_Integration_Run_Acceptance_Tests"
+
+job_qa_checkout: "%{hiera('project')}_B01_QA_Checkout_Project"
+job_qa_install_deps: "%{hiera('project')}_B02_QA_Install_Dependencies"
+job_qa_provision: "%{hiera('project')}_B03_QA_Provision"
+job_qa_acceptance: "%{hiera('project')}_B04_QA_Run_Acceptance_Tests"
+
+job_staging_checkout: "%{hiera('project')}_C01_Staging_Checkout_Project"
+job_staging_install_deps: "%{hiera('project')}_C02_Staging_Install_Dependencies"
+job_staging_provision: "%{hiera('project')}_C03_Staging_Provision"
+job_staging_acceptance: "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests"
+
+job_blue_provision: "%{hiera('project')}_D01_Blue_Provision"
+
+job_release_bump_version: "%{hiera('project')}_E01_Release_Bump_Version"
+job_release_push: "%{hiera('project')}_E02_Release_Push_to_Git"
+
+job_cleanup_vms: "%{hiera('project')}_Z01_Destroy_Non_Production_Deployed_VMs"
+
+# WORKSPACES
+workspace_base: /var/lib/jenkins/workspaces/%{hiera('project')}
+workspace_integration: "%{hiera('workspace_base')}/integration"
+workspace_qa: "%{hiera('workspace_base')}/qa"
+workspace_staging: "%{hiera('workspace_base')}/staging"
+workspace_blue: "%{hiera('workspace_base')}/blue"
+workspace_release: "%{hiera('workspace_base')}/release"
+
 # Jenkins Jobs
 nsidc_jenkins::jobs:
   # clone the project into the shared workspace
-  "%{hiera('project')}_A01_Integration_Checkout_Project":
+  "%{hiera('job_integration_checkout')}":
+    workspace: "%{hiera('workspace_integration')}"
+    parameters:
+      - type: string
+        name: ref
+        description: git ref (branch, tag, or SHA) to checkout
+        default: master
     git:
       repo: "%{hiera('gitrepo')}"
       poll_scm: true
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
-    trigger_job: "%{hiera('project')}_A02_Integration_Configure_System"
+      checkout_local: false
+    command: git checkout $ref
+    trigger_job: "%{hiera('job_integration_install_deps')}"
 
-  # use puppet to install system dependencies, such as Bundler
-  "%{hiera('project')}_A02_Integration_Configure_System":
-    command: |
-      cd puppet
-      librarian-puppet clean
-      librarian-puppet update
-      cd -
-      sudo puppet apply --environment=ci --debug --verbose --modulepath=./puppet/modules --hiera_config=./puppet/hiera.yaml ./puppet/site.pp
-
-      # Because running `puppet apply` modifies the config.xml for each job
-      # defined in ci.yaml, Jenkins has trouble triggering the next job through
-      # normal methods (ie, using the trigger_job param), but we can use the
-      # Jenkins API to trigger the next job with curl. Just make sure the name
-      # of the job in the curl command is correct:
-      echo "Triggering a new build of %{hiera('project')}_A03_Integration_Install_Dependencies"
-      curl localhost:8080/job/%{hiera('project')}_A03_Integration_Install_Dependencies/build
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
-
-  "%{hiera('project')}_A03_Integration_Install_Dependencies":
+  "%{hiera('job_integration_install_deps')}":
     command: bundle install
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
-    trigger_job: "%{hiera('project')}_A04_Integration_Check_Syntax"
+    workspace: "%{hiera('workspace_integration')}"
+    trigger_job: "%{hiera('job_integration_syntax')}"
 
-  "%{hiera('project')}_A04_Integration_Check_Syntax":
+  "%{hiera('job_integration_syntax')}":
     command: bundle exec rubocop
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
-    trigger_job: "%{hiera('project')}_A05_Integration_Run_Unit_Tests"
+    workspace: "%{hiera('workspace_integration')}"
+    trigger_job: "%{hiera('job_integration_unit_tests')}"
 
-  "%{hiera('project')}_A05_Integration_Run_Unit_Tests":
+  "%{hiera('job_integration_unit_tests')}":
     command: bundle exec rake spec:unit
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
-    trigger_job: "%{hiera('project')}_A06_Integration_Provision"
+    workspace: "%{hiera('workspace_integration')}"
+    trigger_job: "%{hiera('job_integration_provision')}"
 
-  "%{hiera('project')}_A06_Integration_Provision":
+  "%{hiera('job_integration_provision')}":
     command: |
       ENV=integration
 
@@ -78,19 +99,18 @@ nsidc_jenkins::jobs:
 
       bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
-    trigger_job: "%{hiera('project')}_A07_Integration_Run_Acceptance_Tests"
+    workspace: "%{hiera('workspace_integration')}"
+    trigger_job: "%{hiera('job_integration_acceptance')}"
 
-  "%{hiera('project')}_A07_Integration_Run_Acceptance_Tests":
+  "%{hiera('job_integration_acceptance')}":
     command: |
       export TARGET_ENVIRONMENT=integration
       bundle exec rake spec:acceptance
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/integration
+    workspace: "%{hiera('workspace_integration')}"
 
-  "%{hiera('project')}_B01_QA_Checkout_Project":
+  "%{hiera('job_qa_checkout')}":
     git:
       repo: "%{hiera('gitrepo')}"
-      wipe_workspace: true
     parameters:
       - type: string
         name: ref
@@ -98,15 +118,15 @@ nsidc_jenkins::jobs:
         default: master
     command: |
       git checkout $ref
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
-    trigger_job: "%{hiera('project')}_B02_QA_Install_Dependencies"
+    workspace: "%{hiera('workspace_qa')}"
+    trigger_job: "%{hiera('job_qa_install_deps')}"
 
-  "%{hiera('project')}_B02_QA_Install_Dependencies":
+  "%{hiera('job_qa_install_deps')}":
     command: bundle install
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
-    trigger_job: "%{hiera('project')}_B03_QA_Provision"
+    workspace: "%{hiera('workspace_qa')}"
+    trigger_job: "%{hiera('job_qa_provision')}"
 
-  "%{hiera('project')}_B03_QA_Provision":
+  "%{hiera('job_qa_provision')}":
     command: |
       ENV=qa
 
@@ -115,19 +135,18 @@ nsidc_jenkins::jobs:
 
       bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
-    trigger_job: "%{hiera('project')}_B04_QA_Run_Acceptance_Tests"
+    workspace: "%{hiera('workspace_qa')}"
+    trigger_job: "%{hiera('job_qa_acceptance')}"
 
-  "%{hiera('project')}_B04_QA_Run_Acceptance_Tests":
+  "%{hiera('job_qa_acceptance')}":
     command: |
       export TARGET_ENVIRONMENT=qa
       bundle exec rake spec:acceptance
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/qa
+    workspace: "%{hiera('workspace_qa')}"
 
-  "%{hiera('project')}_C01_Staging_Checkout_Project":
+  "%{hiera('job_staging_checkout')}":
     git:
       repo: "%{hiera('gitrepo')}"
-      wipe_workspace: true
     parameters:
       - type: string
         name: ref
@@ -135,15 +154,15 @@ nsidc_jenkins::jobs:
         default: qa
     command: |
       git checkout $ref
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
-    trigger_job: "%{hiera('project')}_C02_Staging_Install_Dependencies"
+    workspace: "%{hiera('workspace_staging')}"
+    trigger_job: "%{hiera('job_staging_install_deps')}"
 
-  "%{hiera('project')}_C02_Staging_Install_Dependencies":
+  "%{hiera('job_staging_install_deps')}":
     command: bundle install
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
-    trigger_job: "%{hiera('project')}_C03_Staging_Provision"
+    workspace: "%{hiera('workspace_staging')}"
+    trigger_job: "%{hiera('job_staging_provision')}"
 
-  "%{hiera('project')}_C03_Staging_Provision":
+  "%{hiera('job_staging_provision')}":
     command: |
       ENV=staging
 
@@ -152,20 +171,19 @@ nsidc_jenkins::jobs:
 
       bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
-    trigger_job: "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests"
+    workspace: "%{hiera('workspace_staging')}"
+    trigger_job: "%{hiera('job_staging_acceptance')}"
 
-  "%{hiera('project')}_C04_Staging_Run_Acceptance_Tests":
+  "%{hiera('job_staging_acceptance')}":
     command: |
       export TARGET_ENVIRONMENT=staging
       bundle exec rake spec:acceptance
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/staging
-    trigger_job: "%{hiera('project')}_D01_Blue_Provision"
+    workspace: "%{hiera('workspace_staging')}"
+    trigger_job: "%{hiera('job_blue_provision')}"
 
-  "%{hiera('project')}_D01_Blue_Provision":
+  "%{hiera('job_blue_provision')}":
     git:
       repo: "%{hiera('gitrepo')}"
-      wipe_workspace: true
     parameters:
       - type: string
         name: ref
@@ -184,12 +202,11 @@ nsidc_jenkins::jobs:
 
       bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/blue
+    workspace: "%{hiera('workspace_blue')}"
 
-  "%{hiera('project')}_E01_Release_Bump_Version":
+  "%{hiera('job_release_bump_version')}":
     git:
       repo: "%{hiera('gitrepo')}"
-      wipe_workspace: true
     parameters:
       - type: string
         name: branch
@@ -206,14 +223,14 @@ nsidc_jenkins::jobs:
 
       bundle install
       bundle exec rake jenkins:release:bump[$version_part]
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/release
-    trigger_job: "%{hiera('project')}_E02_Release_Push_to_Git"
+    workspace: "%{hiera('workspace_release')}"
+    trigger_job: "%{hiera('job_release_push')}"
 
-  "%{hiera('project')}_E02_Release_Push_to_Git":
+  "%{hiera('job_release_push')}":
     command: bundle exec rake jenkins:release:push
-    workspace: /var/lib/jenkins/workspaces/%{hiera('project')}/release
+    workspace: "%{hiera('workspace_release')}"
 
-  "%{hiera('project')}_Z01_Destroy_Non_Production_Deployed_VMs":
+  "%{hiera('job_cleanup_vms')}":
     description: |
       Clean up non-production VMs that are not needed while the project is not
       in development.
