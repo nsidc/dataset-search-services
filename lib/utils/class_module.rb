@@ -4,8 +4,8 @@ module ClassModule
       base.extend const_get('ClassMethods')
     end
 
-    if const_defined?('InstanceMethods') && const_get('InstanceMethods').is_a?(Module)
-      base.send :include, const_get('InstanceMethods')
-    end
+    return unless const_defined?('InstanceMethods') && const_get('InstanceMethods').is_a?(Module)
+
+    base.send :include, const_get('InstanceMethods')
   end
 end

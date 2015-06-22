@@ -2,11 +2,7 @@ require_relative 'spec_helper'
 require_relative '../lib/nsidc_open_search/dataset/search/solr_search_suggest'
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchSuggest do
-  let(:base_search_parameters) {
-    {
-      queryType: 'suggestions'
-    }
-  }
+  let(:base_search_parameters) { { queryType: 'suggestions' } }
 
   # Make this look like solr_suggestion in the parser
   let(:solr_response) do

@@ -15,8 +15,8 @@ module OpenSearchDsl
 
         instance_eval(&block) if block
 
-        fail ArgumentError.new('Missing type') if @type.nil?
-        fail ArgumentError.new('Missing base url') if @base_url.nil?
+        fail ArgumentError, 'Missing type' if @type.nil?
+        fail ArgumentError, 'Missing base url' if @base_url.nil?
       end
 
       def parameter(*args)

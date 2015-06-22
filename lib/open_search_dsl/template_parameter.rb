@@ -9,8 +9,8 @@ module OpenSearchDsl
         dsl_methods :name, :replace_val, :required
 
         def initialize(name, replace_val, required = false)
-          fail ArgumentError.new('Missing name') if name.nil_or_whitespace?
-          fail ArgumentError.new('Missing replacement value') if replace_val.nil_or_whitespace?
+          fail ArgumentError, 'Missing name' if name.nil_or_whitespace?
+          fail ArgumentError, 'Missing replacement value' if replace_val.nil_or_whitespace?
 
           @name = name
           @replace_val = replace_val

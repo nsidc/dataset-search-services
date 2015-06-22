@@ -28,9 +28,9 @@ module OpenSearchDsl
 
       instance_eval(&block) if block
 
-      fail ArgumentError.new('Missing short name') if @short_name.nil?
-      fail ArgumentError.new('Missing description') if @description.nil?
-      fail ArgumentError.new('Missing url') if @urls.empty?
+      fail ArgumentError, 'Missing short name' if @short_name.nil?
+      fail ArgumentError, 'Missing description' if @description.nil?
+      fail ArgumentError, 'Missing url' if @urls.empty?
     end
 
     def url(&block)

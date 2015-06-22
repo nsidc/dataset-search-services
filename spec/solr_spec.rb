@@ -4,22 +4,22 @@ require_relative '../lib/nsidc_open_search/dataset/search/solr_search_dataset'
 require_relative '../lib/nsidc_open_search/dataset/model/search/open_search_response_builder'
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
-  let(:default_search_expectations) {
+  let(:default_search_expectations) do
     YAML.load_file(File.expand_path('../fixtures/default_search_expectations.yaml', __FILE__))
-  }
+  end
 
-  let(:base_search_parameters) {
+  let(:base_search_parameters) do
     {
       source: 'NSIDC',
       count: '25',
       startIndex: '1',
       sortKeys: ''
     }
-  }
+  end
 
-  let(:solr_response) {
+  let(:solr_response) do
     YAML.load_file(File.expand_path('../fixtures/solr_response.yaml', __FILE__))
-  }
+  end
 
   let(:rsolr) { double('rsolr', find: solr_response) }
 
@@ -200,18 +200,18 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
 end
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
-  let(:base_search_parameters) {
+  let(:base_search_parameters) do
     {
       source: 'NSIDC',
       count: '25',
       startIndex: '1',
       sortKeys: ''
     }
-  }
+  end
 
-  let(:solr_response) {
+  let(:solr_response) do
     YAML.load_file(File.expand_path('../fixtures/solr_response.yaml', __FILE__))
-  }
+  end
 
   let(:rsolr) { double('rsolr', find: solr_response) }
 

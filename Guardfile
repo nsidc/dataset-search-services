@@ -1,12 +1,12 @@
 guard 'rake', task: 'spec:unit' do
-  watch(/^spec\/.+_spec\.rb/)
-  watch(/^lib\/(.+)\.rb/) { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{^spec/.+_spec\.rb})
+  watch(%r{^lib/(.+)\.rb}) { |m| "spec/#{m[1]}_spec.rb" }
 end
 
 guard :rubocop do
   watch(/.+\.(rb|rake)/)
   watch(/(Guard|Rake)file/)
-  watch(/(?:.+\/)?\.rubocop\.yml/) { |m| File.dirname(m[0]) }
+  watch(%r{(?:.+/)?\.rubocop\.yml}) { |m| File.dirname(m[0]) }
 end
 
 guard('puma',
@@ -17,5 +17,5 @@ guard('puma',
       config: '-'
      ) do
   watch('Gemfile.lock')
-  watch(/^config|lib\/.*/)
+  watch(%r{^config|lib/.*})
 end

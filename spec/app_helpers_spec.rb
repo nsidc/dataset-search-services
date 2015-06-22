@@ -10,8 +10,6 @@ describe 'Nsidc OpenSearch App Helper' do
 
   before(:each) do
     @app_helper = AppHelperTestClass.new
-    settings = Class.new
-    request = Class.new
     settings_stub = double('settings')
     allow(settings_stub).to receive(:relative_url_root).and_return('/api')
     @request_stub = double('request')

@@ -1,5 +1,5 @@
-require_relative 'spec_helper'
-require_relative '../lib/nsidc_open_search/search_adapter'
+require File.join(File.dirname(__FILE__), 'spec_helper')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'search_adapter')
 
 describe 'search mapper' do
   let(:params) { { searchterms: 'sea ice', bbox: '10 20 30 40' } }

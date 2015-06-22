@@ -15,9 +15,9 @@ module NsidcOpenSearch
           end
 
           def build_search_url_with_index(current_search_url, startIndex)
-            unless startIndex.nil? || startIndex == 0
-              current_search_url.clone.gsub!(/startIndex=([^&]+)/, 'startIndex=' + startIndex.to_s)
-            end
+            return if startIndex.nil? || startIndex == 0
+
+            current_search_url.clone.gsub!(/startIndex=([^&]+)/, 'startIndex=' + startIndex.to_s)
           end
         end
       end

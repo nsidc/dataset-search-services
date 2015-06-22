@@ -3,27 +3,27 @@ require_relative '../lib/nsidc_open_search/dataset/search/solr_search_facets'
 require_relative '../lib/nsidc_open_search/dataset/model/facets/facets_response_builder'
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
-  let(:default_search_expectations) {
+  let(:default_search_expectations) do
     YAML.load_file(File.expand_path('../fixtures/default_facet_search_expectations.yaml', __FILE__))
-  }
+  end
 
-  let(:base_search_parameters) {
+  let(:base_search_parameters) do
     {
       source: 'NSIDC',
       count: '0',
       startIndex: '1',
       queryType: 'facets'
     }
-  }
+  end
 
-  let(:solr_response) {
+  let(:solr_response) do
     double(
       'facets',
       facets: [
         double('facet', name: 'Facet1', items: [double('item', value: 'dummy', hits: '12')])
       ]
     )
-  }
+  end
 
   let(:rsolr) { double('rsolr', find: solr_response) }
   let(:query_config) do

@@ -141,7 +141,11 @@ describe 'osdd dsl' do
       osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
         short_name 'Short Name'
         description 'Description'
-        url { type 'atom'; base_url 'url'; parameter 'name', 'val' }
+        url do
+          type 'atom'
+          base_url 'url'
+          parameter 'name', 'val'
+        end
         language 'en'
         language 'fr'
       end
@@ -153,7 +157,11 @@ describe 'osdd dsl' do
       osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
         short_name 'Short Name'
         description 'Description'
-        url { type 'atom'; base_url 'url'; parameter 'name', 'val' }
+        url do
+          type 'atom'
+          base_url 'url'
+          parameter 'name', 'val'
+        end
         input_encoding 'utf-8'
         input_encoding 'utf-16'
       end
@@ -165,7 +173,11 @@ describe 'osdd dsl' do
       osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
         short_name 'Short Name'
         description 'Description'
-        url { type 'atom'; base_url 'url'; parameter 'name', 'val' }
+        url do
+          type 'atom'
+          base_url 'url'
+          parameter 'name', 'val'
+        end
         output_encoding 'utf-8'
         output_encoding 'utf-16'
       end
@@ -177,9 +189,21 @@ describe 'osdd dsl' do
       osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
         short_name 'Short Name'
         description 'Description'
-        url { type 'atom'; base_url 'url'; parameter 'query', 'val' }
-        url { type 'atom'; base_url 'url'; parameter 'facet', 'val' }
-        url { type 'json'; base_url 'url'; parameter 'suggest', 'val' }
+        url do
+          type 'atom'
+          base_url 'url'
+          parameter 'query', 'val'
+        end
+        url do
+          type 'atom'
+          base_url 'url'
+          parameter 'facet', 'val'
+        end
+        url do
+          type 'json'
+          base_url 'url'
+          parameter 'suggest', 'val'
+        end
       end
 
       xml = osdd.to_xml
@@ -196,7 +220,11 @@ describe 'osdd dsl' do
         namespace 'time', 'http://a9.com/-/opensearch/extensions/time/1.0/'
         short_name 'Short Name'
         description 'Description'
-        url { type 'atom'; base_url 'url'; parameter 'name', 'val' }
+        url do
+          type 'atom'
+          base_url 'url'
+          parameter 'name', 'val'
+        end
         query { parameter 'st', 'searchTerm' }
         image 'http://test.org/image.jpg'
         long_name 'this is a test osdd'

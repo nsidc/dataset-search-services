@@ -12,9 +12,9 @@ module NsidcOpenSearch
       end
 
       def enrich_entry(entry)
-        iso_document = RestClient.get "#{@iso_url}/#{entry.id}" rescue nil
-
-        if iso_document.nil?
+        begin
+          iso_document = RestClient.get("#{@iso_url}/#{entry.id}")
+        rescue
           # log.info('Result entry cannot be enriched without an iso document')
           return
         end

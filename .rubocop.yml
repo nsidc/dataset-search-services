@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 AllCops:
   Include:
     - tasks/*.rake
@@ -29,11 +27,6 @@ Metrics/MethodLength:
 Style/Documentation:
   Enabled: false
 
-Style/Encoding:
-  Enabled: false
-
-Style/RescueModifier:
-  Enabled: false
-
-Style/Semicolon:
-  Enabled: false
+Style/MethodName:
+  Exclude:
+  - lib/nsidc_open_search/dataset/search/definitions/definition.rb # OpenSearch uses camelCase

@@ -3,26 +3,26 @@ require_relative '../lib/nsidc_open_search/dataset/search/solr_search_dataset'
 require_relative '../lib/nsidc_open_search/dataset/model/search/open_search_response_builder'
 
 describe NsidcOpenSearch::Dataset::Search::SolrSearchRest do
-  let(:default_search_expectations) {
+  let(:default_search_expectations) do
     {
       :queries => { authoritative_id: 'abcd' },
       'start' => '0',
       'rows' => '1'
     }
-  }
+  end
 
-  let(:base_search_parameters) {
+  let(:base_search_parameters) do
     {
       id: 'abcd',
       source: 'NSIDC',
       count: '0',
       startIndex: '1'
     }
-  }
+  end
 
-  let(:solr_response) {
+  let(:solr_response) do
     YAML.load_file(File.expand_path('../fixtures/solr_response.yaml', __FILE__))
-  }
+  end
 
   let(:rsolr) { double('rsolr', find: solr_response) }
   let(:query_config) do

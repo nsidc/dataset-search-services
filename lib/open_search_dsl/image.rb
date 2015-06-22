@@ -8,7 +8,7 @@ module OpenSearchDsl
       dsl_methods :height, :width, :type, :url
 
       def initialize(url, height = nil, width = nil, type = nil)
-        fail ArgumentError.new('Missing url') if url.nil_or_whitespace?
+        fail ArgumentError, 'Missing url' if url.nil_or_whitespace?
 
         @url = url
         @height = height
