@@ -37,14 +37,14 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
   let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrFacetsParser, NsidcOpenSearch::Dataset::Model::Facets::FacetsResponseBuilder, query_config, RSolr::Ext }
 
   before :each do
-    RSolr::Ext.stub(:connect).and_return(rsolr)
+    allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
   end
 
   describe 'search request' do
     def get_should_receive_expectations(expected)
-      rsolr.should_receive(:find) do |*args|
+      expect(rsolr).to receive(:find) do |*args|
         expected.each do |k, v|
-          args[0][k].should eql v
+          expect(args[0][k]).to eql v
         end
 
         solr_response

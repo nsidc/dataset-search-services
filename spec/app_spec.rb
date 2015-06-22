@@ -18,14 +18,14 @@ describe 'Nsidc OpenSearch App' do
       facet[:items].each do |item|
         fake_facet_value = {}
 
-        fake_facet_value.stub(:value).and_return(item[:value])
-        fake_facet_value.stub(:hits).and_return(item[:hits])
+        allow(fake_facet_value).to receive(:value).and_return(item[:value])
+        allow(fake_facet_value).to receive(:hits).and_return(item[:hits])
 
         fake_facet_values.push(fake_facet_value)
       end
 
-      fake_facet.stub(:items).and_return(fake_facet_values)
-      fake_facet.stub(:name).and_return(facet[:name])
+      allow(fake_facet).to receive(:items).and_return(fake_facet_values)
+      allow(fake_facet).to receive(:name).and_return(facet[:name])
 
       facet_stubs.push(fake_facet)
     end
@@ -52,8 +52,8 @@ describe 'Nsidc OpenSearch App' do
 
   it 'should provide dataset OSDD content at its endpoint' do
     get '/OpenSearchDescription', {},  'HTTP_ACCEPT' => 'application/opensearchdescription+xml'
-    last_response.should be_ok
-    last_response.header['Content-Type'].should match '^application/opensearchdescription\+xml'
+    expect(last_response).to be_ok
+    expect(last_response.header['Content-Type']).to match '^application/opensearchdescription\+xml'
   end
 
   it 'should provide OpenSearch results at its dataset endpoint' do
@@ -71,16 +71,16 @@ describe 'Nsidc OpenSearch App' do
     }
 
     rsolr = double('rsolr', find: solr_response)
-    RSolr::Ext.stub(:connect).and_return(rsolr)
-    RestClient.stub(:get).and_return(iso_document_fixture)
+    allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
+    allow(RestClient).to receive(:get).and_return(iso_document_fixture)
 
     get('/OpenSearch', default_os_query_params,
         'HTTP_ACCEPT' => 'application/atom+xml',
         'X-Requested-With' => 'spec_test'
        )
 
-    last_response.should be_ok
-    last_response.header['Content-Type'].should match '^application/atom\+xml'
+    expect(last_response).to be_ok
+    expect(last_response.header['Content-Type']).to match '^application/atom\+xml'
   end
 
   it 'should provide Facets results at its facets endpoint' do
@@ -122,17 +122,17 @@ describe 'Nsidc OpenSearch App' do
     stubbed_facets = get_stubbed_facets_from_hash(facets_hash)
 
     solr_response = {}
-    solr_response.stub(:facets).and_return(stubbed_facets)
+    allow(solr_response).to receive(:facets).and_return(stubbed_facets)
 
     rsolr = double('rsolr', find: solr_response)
-    RSolr::Ext.stub(:connect).and_return(rsolr)
+    allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
 
     get('/Facets', default_os_query_params,
         'HTTP_ACCEPT' => 'application/nsidcfacets+xml',
         'X-Requested-With' => 'spec_test'
        )
-    last_response.should be_ok
-    last_response.header['Content-Type'].should match '^application/nsidcfacets\+xml'
+    expect(last_response).to be_ok
+    expect(last_response.header['Content-Type']).to match '^application/nsidcfacets\+xml'
   end
 
 end

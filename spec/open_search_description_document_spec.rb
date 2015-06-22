@@ -32,8 +32,8 @@ describe 'osdd dsl' do
 
       xml = url.to_xml
 
-      xml.should have_a_type
-      xml.should have_a_complete_template url.base_url, parameters
+      expect(xml).to have_a_type
+      expect(xml).to have_a_complete_template url.base_url, parameters
     end
 
     it 'preserves the https protocol' do
@@ -46,7 +46,7 @@ describe 'osdd dsl' do
       xml = url.to_xml
       template = get_xml(xml).root.attribute('template')
 
-      template.value.should eql 'https://test.org/dataset'
+      expect(template.value).to eql 'https://test.org/dataset'
       have_a_complete_template url.base_url, 'st' => 'searchTerm'
     end
   end
@@ -59,7 +59,7 @@ describe 'osdd dsl' do
     it 'outputs a valid OSDD Image element' do
       img = OpenSearchDsl::OpenSearchDescriptionDocument::Image.new 'http://test.org/image.jpg'
       xml = img.to_xml
-      xml.should have_an_image_url
+      expect(xml).to have_an_image_url
     end
   end
 
@@ -74,7 +74,7 @@ describe 'osdd dsl' do
         parameter 'name2', 'val2'
       end
 
-      q.parameters.length.should be 2
+      expect(q.parameters.length).to be 2
     end
 
     it 'should output a valid OSDD Query element' do
@@ -90,8 +90,8 @@ describe 'osdd dsl' do
       end
 
       xml = q.to_xml
-      xml.should have_a_role
-      xml.should have_parameters parameters
+      expect(xml).to have_a_role
+      expect(xml).to have_parameters parameters
     end
   end
 
@@ -112,7 +112,7 @@ describe 'osdd dsl' do
         language 'fr'
       end
 
-      osdd.languages.length.should be 2
+      expect(osdd.languages.length).to be 2
     end
 
     it 'should allow multiple input encodings' do
@@ -124,7 +124,7 @@ describe 'osdd dsl' do
         input_encoding 'utf-16'
       end
 
-      osdd.input_encodings.length.should be 2
+      expect(osdd.input_encodings.length).to be 2
     end
 
     it 'should allow multiple output encodings' do
@@ -136,7 +136,7 @@ describe 'osdd dsl' do
         output_encoding 'utf-16'
       end
 
-      osdd.output_encodings.length.should be 2
+      expect(osdd.output_encodings.length).to be 2
     end
 
     it 'outputs a valid OSDD' do
@@ -150,11 +150,11 @@ describe 'osdd dsl' do
 
       xml = osdd.to_xml
 
-      xml.should have_opensearch_namespace
-      xml.should have_opensearch_root_element
-      xml.should have_a_short_name
-      xml.should have_a_description
-      xml.should have_at_least_three_urls
+      expect(xml).to have_opensearch_namespace
+      expect(xml).to have_opensearch_root_element
+      expect(xml).to have_a_short_name
+      expect(xml).to have_a_description
+      expect(xml).to have_at_least_three_urls
     end
 
     it 'outputs a valid OSDD with optional elements' do
@@ -174,13 +174,13 @@ describe 'osdd dsl' do
 
       xml = osdd.to_xml
 
-      xml.should have_namespace 'time', 'http://a9.com/-/opensearch/extensions/time/1.0/'
-      xml.should have_a_contact
-      xml.should have_at_least_one_query
-      xml.should have_at_least_one_image
-      xml.should have_at_least_one_language
-      xml.should have_at_least_one_input_encoding
-      xml.should have_at_least_one_output_encoding
+      expect(xml).to have_namespace 'time', 'http://a9.com/-/opensearch/extensions/time/1.0/'
+      expect(xml).to have_a_contact
+      expect(xml).to have_at_least_one_query
+      expect(xml).to have_at_least_one_image
+      expect(xml).to have_at_least_one_language
+      expect(xml).to have_at_least_one_input_encoding
+      expect(xml).to have_at_least_one_output_encoding
     end
   end
 end

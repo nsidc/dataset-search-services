@@ -63,14 +63,14 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
   let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrResultsParser, NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder, query_config, RSolr::Ext }
 
   before :each do
-    RSolr::Ext.stub(:connect).and_return(rsolr)
+    allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
   end
 
   describe 'search request' do
     def get_should_receive_expectations(expected)
-      rsolr.should_receive(:find) do |*args|
+      expect(rsolr).to receive(:find) do |*args|
         expected.each do |k, v|
-          args[0][k].should eql v
+          expect(args[0][k]).to eql v
         end
 
         solr_response
@@ -171,17 +171,17 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchDataset do
   describe 'search result' do
     it 'should set total results count to number found' do
       result = solr_search.execute base_search_parameters
-      result.total_results.should be solr_response['response']['numFound']
+      expect(result.total_results).to be solr_response['response']['numFound']
     end
 
     it 'should set set the search dsl to itself' do
       result = solr_search.execute base_search_parameters
-      result.search_parameters.should eql base_search_parameters
+      expect(result.search_parameters).to eql base_search_parameters
     end
 
     it 'should set entities to returned documents' do
       result = solr_search.execute base_search_parameters
-      result.entries.length.should be solr_response['response']['docs'].length
+      expect(result.entries.length).to be solr_response['response']['docs'].length
     end
   end
 end
@@ -234,14 +234,14 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchFacets do
   let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrResultsParser, NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder, query_config, RSolr::Ext }
 
   before :each do
-    RSolr::Ext.stub(:connect).and_return(rsolr)
+    allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
   end
 
   describe 'search request' do
     def get_should_receive_expectations(expected)
-      rsolr.should_receive(:find) do |*args|
+      expect(rsolr).to receive(:find) do |*args|
         expected.each do |k, v|
-          args[0][k].should eql v
+          expect(args[0][k]).to eql v
         end
 
         solr_response

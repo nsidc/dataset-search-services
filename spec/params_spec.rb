@@ -8,21 +8,21 @@ describe NsidcOpenSearch::Dataset::Search::ParameterFactory do
 
   it 'should insert default query parameters' do
     search_params = NsidcOpenSearch::Dataset::Search::ParameterFactory.construct({}, @valids)
-    search_params.should eql Hash.new # using literal {} fails the test
+    expect(search_params).to eql Hash.new # using literal {} fails the test
   end
 
   it 'should include valid query parameters' do
     search_params = NsidcOpenSearch::Dataset::Search::ParameterFactory.construct({ q: 'sea' }, @valids)
-    search_params.should eql q: 'sea'
+    expect(search_params).to eql q: 'sea'
   end
 
   it 'should exclude empty query parameters' do
     search_params = NsidcOpenSearch::Dataset::Search::ParameterFactory.construct({ q: '' }, @valids)
-    search_params.should eql Hash.new # using literal {} fails the test
+    expect(search_params).to eql Hash.new # using literal {} fails the test
   end
 
   it 'should exclude invalid query parameters' do
     search_params = NsidcOpenSearch::Dataset::Search::ParameterFactory.construct({ q: 'sea', searchTerms: 'ice' }, @valids)
-    search_params.should eql q: 'sea'
+    expect(search_params).to eql q: 'sea'
   end
 end

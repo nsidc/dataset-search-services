@@ -11,7 +11,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrSuggestionsParser do
 
   describe 'suggestion response' do
     it 'should return a suggestion' do
-      @suggestion_result.entries[0].completion.should eql 'sea ice'
+      expect(@suggestion_result.entries[0].completion).to eql 'sea ice'
     end
   end
 end

@@ -18,14 +18,14 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchSuggest do
   let(:solr_search) { described_class.new 'localhost:8983', NsidcOpenSearch::Dataset::Search::SolrSuggestionsParser, NsidcOpenSearch::Dataset::Model::Suggestions::SuggestionsResponseBuilder, query_config }
 
   before :each do
-    RSolr.stub(:connect).and_return(rsolr)
+    allow(RSolr).to receive(:connect).and_return(rsolr)
   end
 
   describe 'suggestion request' do
     def get_should_receive_expectations(expected)
-      rsolr.should_receive(:get) do |*args|
+      expect(rsolr).to receive(:get) do |*args|
         expected.each do |k, v|
-          args[0][k].should eql v
+          expect(args[0][k]).to eql v
         end
 
         solr_response

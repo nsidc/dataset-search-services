@@ -4,7 +4,7 @@ require_relative '../lib/nsidc_open_search/entry_enrichers/iso'
 
 describe NsidcOpenSearch::EntryEnrichers::Iso do
   before :each do
-    RestClient.stub(:get).and_return(iso_document_fixture)
+    allow(RestClient).to receive(:get).and_return(iso_document_fixture)
     @result_entry = NsidcOpenSearch::Dataset::Model::Search::ResultEntry.new(id: '12345')
   end
 
@@ -17,18 +17,18 @@ describe NsidcOpenSearch::EntryEnrichers::Iso do
       described_method(@result_entry)
       expected_url = 'ftp://sidads.colorado.edu/pub/DATASETS/fgdc/ggd221_soiltemp_antarctica/'
 
-      @result_entry.data_access.length.should be 1
-      @result_entry.data_access[0].url.should eql expected_url
-      @result_entry.data_access[0].name.should eql 'Get Data'
-      @result_entry.data_access[0].description.should eql 'Data Access URL'
-      @result_entry.data_access[0].type.should eql 'download'
+      expect(@result_entry.data_access.length).to be 1
+      expect(@result_entry.data_access[0].url).to eql expected_url
+      expect(@result_entry.data_access[0].name).to eql 'Get Data'
+      expect(@result_entry.data_access[0].description).to eql 'Data Access URL'
+      expect(@result_entry.data_access[0].type).to eql 'download'
     end
 
     it 'should set supporting programs' do
       described_method(@result_entry)
-      @result_entry.supporting_programs.length.should be 2
-      @result_entry.supporting_programs[0].should eql 'NSIDC_MEASURES'
-      @result_entry.supporting_programs[1].should eql 'NSIDC_DAAC'
+      expect(@result_entry.supporting_programs.length).to be 2
+      expect(@result_entry.supporting_programs[0]).to eql 'NSIDC_MEASURES'
+      expect(@result_entry.supporting_programs[1]).to eql 'NSIDC_DAAC'
     end
   end
 end

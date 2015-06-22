@@ -13,30 +13,30 @@ describe 'Nsidc OpenSearch App Helper' do
     settings = Class.new
     request = Class.new
     settings_stub = double('settings')
-    settings_stub.stub(:relative_url_root).and_return('/api')
+    allow(settings_stub).to receive(:relative_url_root).and_return('/api')
     @request_stub = double('request')
     @app_helper.settings = settings_stub
     @app_helper.request = @request_stub
   end
 
   it 'produces a base_url' do
-    @request_stub.stub(:base_url).and_return('http://integration.nsidc.org')
-    @request_stub.stub(:referrer).and_return(nil)
+    allow(@request_stub).to receive(:base_url).and_return('http://integration.nsidc.org')
+    allow(@request_stub).to receive(:referrer).and_return(nil)
 
-    @app_helper.base_url.should eql 'http://integration.nsidc.org/api'
+    expect(@app_helper.base_url).to eql 'http://integration.nsidc.org/api'
   end
 
   it 'produces a http base_url with http referrer' do
-    @request_stub.stub(:base_url).and_return('http://nsidc.org')
-    @request_stub.stub(:referrer).and_return('http://nsidc.org/api/dataset')
+    allow(@request_stub).to receive(:base_url).and_return('http://nsidc.org')
+    allow(@request_stub).to receive(:referrer).and_return('http://nsidc.org/api/dataset')
 
-    @app_helper.base_url.should eql 'http://nsidc.org/api'
+    expect(@app_helper.base_url).to eql 'http://nsidc.org/api'
   end
 
   it 'produces a https base_url with https referrer' do
-    @request_stub.stub(:base_url).and_return('http://nsidc.org')
-    @request_stub.stub(:referrer).and_return('https://nsidc.org/api/dataset')
+    allow(@request_stub).to receive(:base_url).and_return('http://nsidc.org')
+    allow(@request_stub).to receive(:referrer).and_return('https://nsidc.org/api/dataset')
 
-    @app_helper.base_url.should eql 'https://nsidc.org/api'
+    expect(@app_helper.base_url).to eql 'https://nsidc.org/api'
   end
 end

@@ -52,119 +52,119 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
       @entry = NsidcOpenSearch::Dataset::Search::SolrResultsParser.new(response: @solr_response, services_config: @facet_config).entries.first
     end
     it 'should set id to response authoritative id' do
-      @entry.id.should be @solr_response['response']['docs'][0]['authoritative_id']
+      expect(@entry.id).to be @solr_response['response']['docs'][0]['authoritative_id']
     end
 
     it 'should set title to response title' do
-      @entry.title.should be @solr_response['response']['docs'][0]['title']
+      expect(@entry.title).to be @solr_response['response']['docs'][0]['title']
     end
 
     it 'should set summary' do
-      @entry.summary.should eql 'Test Abstract'
+      expect(@entry.summary).to eql 'Test Abstract'
     end
 
     it 'should set parameters' do
-      @entry.parameters.length.should be 2
+      expect(@entry.parameters.length).to be 2
     end
 
     it 'should set parameter category' do
-      @entry.parameters[0].category.should eql 'EARTH SCIENCE'
+      expect(@entry.parameters[0].category).to eql 'EARTH SCIENCE'
     end
 
     it 'should set parameter topic' do
-      @entry.parameters[0].topic.should eql 'Cryosphere'
+      expect(@entry.parameters[0].topic).to eql 'Cryosphere'
     end
 
     it 'should set parameter term' do
-      @entry.parameters[0].term.should eql 'Snow/Ice'
+      expect(@entry.parameters[0].term).to eql 'Snow/Ice'
     end
 
     it 'should set parameter variable' do
-      @entry.parameters[0].variable_1.should eql 'Ice Extent'
+      expect(@entry.parameters[0].variable_1).to eql 'Ice Extent'
     end
 
     it 'should set parameter name' do
-      @entry.parameters[0].name.should eql 'Coverage'
+      expect(@entry.parameters[0].name).to eql 'Coverage'
     end
 
     it 'should set keywords' do
-      @entry.keywords.length.should be 3
+      expect(@entry.keywords.length).to be 3
     end
 
     it 'should set entry url' do
-      @entry.url.should eql 'http://nsidc.org/data/test'
+      expect(@entry.url).to eql 'http://nsidc.org/data/test'
     end
 
     it 'should set data access urls' do
-      @entry.data_access_urls.length.should be 1
+      expect(@entry.data_access_urls.length).to be 1
     end
 
     it 'should set authors' do
-      @entry.authors.length.should be 2
-      @entry.authors.should include('John Doe', 'Jane Doe')
+      expect(@entry.authors.length).to be 2
+      expect(@entry.authors).to include('John Doe', 'Jane Doe')
     end
 
     it 'should set data centers' do
-      @entry.data_centers.length.should be 2
-      @entry.data_centers.should include('NSIDC', 'NOAA')
+      expect(@entry.data_centers.length).to be 2
+      expect(@entry.data_centers).to include('NSIDC', 'NOAA')
     end
 
     it 'should set spatial coverage' do
-      @entry.spatial_coverages.length.should be 2
+      expect(@entry.spatial_coverages.length).to be 2
     end
 
     it 'should set bounding box coordinates' do
       bbox = @entry.spatial_coverages[0]
       west, south, east, north = bbox.split(',').map { |c| c.to_f }
-      west.should eql(-180.0)
-      east.should eql 180.0
-      north.should eql 90.0
-      south.should eql 30.98
+      expect(west).to eql(-180.0)
+      expect(east).to eql 180.0
+      expect(north).to eql 90.0
+      expect(south).to eql 30.98
     end
 
     it 'should set temporal coverages' do
-      @entry.temporal_coverages.length.should be 4
+      expect(@entry.temporal_coverages.length).to be 4
     end
 
     it 'should sort the temporal coverages by start_date' do
-      @entry.temporal_coverages.first.start_date.should eql Date.parse '1978-10-01'
-      @entry.temporal_coverages.last.start_date.should eql Date.parse '2004-01-01'
-      @entry.temporal_coverages.last.end_date.should eql nil
+      expect(@entry.temporal_coverages.first.start_date).to eql Date.parse '1978-10-01'
+      expect(@entry.temporal_coverages.last.start_date).to eql Date.parse '2004-01-01'
+      expect(@entry.temporal_coverages.last.end_date).to eql nil
     end
 
     it 'should sort the temporal coverages by end_date if start_date is equal' do
-      @entry.temporal_coverages[0].end_date.should eql Date.parse '2011-12-31'
-      @entry.temporal_coverages[1].end_date.should eql Date.parse '2014-05-23'
+      expect(@entry.temporal_coverages[0].end_date).to eql Date.parse '2011-12-31'
+      expect(@entry.temporal_coverages[1].end_date).to eql Date.parse '2014-05-23'
     end
 
     it 'should treat nil end dates as greater than end dates that exist' do
-      @entry.temporal_coverages[2].start_date.should eql Date.parse '2004-01-01'
-      @entry.temporal_coverages[2].end_date.should eql Date.parse '2005-01-01'
+      expect(@entry.temporal_coverages[2].start_date).to eql Date.parse '2004-01-01'
+      expect(@entry.temporal_coverages[2].end_date).to eql Date.parse '2005-01-01'
 
-      @entry.temporal_coverages[3].start_date.should eql Date.parse '2004-01-01'
-      @entry.temporal_coverages[3].end_date.should eql nil
+      expect(@entry.temporal_coverages[3].start_date).to eql Date.parse '2004-01-01'
+      expect(@entry.temporal_coverages[3].end_date).to eql nil
     end
 
     it 'should set date range start and end' do
       dr = @entry.temporal_coverages[0]
-      dr.start_date.should eql Date.parse '19781001'
-      dr.end_date.should eql Date.parse '20111231'
+      expect(dr.start_date).to eql Date.parse '19781001'
+      expect(dr.end_date).to eql Date.parse '20111231'
     end
 
     it 'should set distribution formats' do
-      @entry.distribution_formats.length.should be 1
+      expect(@entry.distribution_formats.length).to be 1
     end
 
     it 'should set last revision date' do
-      @entry.last_revision_date.should eql Date.parse '20130528'
+      expect(@entry.last_revision_date).to eql Date.parse '20130528'
     end
 
     it 'should set the temporal duration' do
-      @entry.temporal_duration.should eql '33'
+      expect(@entry.temporal_duration).to eql '33'
     end
 
     it 'should set the spatial area' do
-      @entry.spatial_area.should eql '271.83'
+      expect(@entry.spatial_area).to eql '271.83'
     end
   end
 end

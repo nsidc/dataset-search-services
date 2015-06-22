@@ -14,16 +14,16 @@ describe NsidcOpenSearch::Dataset::Search::DatasetParameterFactory do
 
   it 'should insert defaults search values' do
     search_params = NsidcOpenSearch::Dataset::Search::DatasetParameterFactory.construct({}, @valids)
-    search_params.should eql @expected
+    expect(search_params).to eql @expected
   end
 
   it 'should exclude empty query parameters' do
     search_params = NsidcOpenSearch::Dataset::Search::DatasetParameterFactory.construct({ splat: ['http://something.com']  }, @valids)
-    search_params.should eql @expected.merge(id: "\"http://something.com\"")
+    expect(search_params).to eql @expected.merge(id: "\"http://something.com\"")
   end
 
   it 'should exclude invalid query parameters' do
     search_params = NsidcOpenSearch::Dataset::Search::DatasetParameterFactory.construct({ searchTerms: 'sea ice', splat: ['id-01'] }, @valids)
-    search_params.should eql @expected.merge(id: "\"id-01\"")
+    expect(search_params).to eql @expected.merge(id: "\"id-01\"")
   end
 end

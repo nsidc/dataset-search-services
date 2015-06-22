@@ -44,16 +44,16 @@ describe 'facets response' do
     it 'should output a valid atom format' do
       xml = @result.to_atom 'localhost/dataset?searchTerms=sea ice&facetFilters=' + @facet_filters, 'localhost'
 
-      xml.should have_atom_root_element
-      xml.should have_atom_namespace
-      xml.should have_atom_opensearch_namespace
-      xml.should have_an_id
-      xml.should have_a_title
-      xml.should have_an_updated
-      xml.should have_a_total_results
-      xml.should have_a_query
+      expect(xml).to have_atom_root_element
+      expect(xml).to have_atom_namespace
+      expect(xml).to have_atom_opensearch_namespace
+      expect(xml).to have_an_id
+      expect(xml).to have_a_title
+      expect(xml).to have_an_updated
+      expect(xml).to have_a_total_results
+      expect(xml).to have_a_query
 
-      xml.should have_three_facets
+      expect(xml).to have_three_facets
     end
   end
 end

@@ -25,7 +25,7 @@ describe 'suggestions response' do
 
     it 'should output a valid json format' do
       json = @result.to_json
-      json.should eql [
+      expect(json).to eql [
         'sea',
         ['sea ice', 'sea ice concentration']
       ].to_json

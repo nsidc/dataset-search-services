@@ -15,14 +15,14 @@ describe 'enricher' do
       @obj.class.send :entry_enrichers, [entry_enricher]
 
       @obj.enrich_result @result
-      entry_enricher.should have_received(:enrich_entry).exactly(@result.entries.length).times
+      expect(entry_enricher).to have_received(:enrich_entry).exactly(@result.entries.length).times
 
       @obj.class.send :remove_method, :enrichers
     end
 
     it 'should handle empty entry enrichers list' do
       @obj.enrich_result @result
-      @result.entries.should eql [{}]
+      expect(@result.entries).to eql [{}]
     end
   end
 end
