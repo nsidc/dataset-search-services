@@ -1,15 +1,14 @@
-require File.join(File.dirname(__FILE__), '..', '..', '..', '..', 'routes')
-require File.join(File.dirname(__FILE__), '..', '..', '..', 'search', 'definitions', 'definition')
+require_relative '../../../../routes'
+require_relative '../../../search/definitions/definition'
 
 xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
-  'xmlns:os' => 'http://a9.com/-/spec/opensearch/1.1/',
-  'xmlns:dif' => 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/',
-  'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
-  'xmlns:nsidc' =>  'http://nsidc.org/ns/opensearch/1.1/',
-  'xmlns:time' => 'http://a9.com/-/opensearch/extensions/time/1.0/',
-  'xmlns:geo' => 'http://a9.com/-/opensearch/extensions/geo/1.0/',
-  'xmlns:georss' => 'http://www.georss.org/georss' do
-
+         'xmlns:os' => 'http://a9.com/-/spec/opensearch/1.1/',
+         'xmlns:dif' => 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/',
+         'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
+         'xmlns:nsidc' =>  'http://nsidc.org/ns/opensearch/1.1/',
+         'xmlns:time' => 'http://a9.com/-/opensearch/extensions/time/1.0/',
+         'xmlns:geo' => 'http://a9.com/-/opensearch/extensions/geo/1.0/',
+         'xmlns:georss' => 'http://www.georss.org/georss' do
   xml.title 'NSIDC dataset search results'
   xml.updated DateTime.now.iso8601(3)
   xml.author do
@@ -19,7 +18,11 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
   end
   xml.id current_search_url
   xml.link 'href' => current_search_url, 'rel' => 'self'
-  xml.link 'href' => "#{base_url}#{NsidcOpenSearch::Routes.named(:dataset_osdd)}", 'rel' => 'search', 'type' => 'application/opensearchdescription+xml'
+  xml.link(
+    'href' => "#{base_url}#{NsidcOpenSearch::Routes.named(:dataset_osdd)}",
+    'rel' => 'search',
+    'type' => 'application/opensearchdescription+xml'
+  )
 
   first_page_search_url = build_search_url_with_index(current_search_url, 1)
   xml.link 'href' => first_page_search_url, 'rel' => 'first'
@@ -27,12 +30,18 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
   next_start_index = (search_parameters[:startIndex].to_i + search_parameters[:count].to_i)
   next_start_index = next_start_index > total_results ? nil : next_start_index
   unless next_start_index.nil?
-    xml.link 'href' => build_search_url_with_index(current_search_url, next_start_index), 'rel' => 'next'
+    xml.link(
+      'href' => build_search_url_with_index(current_search_url, next_start_index),
+      'rel' => 'next'
+    )
   end
   previous_start_index = (search_parameters[:startIndex].to_i - search_parameters[:count].to_i)
   previous_start_index = previous_start_index < 1 ? nil : previous_start_index
   unless previous_start_index.nil?
-    xml.link 'href' => build_search_url_with_index(current_search_url, previous_start_index), 'rel' => 'previous'
+    xml.link(
+      'href' => build_search_url_with_index(current_search_url, previous_start_index),
+      'rel' => 'previous'
+    )
   end
 
   last_start_index = (total_results - (total_results % search_parameters[:count].to_i))
@@ -44,14 +53,14 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
   xml.os :itemsPerPage, search_parameters[:count]
 
   query_attrs = { 'role' => 'request' }
-  search_parameters.each do |k,v|
+  search_parameters.each do |k, v|
     query_attrs[NsidcOpenSearch::Dataset::Search::Definition.send(k).replacement] = v
   end
   xml.os :query, query_attrs
 
   entries.each do |e|
     xml.entry do
-      xml.id e.id #this is an optional field in iso, what should we do if it is empty?
+      xml.id e.id # this is an optional field in iso, what should we do if it is empty?
       xml.nsidc :datasetVersion, e.dataset_version
       xml.title e.title
       xml.updated e.last_revision_date
@@ -65,27 +74,33 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
         xml.dc :date, "#{t.start_date}/#{t.end_date}"
       end
       xml.link 'href' => e.url, 'rel' => 'describedBy', 'type' => 'text/html'
-      xml.link 'href' => "#{base_url}/id/#{e.id}", 'rel' => 'describedBy', 'type' => 'application/atom+xml'
+      xml.link(
+        'href' => "#{base_url}/id/#{e.id}",
+        'rel' => 'describedBy',
+        'type' => 'application/atom+xml'
+      )
 
       e.data_access.each do |u|
         rel = ''
 
         case u.type
-          when 'information'
-            if u.name == 'Product Web Site'
-              rel = 'download-data'
-            end
-          when 'download'
-            rel = 'download-data'
-          when 'order'
-            rel = 'order-data'
-          when 'offlineAccess'
-  xml.link 'href' => first_page_search_url, 'rel' => 'first'
-            rel = 'external-data'
-          else
+        when 'information'
+          rel = 'download-data' if u.name == 'Product Web Site'
+        when 'download'
+          rel = 'download-data'
+        when 'order'
+          rel = 'order-data'
+        when 'offlineAccess'
+          xml.link 'href' => first_page_search_url, 'rel' => 'first'
+          rel = 'external-data'
         end
 
-        xml.link 'href' => u.url, 'rel' => rel, 'title' => u.name , 'nsidc:description' => u.description
+        xml.link(
+          'href' => u.url,
+          'rel' => rel,
+          'title' => u.name,
+          'nsidc:description' => u.description
+        )
       end
 
       e.data_access_urls.each do |u|

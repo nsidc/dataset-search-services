@@ -1,5 +1,5 @@
 attrs = {
-    'role' => role
+  'role' => role
 }
 
 parameters.each do |k, v|

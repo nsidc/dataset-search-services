@@ -3,6 +3,7 @@ AllCops:
     - tasks/*.rake
     - Guardfile
     - Rakefile
+    - '**/*.builder'
   Exclude:
     - gem/**/*
     - puppet/**/*

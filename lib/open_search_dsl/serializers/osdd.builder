@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__), '..', '..', 'utils', 'class_extensions')
+require_relative '../../utils/class_extensions'
 
 xml.instruct!
 xml_namespaces = {
-  'xmlns' => 'http://a9.com/-/spec/opensearch/1.1/'    
+  'xmlns' => 'http://a9.com/-/spec/opensearch/1.1/'
 }
 
 namespaces.each do |k, v|
@@ -25,8 +25,8 @@ xml.OpenSearchDescription xml_namespaces do
     xml << i.to_xml
   end
 
-  [:Contact, :Tags, :LongName, :Developer, :Attribution, :SyndicationRight, :AdultContent].each do |tag|
-    val = self.send(tag.to_s.to_underscore.to_sym)
+  %i(Contact Tags LongName Developer Attribution SyndicationRight AdultContent).each do |tag|
+    val = send(tag.to_s.to_underscore.to_sym)
     xml.tag! tag, val unless val.nil?
   end
 
