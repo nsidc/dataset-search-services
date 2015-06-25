@@ -7,5 +7,4 @@
   - scm_creds
   - vagrant-nsidc
 
-classes:
-  - nsidc_os_repo
+classes: []

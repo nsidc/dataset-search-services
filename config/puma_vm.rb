@@ -1,7 +1,8 @@
 #!/usr/bin/env puma
 require File.join(File.dirname(__FILE__), 'app_config.rb')
 
-# Puma configuration file. See https://github.com/puma/puma for more information and example config files.
+# Puma configuration file. See https://github.com/puma/puma for more information
+# and example config files.
 directory AppConfig::APP_PATH
 env = "#{ENV['RACK_ENV']}" || 'development'
 

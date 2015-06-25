@@ -9,8 +9,10 @@ module OpenSearchDsl
   class OpenSearchDescriptionDocument
     include OsddBase
 
-    dsl_methods :short_name, :description, :contact, :tags, :long_name, :developer, :attribution, :adult_content, :syndication_right
-    attr_reader :urls, :queries, :images, :namespaces, :languages, :input_encodings, :output_encodings
+    dsl_methods :short_name, :description, :contact, :tags, :long_name, :developer, :attribution,
+                :adult_content, :syndication_right
+    attr_reader :urls, :queries, :images, :namespaces, :languages, :input_encodings,
+                :output_encodings
 
     def initialize(&block)
       @builder_name = 'osdd'
@@ -26,9 +28,9 @@ module OpenSearchDsl
 
       instance_eval(&block) if block
 
-      fail ArgumentError.new('Missing short name') if @short_name.nil?
-      fail ArgumentError.new('Missing description') if @description.nil?
-      fail ArgumentError.new('Missing url') if @urls.empty?
+      fail ArgumentError, 'Missing short name' if @short_name.nil?
+      fail ArgumentError, 'Missing description' if @description.nil?
+      fail ArgumentError, 'Missing url' if @urls.empty?
     end
 
     def url(&block)

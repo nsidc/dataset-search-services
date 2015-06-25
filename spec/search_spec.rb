@@ -1,6 +1,6 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'search')
-require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'dataset', 'model', 'search', 'open_search_response_builder')
+require_relative 'spec_helper'
+require_relative '../lib/nsidc_open_search/search'
+require_relative '../lib/nsidc_open_search/dataset/model/search/open_search_response_builder'
 
 describe NsidcOpenSearch::Search do
   let(:params) { { searchterms: 'sea ice' } }
@@ -14,9 +14,9 @@ describe NsidcOpenSearch::Search do
   let(:obj) { Object.new }
 
   before :each do
-    search.stub(:execute).with(params).and_return(results)
-    param_factory.stub(:construct).and_return(params)
-    definition.stub(:valids).and_return([valids])
+    allow(search).to receive(:execute).with(params).and_return(results)
+    allow(param_factory).to receive(:construct).and_return(params)
+    allow(definition).to receive(:valids).and_return([valids])
 
     obj.class.send :include, NsidcOpenSearch::Search
     obj.class.send :search_definition, definition
@@ -24,26 +24,26 @@ describe NsidcOpenSearch::Search do
     obj.class.send :param_factory, param_factory
     obj.class.send :entry_enrichers, [entry_enricher]
 
-    obj.stub(:validate!).and_call_original
-    obj.stub(:execute_search).and_call_original
-    obj.stub(:enrich_result).and_call_original
+    allow(obj).to receive(:validate!).and_call_original
+    allow(obj).to receive(:execute_search).and_call_original
+    allow(obj).to receive(:enrich_result).and_call_original
   end
 
   it 'should validate input, search, and enrich results with valid data' do
     obj.exec params
-    obj.should have_received(:validate!).with(params)
-    obj.should have_received(:execute_search).with(params, valid_terms)
-    obj.should have_received(:enrich_result).with(results)
+    expect(obj).to have_received(:validate!).with(params)
+    expect(obj).to have_received(:execute_search).with(params, valid_terms)
+    expect(obj).to have_received(:enrich_result).with(results)
   end
 
   it 'should return search results' do
     result = obj.exec params
-    result.should be result
+    expect(result).to be result
   end
 
   it 'should raise an error if the parameters are invalid' do
-    obj.stub(:valid?).and_return(false)
+    allow(obj).to receive(:valid?).and_return(false)
 
-    expect { obj.exec params }.to raise_error
+    expect { obj.exec(params) }.to raise_error(ArgumentError)
   end
 end

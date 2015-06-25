@@ -19,7 +19,11 @@ module NsidcOpenSearch
 
     def exec(parameters)
       validate! parameters
-      fail 'Invalid search query. The query must contain all parameters specified in the OpenSearch description document' unless valid?
+
+      unless valid?
+        fail ArgumentError, 'Invalid search query. The query must contain all parameters specified'\
+                            'in the OpenSearch description document.'
+      end
 
       result = execute_search parameters, valid_terms
       enrich_result result

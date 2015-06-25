@@ -1,0 +1,40 @@
+:common:
+  :enricher_thread_count: 5
+  :relative_url_root: /api/dataset/2
+  :port: '10680'
+  :num_workers: 5
+  :pidfile: /var/run/puma/search_services.pid
+  :state_path: /var/run/puma/search_services.state
+  :std_err_log: /var/log/search_services.stderr.log
+  :std_out_log: /var/log/search_services.stdout.log
+
+:development:
+  :enricher_thread_count: 5
+  :relative_url_root: /
+  :solr_url: http://localhost:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://localhost:8983/solr/auto_suggest
+  :dataset_catalog_services_url: http://integration.nsidc.org/api/dataset/metadata
+  :metrics_url: http://liquid.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/integration
+
+:integration:
+  :solr_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :dataset_catalog_services_url: http://integration.nsidc.org/api/dataset/metadata
+  :metrics_url: http://liquid.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/integration
+
+:qa:
+  :solr_url: http://qa.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://qa.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :dataset_catalog_services_url: http://qa.nsidc.org/api/dataset/metadata
+  :metrics_url: http://brash.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/qa
+
+:staging:
+  :solr_url: http://staging.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://staging.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :dataset_catalog_services_url: http://staging.nsidc.org/api/dataset/metadata
+
+:production:
+  :solr_url: http://search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :dataset_catalog_services_url: http://nsidc.org/api/dataset/metadata
+  :metrics_url: http://frozen.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/prod

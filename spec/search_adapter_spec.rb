@@ -9,8 +9,9 @@ describe 'search mapper' do
   let(:obj) { Object.new }
 
   before :each do
-    search.stub(:execute).with(params).and_return(double('results', total_results: 2, entries: []))
-    param_factory.stub(:construct).and_return(params)
+    allow(search).to(
+      receive(:execute).with(params).and_return(double('results', total_results: 2, entries: [])))
+    allow(param_factory).to receive(:construct).and_return(params)
 
     obj.class.send :include, NsidcOpenSearch::SearchAdapter
     obj.class.send :search, search
@@ -20,13 +21,13 @@ describe 'search mapper' do
   describe 'search' do
     it 'should set each term in list of valid terms' do
       obj.execute_search params, valids
-      param_factory.should have_received(:construct)
-      search.should have_received(:execute).with(params)
+      expect(param_factory).to have_received(:construct)
+      expect(search).to have_received(:execute).with(params)
     end
 
     it 'should return a valid search result' do
       result = obj.execute_search params, valids
-      result.total_results.should be 2
+      expect(result.total_results).to be 2
     end
   end
 end

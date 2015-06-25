@@ -7,11 +7,11 @@ RSpec::Matchers.define :have_opensearch_root_element do
     xml.xpath('/xmlns:OpenSearchDescription').length == 1
   end
 
-  failure_message_for_should do |actual|
+  failure_message do |actual|
     "expected that #{truncate_string actual} would have a valid OpenSearch root element"
   end
 
-  failure_message_for_should_not do |actual|
+  failure_message_when_negated do |actual|
     "expected that #{truncate_string actual} would not have a valid OpenSearch root element"
   end
 
@@ -26,11 +26,11 @@ RSpec::Matchers.define :have_opensearch_namespace do
     xml.namespaces.key?('xmlns') && xml.namespaces['xmlns'] == 'http://a9.com/-/spec/opensearch/1.1/'
   end
 
-  failure_message_for_should do |actual|
+  failure_message do |actual|
     "expected that #{truncate_string actual} would have the OpenSearch namespace"
   end
 
-  failure_message_for_should_not do |actual|
+  failure_message_when_negated do |actual|
     "expected that #{truncate_string actual} would not have the OpenSearch namespace"
   end
 
@@ -49,15 +49,17 @@ end
 
 RSpec::Matchers.define :have_a_short_name do
   match do |actual|
+    shortname_xpath = '/xmlns:OpenSearchDescription/xmlns:ShortName'
     xml = get_xml actual
-    xml.xpath('/xmlns:OpenSearchDescription/xmlns:ShortName').length == 1 && xml.xpath('/xmlns:OpenSearchDescription/xmlns:ShortName').text.length >= 1
+    xml.xpath(shortname_xpath).length == 1 && xml.xpath(shortname_xpath).text.length >= 1
   end
 end
 
 RSpec::Matchers.define :have_a_description do
   match do |actual|
+    description_xpath = '/xmlns:OpenSearchDescription/xmlns:Description'
     xml = get_xml actual
-    xml.xpath('/xmlns:OpenSearchDescription/xmlns:Description').length == 1 && xml.xpath('/xmlns:OpenSearchDescription/xmlns:Description').text.length >= 1
+    xml.xpath(description_xpath).length == 1 && xml.xpath(description_xpath).text.length >= 1
   end
 end
 

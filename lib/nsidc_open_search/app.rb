@@ -59,7 +59,9 @@ module NsidcOpenSearch
       remote_ip = remote_ip(env, request)
       requested_with = env['HTTP_X_REQUESTED_WITH'] || request.env['X-Requested-With']
 
-      if query_string.length > 0 && requested_with != 'spec_test' && !request.path.include?('suggest')
+      if (query_string.length > 0) &&
+         (requested_with != 'spec_test') &&
+         (!request.path.include?('suggest'))
 
         puts "New request from: #{remote_ip} requested with: #{requested_with}"
 
@@ -74,7 +76,7 @@ module NsidcOpenSearch
                 { name: 'search_terms', value: search_terms },
                 { name: 'query_string', value: query_string },
                 { name: 'requested_with', value: requested_with }
-            ]
+              ]
             )
           rescue => e
             puts 'Could not send metrics information to libre_metrics'

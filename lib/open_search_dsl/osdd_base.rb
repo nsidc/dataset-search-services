@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', 'utils', 'dsl_base')
 module OpenSearchDsl
   module OsddBase
     def self.included(base)
-      base.send     :include, InstanceMethods
+      base.send :include, InstanceMethods
       base.extend(DslBase)
     end
 

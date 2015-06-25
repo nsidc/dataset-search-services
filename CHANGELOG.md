@@ -1,3 +1,9 @@
+## Unreleased
+
+Changes:
+
+  - Upgraded from Ruby 1.9.3 to 2.2.2
+
 ## v1.0.3 (2015-05-08)
 
 Bugfixes:

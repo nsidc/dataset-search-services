@@ -11,7 +11,6 @@ end
 
 namespace :jenkins do
   namespace :release do
-
     date = Time.now.strftime('%Y-%m-%d')
 
     desc 'Bump version part (patch/minor/major), set release date in CHANGELOG, make tag'
@@ -37,13 +36,13 @@ namespace :jenkins do
     desc 'git-push the release changes (the version bump commit and the version tag)'
     task :push do
       current_branch = `git rev-parse --abbrev-ref HEAD`.chomp
-      sh "git push origin #{ current_branch } --tags"
+      sh "git push origin #{current_branch} --tags"
     end
 
     desc 'Update git with a tag to show which ref is deployed to which environment'
     task :tag_deployment, [:env] do |_t, args|
-      sh "git tag --force #{ args[:env] }"
-      sh "git push --force origin refs/tags/#{ args[:env] }"
+      sh "git tag --force #{args[:env]}"
+      sh "git push --force origin refs/tags/#{args[:env]}"
     end
   end
 end

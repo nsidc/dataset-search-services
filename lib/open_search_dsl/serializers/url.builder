@@ -1,13 +1,24 @@
 attrs = {
-    'type' => type
+  'type' => type
 }
 
 namespaces.each do |k, v|
   attrs["xmlns:#{k}"] = v
 end
 
-template = template_parameters.count > 1 ? "#{base_url}?#{template_parameters.map { |t| "#{t.name}={#{t.replace_val}#{!t.required ? '?' : ''}}" }.join('&')}" : "#{base_url}"
+template = base_url
+
+if template_parameters.count > 1
+  params = template_parameters.map do |param|
+    value = param.replace_val
+    value.concat('?') unless param.required
+
+    "#{param.name}={#{value}}"
+  end.join('&')
+
+  template.concat("?#{params}")
+end
 
 attrs['template'] = template
 
-xml.Url attrs
+xml.Url(attrs)

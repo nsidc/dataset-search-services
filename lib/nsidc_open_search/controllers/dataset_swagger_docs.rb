@@ -1,12 +1,14 @@
 require 'sinatra/base'
-require File.join(File.dirname(__FILE__), '..', 'routes')
+require_relative '../routes'
 
 module NsidcOpenSearch
   module Controllers
     module DatasetSwaggerDocs
       def self.registered(app)
         app.get Routes.named(:dataset_swagger_docs), provides: [:json] do
-          swagger_json = JSON.parse(File.read(File.join(File.dirname(__FILE__), '..', '..', 'docs', 'swagger_docs.json')))
+          json_string = File.read(File.expand_path('../../../docs/swagger_docs.json', __FILE__))
+          swagger_json = JSON.parse(json_string)
+
           unless %w(production development).include? ENV['RACK_ENV']
             swagger_json['basePath'].gsub!('nsidc.org', "#{ENV['RACK_ENV']}.nsidc.org")
           end

@@ -38,11 +38,11 @@ module NsidcOpenSearch
           param_keys = parameters.keys.map(&:to_sym)
           param_set = Set.new(param_keys)
 
-          if param_set.subset?(valid_set)
-            @is_valid = true
-            @valid_terms = param_keys
-            break
-          end
+          next unless param_set.subset?(valid_set)
+
+          @is_valid = true
+          @valid_terms = param_keys
+          break
         end
       end
     end

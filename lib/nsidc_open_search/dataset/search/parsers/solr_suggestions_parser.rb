@@ -23,7 +23,7 @@ module NsidcOpenSearch
         # returned by solr
         def extract_suggestions_array(solr_suggestions)
           arr = solr_suggestions.map do |s|
-            s.class == Hash ? s['text_suggest']  : nil
+            s.class == Hash ? s['text_suggest'] : nil
           end
           arr.select { |s| !s.nil? }.flatten
         end

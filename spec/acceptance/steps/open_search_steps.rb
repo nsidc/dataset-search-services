@@ -3,7 +3,6 @@ require 'acceptance/page_objects/open_search_query_page'
 
 module OpenSearchSteps
   attr_reader :osdd
-  attr_writer :parameters
 
   # Given steps
   step 'there are the following valid environments:' do |envTable|
@@ -21,11 +20,11 @@ module OpenSearchSteps
 
   # When steps
   step 'I make a request to the template url with blanks for optional parameters' do
-    parameters = osdd.blank_parameters
+    @parameters = osdd.blank_parameters
   end
 
   step 'I make a request to the template url with using the example query values' do
-    parameters = osdd.example_query_parameters
+    @parameters = osdd.example_query_parameters
   end
 
   step 'I make a request with a date time line crossing bounding box' do

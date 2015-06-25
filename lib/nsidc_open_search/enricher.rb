@@ -1,5 +1,5 @@
 require 'peach'
-require File.join(File.dirname(__FILE__), '..', 'utils', 'class_module')
+require_relative '../utils/class_module'
 
 module NsidcOpenSearch
   module Enricher
@@ -25,12 +25,12 @@ module NsidcOpenSearch
 
     module InstanceMethods
       def enrich_result(result)
-        if defined? enrichers
-          threads = defined?(thread_count) ? thread_count : DEFAULT_THREAD_COUNT
-          result.entries.peach(threads) do |entry|
-            enrichers.each do |enricher|
-              enricher.enrich_entry entry
-            end
+        return unless defined?(enrichers)
+
+        threads = defined?(thread_count) ? thread_count : DEFAULT_THREAD_COUNT
+        result.entries.peach(threads) do |entry|
+          enrichers.each do |enricher|
+            enricher.enrich_entry entry
           end
         end
       end

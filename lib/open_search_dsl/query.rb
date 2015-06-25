@@ -9,7 +9,7 @@ module OpenSearchDsl
       attr_reader :parameters
 
       def initialize(role = 'example', &block)
-        fail ArgumentError.new('Missing role') if role.nil_or_whitespace?
+        fail ArgumentError, 'Missing role' if role.nil_or_whitespace?
 
         @parameters = {}
         @role = role

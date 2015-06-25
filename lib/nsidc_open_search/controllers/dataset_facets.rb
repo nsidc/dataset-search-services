@@ -1,13 +1,16 @@
 require 'sinatra/base'
-require File.join(File.dirname(__FILE__), '..', 'routes')
-require File.join(File.dirname(__FILE__), '..', 'dataset_facets')
+require_relative '../routes'
+require_relative '../dataset_facets'
 
 module NsidcOpenSearch
   module Controllers
     module DatasetFacets
       def self.registered(app)
         app.get Routes.named(:dataset_facets), provides: [:facets, :xml] do
-          NsidcOpenSearch::DatasetFacets.new(settings.solr_url, settings.query_config).exec(params).to_atom(request.url, base_url)
+          NsidcOpenSearch::DatasetFacets.new(
+            settings.solr_url,
+            settings.query_config
+          ).exec(params).to_atom(request.url, base_url)
         end
       end
     end

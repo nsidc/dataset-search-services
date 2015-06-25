@@ -24,7 +24,8 @@ RSpec::Matchers.define :have_at_least_one_author do
 end
 
 RSpec::Matchers.define :have_an_id do
-  match_count(1, "#{FEED_SELECTOR}/xmlns:id") && match_at_least_one("#{FEED_SELECTOR}/xmlns:id", true)
+  match_count(1, "#{FEED_SELECTOR}/xmlns:id") &&
+    match_at_least_one("#{FEED_SELECTOR}/xmlns:id", true)
 end
 
 RSpec::Matchers.define :have_at_least_one_link do
@@ -32,15 +33,18 @@ RSpec::Matchers.define :have_at_least_one_link do
 end
 
 RSpec::Matchers.define :have_a_title do
-  match_count(1, "#{FEED_SELECTOR}/xmlns:title") && match_at_least_one("#{FEED_SELECTOR}/xmlns:title", true)
+  match_count(1, "#{FEED_SELECTOR}/xmlns:title") &&
+    match_at_least_one("#{FEED_SELECTOR}/xmlns:title", true)
 end
 
 RSpec::Matchers.define :have_an_updated do
-  match_count(1, "#{FEED_SELECTOR}/xmlns:updated") && match_at_least_one("#{FEED_SELECTOR}/xmlns:updated", true)
+  match_count(1, "#{FEED_SELECTOR}/xmlns:updated") &&
+    match_at_least_one("#{FEED_SELECTOR}/xmlns:updated", true)
 end
 
 RSpec::Matchers.define :have_a_total_results do
-  match_count(1, "#{FEED_SELECTOR}/os:totalResults") && match_at_least_one("#{FEED_SELECTOR}/os:totalResults", true)
+  match_count(1, "#{FEED_SELECTOR}/os:totalResults") &&
+    match_at_least_one("#{FEED_SELECTOR}/os:totalResults", true)
 end
 
 RSpec::Matchers.define :have_a_first_link do
@@ -60,11 +64,13 @@ RSpec::Matchers.define :have_a_last_link do
 end
 
 RSpec::Matchers.define :have_a_start_index do
-  match_count(1, "#{FEED_SELECTOR}/os:startIndex") && match_at_least_one("#{FEED_SELECTOR}/os:startIndex", true)
+  match_count(1, "#{FEED_SELECTOR}/os:startIndex") &&
+    match_at_least_one("#{FEED_SELECTOR}/os:startIndex", true)
 end
 
 RSpec::Matchers.define :have_an_items_per_page do
-  match_count(1, "#{FEED_SELECTOR}/os:itemsPerPage") && match_at_least_one("#{FEED_SELECTOR}/os:itemsPerPage", true)
+  match_count(1, "#{FEED_SELECTOR}/os:itemsPerPage") &&
+    match_at_least_one("#{FEED_SELECTOR}/os:itemsPerPage", true)
 end
 
 RSpec::Matchers.define :have_a_query do
@@ -108,7 +114,8 @@ RSpec::Matchers.define :have_at_least_one_entry_with_a_catalog_page_link do
 end
 
 RSpec::Matchers.define :have_at_least_one_entry_with_a_dataset_call_link do
-  match_at_least_one("#{ENTRY_SELECTOR}/xmlns:link[@rel='describedBy' and @type='application/atom+xml']")
+  selector = "#{ENTRY_SELECTOR}/xmlns:link[@rel='describedBy' and @type='application/atom+xml']"
+  match_at_least_one(selector)
 end
 
 RSpec::Matchers.define :have_at_least_two_entries_with_a_download_data_rel_link do

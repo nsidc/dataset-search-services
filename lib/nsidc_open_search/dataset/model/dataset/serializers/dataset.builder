@@ -1,15 +1,14 @@
-require File.join(File.dirname(__FILE__), '..', '..', '..', '..', 'routes')
-require File.join(File.dirname(__FILE__), '..', '..', '..', 'search', 'definitions', 'definition')
+require_relative '../../../../routes'
+require_relative '../../../search/definitions/definition'
 
 xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
-  'xmlns:os' => 'http://a9.com/-/spec/opensearch/1.1/',
-  'xmlns:dif' => 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/',
-  'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
-  'xmlns:nsidc' =>  'http://nsidc.org/ns/opensearch/1.1/',
-  'xmlns:time' => 'http://a9.com/-/opensearch/extensions/time/1.0/',
-  'xmlns:geo' => 'http://a9.com/-/opensearch/extensions/geo/1.0/',
-  'xmlns:georss' => 'http://www.georss.org/georss' do
-
+         'xmlns:os' => 'http://a9.com/-/spec/opensearch/1.1/',
+         'xmlns:dif' => 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/',
+         'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
+         'xmlns:nsidc' =>  'http://nsidc.org/ns/opensearch/1.1/',
+         'xmlns:time' => 'http://a9.com/-/opensearch/extensions/time/1.0/',
+         'xmlns:geo' => 'http://a9.com/-/opensearch/extensions/geo/1.0/',
+         'xmlns:georss' => 'http://www.georss.org/georss' do
   xml.title 'NSIDC dataset search results'
   xml.updated DateTime.now.iso8601(3)
   xml.author do
@@ -19,20 +18,24 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
   end
   xml.id current_search_url
   xml.link 'href' => current_search_url, 'rel' => 'self'
-  xml.link 'href' => "#{base_url}#{NsidcOpenSearch::Routes.named(:dataset_osdd)}", 'rel' => 'search', 'type' => 'application/opensearchdescription+xml'
+  xml.link(
+    'href' => "#{base_url}#{NsidcOpenSearch::Routes.named(:dataset_osdd)}",
+    'rel' => 'search',
+    'type' => 'application/opensearchdescription+xml'
+  )
   xml.os :totalResults, total_results
   xml.os :startIndex, search_parameters[:startIndex]
   xml.os :itemsPerPage, search_parameters[:count]
 
   query_attrs = { 'role' => 'request' }
-  search_parameters.each do |k,v|
+  search_parameters.each do |k, v|
     query_attrs[NsidcOpenSearch::Dataset::Search::Definition.send(k).replacement] = v
   end
   xml.os :query, query_attrs
 
   entries.each do |e|
     xml.entry do
-      xml.id e.id #this is an optional field in iso, what should we do if it is empty?
+      xml.id e.id # this is an optional field in iso, what should we do if it is empty?
       xml.nsidc :datasetVersion, e.dataset_version
       xml.title e.title
       xml.updated e.last_revision_date
@@ -49,16 +52,20 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
         rel = ''
 
         case u.type
-          when 'download'
-            rel = 'download-data'
-          when 'order'
-            rel = 'order-data'
-          when 'offlineAccess'
-            rel = 'external-data'
-          else
+        when 'download'
+          rel = 'download-data'
+        when 'order'
+          rel = 'order-data'
+        when 'offlineAccess'
+          rel = 'external-data'
         end
 
-        xml.link 'href' => u.url, 'rel' => rel, 'title' => u.name , 'nsidc:description' => u.description
+        xml.link(
+          'href' => u.url,
+          'rel' => rel,
+          'title' => u.name,
+          'nsidc:description' => u.description
+        )
       end
 
       e.data_access_urls.each do |u|
@@ -74,7 +81,6 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
       end
 
       e.data_centers.each do |d|
-
         xml.nsidc :dataCenter, d
       end
 

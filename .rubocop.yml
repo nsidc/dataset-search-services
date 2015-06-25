@@ -1,32 +1,33 @@
-inherit_from: rubocop-todo.yml
-
 AllCops:
-  Includes:
+  Include:
     - tasks/*.rake
     - Guardfile
     - Rakefile
-  Excludes:
-    - 'gem/**/*'
-    - 'puppet/**/*'
+    - '**/*.builder'
+  Exclude:
+    - gem/**/*
+    - puppet/**/*
     - vendor/bundle/**/*
 
-Encoding:
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+  - lib/nsidc_open_search/dataset_osdd.rb
+
+Metrics/ClassLength:
+  Max: 125
+
+Metrics/LineLength:
+  Max: 100
+
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+  - lib/nsidc_open_search/dataset_osdd.rb
+
+Style/Documentation:
   Enabled: false
 
-LineLength:
-  Enabled: false
-
-Documentation:
-  Enabled: false
-
-MethodLength:
-  Enabled: false
-
-RescueModifier:
-  Enabled: false
-
-Blocks:
-  Enabled: false
-
-Semicolon:
-  Enabled: false
+Style/MethodName:
+  Exclude:
+  - lib/nsidc_open_search/dataset/search/definitions/definition.rb # OpenSearch uses camelCase
