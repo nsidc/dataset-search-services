@@ -47,9 +47,8 @@ file:
 1. Clone the source code - `git clone git@bitbucket.org:nsidc/dataset-search-services.git`
 1. `cd dataset-search-services`
 1. Install the dependencies - `bundle install`
-  * users not on NSIDC's internal network will need to first remove 2 lines in
-    `Gemfile`: the `source` command that accesses `snowhut.apps.int.nsidc.org`,
-    and the `gem` command to install `libre_metrics_client`. See
+  * users not on NSIDC's internal network will need to first remove the line in
+    `Gemfile` that installs `libre_metrics_client`. See
     [`DEVELOPMENT.md`](https://bitbucket.org/nsidc/dataset-search-services/src/master/DEVELOPMENT.md)
     for more detailed info.
 1. Modify the `development` section in `config/app_config.yaml` so that it has
