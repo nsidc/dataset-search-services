@@ -45,12 +45,12 @@ file:
 
 ### Simple Setup
 
-1. Clone the source code - `git clone git@bitbucket.org:nsidc/dataset-search-services.git`
+1. Clone the source code - `git clone git@github.com:nsidc/dataset-search-services.git`
 1. `cd dataset-search-services`
 1. Install the dependencies - `bundle install`
   * users not on NSIDC's internal network will need to first remove the line in
     `Gemfile` that installs `libre_metrics_client`. See
-    [`DEVELOPMENT.md`](https://bitbucket.org/nsidc/dataset-search-services/src/master/DEVELOPMENT.md)
+    [`DEVELOPMENT.md`](https://github.com/nsidc/dataset-search-services/blob/master/DEVELOPMENT.md)
     for more detailed info.
 1. Modify the `development` section in `config/app_config.yaml` so that it has
    the values you need (if `RACK_ENV` is set to something other than
@@ -68,7 +68,7 @@ file:
 Vagrant VM hosted on NSIDC's internal network. To set up the service outside of
 this network, follow these steps:
 
-1. Clone the source code - `git clone git@bitbucket.org:nsidc/dataset-search-services.git`
+1. Clone the source code - `git clone git@github.com:nsidc/dataset-search-services.git`
 1. `cd dataset-search-services`
 1. Set `APP_PATH` in `config/app_config.rb` and `app` in `deployment/puma.conf`
    to the same value
@@ -79,7 +79,7 @@ this network, follow these steps:
 1. `cd $APP_PATH; bundle install`
   * users not on NSIDC's internal network will need to first remove the line in
     `Gemfile` that installs `libre_metrics_client`. See
-    [`DEVELOPMENT.md`](https://bitbucket.org/nsidc/dataset-search-services/src/master/DEVELOPMENT.md)
+    [`DEVELOPMENT.md`](https://github.com/nsidc/dataset-search-services/blob/master/DEVELOPMENT.md)
     for more detailed info.
 1. `cp $APP_PATH/deployment/puma.conf /etc/init/`
 1. `mkdir -p $APP_PATH/run/log`
@@ -97,17 +97,15 @@ this network, follow these steps:
    by the service at
    [http://localhost:10680/api/dataset/2/OpenSearchDescription](http://localhost:10680/api/dataset/2/OpenSearchDescription).
 
-
 ## Changes
 
 Notes on changes can be found in
-[`CHANGELOG.md`](https://bitbucket.org/nsidc/dataset-search-services/src/master/CHANGELOG.md).
+[`CHANGELOG.md`](https://github.com/nsidc/dataset-search-services/blob/master/CHANGELOG.md).
 
 ## Developer Info
 
 Instructions and notes for developing this project are in
-[`DEVELOPMENT.md`](https://bitbucket.org/nsidc/dataset-search-services/src/master/DEVELOPMENT.md).
-
+[`DEVELOPMENT.md`](https://github.com/nsidc/dataset-search-services/blob/master/DEVELOPMENT.md).
 
 ## How to contact NSIDC
 

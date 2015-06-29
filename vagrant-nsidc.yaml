@@ -1,5 +1,5 @@
 project: dss
-gitrepo: git@bitbucket.org:nsidc/dataset-search-services.git
+gitrepo: git@github.com:nsidc/dataset-search-services.git
 vsphere:
   template: trusty64-nsidc
 
