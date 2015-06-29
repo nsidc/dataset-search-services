@@ -12,7 +12,7 @@ module AppConfig
       query_config_env = :integration
     else
       app_config = APP_CONFIGS[:common].merge(APP_CONFIGS[env.to_sym])
-      query_config_env = env
+      query_config_env = env.to_sym == :staging ? :production : env
     end
 
     query_config_file = File.expand_path("../solr_query_config_#{query_config_env}.yml", __FILE__)
