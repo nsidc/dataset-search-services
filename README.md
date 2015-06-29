@@ -19,7 +19,8 @@ same instance of this service, and the same Solr store to retrieve metadata;
 however, the ADE contains metadata for datasets from variety of sources as well
 as from NSIDC, and a simple way to distinguish between the two applications was
 needed. The `source` parameter in queries made by NSIDC Search is set to
-`NSIDC`, and for queries from the ADE is set to `ADE`.
+`NSIDC`, and for queries from the ADE is set to `ADE` - this corresponds to the 
+"source" value in the solr datastore. 
 
 ## Installation & Usage
 
