@@ -34,7 +34,7 @@ Feature: Must-not-break search scenarios
   Scenario: Sea ice extent
     When I perform a text search for "sea ice extent"
     Then The entries contain g02186 in the top 4
-    And The entries contain g02135 in the top 4
+    And The entries contain g02135 in the top 5
 
   Scenario: ice sounding
     When I perform a text search for "ice sounding"
