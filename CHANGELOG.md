@@ -28,5 +28,5 @@ Features:
 
 Features:
 
-  - Please see the Production Change Tracker for change history
-    up to and including v1.0.0.
+  - Please see the Production Change Tracker board on NSIDC's internal JIRA
+    instance for change history up to and including v1.0.0.

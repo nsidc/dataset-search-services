@@ -1,22 +1,3 @@
-To run Dataset Search Services locally, you will need a local installation of
-Ruby (check `.ruby-version` for the required version) and Bundler (`gem install
-bundler`).
-
-* install dependencies with `bundle install`
-* the user that will be running the service must have permission to write to
-  `/var/log` and `/var/run/puma` (the full paths of the relevant files can be
-  seen in `config/app_config.rb`)
-* the source directory for this project may need to match the `APP_PATH` as set
-  in `config/app_config.rb`
-* start the service with `bundle exec rake run`
-
-The settings in `config/app_config.rb` define (among other things) the URL of
-the Solr backend that Dataset Search Services will access to fulfill the user's
-search request. A local solr can be set up using
-[search-solr](https://bitbucket.org/nsidc/search-solr), with
-[search-solr-tools](https://bitbucket.org/nsidc/search-solr-tools) to harvest
-data into that local solr instance.
-
 ## Git workflow
 
 Development on this project uses
@@ -30,15 +11,19 @@ Development on this project uses
 4. Push to the branch (`git push -u origin my-new-feature`)
 5. [Create a new Pull Request](https://bitbucket.org/nsidc/set-search-services/pull-request/new)
 
+## Installation & Usage
+
+See
+[`README.md`](https://bitbucket.org/nsidc/dataset-search-services/src/master/README.md).
+
 ## Libre Metrics Client gem
 
 This project uses a gem that is hosted internally at NSIDC for metrics
 collection. If you are working on this project outside of NSIDC's intranet, you
 will need to remove the line in `Gemfile` that installs the gem
-`libre_metrics_client`, as well as the line that sources
-snowhut.apps.int.nsidc.org, before running `bundle install`. No other changes
-are required; the logic in `lib/nsidc_open_search/app.rb` is set up to
-gracefully handle a failure to import the gem.
+`libre_metrics_client` before running `bundle install`. No other changes are
+required; the logic in `lib/nsidc_open_search/app.rb` is set up to gracefully
+handle a failure to import the gem.
 
 ## Unit tests
 

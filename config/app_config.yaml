@@ -1,3 +1,11 @@
+:development:
+  :enricher_thread_count: 5
+  :relative_url_root: /
+  :solr_url: http://localhost:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://localhost:8983/solr/auto_suggest
+  :dataset_catalog_services_url: http://integration.nsidc.org/api/dataset/metadata
+  :metrics_url: http://liquid.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/integration
+
 :common:
   :enricher_thread_count: 5
   :relative_url_root: /api/dataset/2
@@ -7,14 +15,6 @@
   :state_path: /var/run/puma/search_services.state
   :std_err_log: /var/log/search_services.stderr.log
   :std_out_log: /var/log/search_services.stdout.log
-
-:development:
-  :enricher_thread_count: 5
-  :relative_url_root: /
-  :solr_url: http://localhost:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://localhost:8983/solr/auto_suggest
-  :dataset_catalog_services_url: http://integration.nsidc.org/api/dataset/metadata
-  :metrics_url: http://liquid.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/integration
 
 :integration:
   :solr_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai

@@ -1,9 +1,8 @@
 source 'https://rubygems.org'
-source 'http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/ruby/nsidc/'
 
 gem 'bump', '~> 0.5'
 gem 'json'
-gem 'libre_metrics_client', '~> 0.1.5'
+gem 'libre_metrics_client', '~> 0.1.5', source: 'http://snowhut.apps.int.nsidc.org/shares/export/sw/packages/ruby/nsidc/'
 gem 'nokogiri'
 gem 'peach'
 gem 'puma'
