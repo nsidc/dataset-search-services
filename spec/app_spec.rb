@@ -56,8 +56,7 @@ describe 'Nsidc OpenSearch App' do
         'docs' => [
           {
             'authoritative_id' => '12345',
-            'title' => 'test',
-            'iso' => iso_document_fixture
+            'title' => 'test'
           }
         ]
       }
@@ -65,7 +64,6 @@ describe 'Nsidc OpenSearch App' do
 
     rsolr = double('rsolr', find: solr_response)
     allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
-    allow(RestClient).to receive(:get).and_return(iso_document_fixture)
 
     get('/OpenSearch', default_os_query_params,
         'HTTP_ACCEPT' => 'application/atom+xml',
