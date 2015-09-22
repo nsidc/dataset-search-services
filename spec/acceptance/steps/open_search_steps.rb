@@ -66,10 +66,10 @@ module OpenSearchSteps
     page.result_entries.size.should be > 10
   end
 
-  step 'I get a valid response with 4 entries' do
+  step 'I get a valid response with :count entries' do |count|
     page.valid?.should be true
-    page.total_results.should be 4
-    page.result_entries.size.should be 4
+    page.total_results.should be count.to_i
+    page.result_entries.size.should be count.to_i
   end
 
   step 'The entries contain :auth_id' do |auth_id|

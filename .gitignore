@@ -2,6 +2,7 @@
 .bundle/*
 .project
 *.iml
+results.html
 results.xml
 vendor/bundle/
 

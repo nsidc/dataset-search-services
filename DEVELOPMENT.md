@@ -138,11 +138,9 @@ methods must return an open search response builder.
   search, enrich results
     * `Validator`
     * `SearchAdapter`
-    * `Enricher`
 * `Validator` - validate search inputs with a given search definition
 * `SearchAdapter` - executes a search by calling the execute method of a given
   search implementation with the parameters from a given parameter factory
-* `Enricher` - updates each result entry with a given set of entry enrichers
 * `App` - the main application
     * `Sinatra::Base`
     * `Controllers::DatasetOsdd`

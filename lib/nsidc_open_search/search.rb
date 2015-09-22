@@ -1,7 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', 'utils', 'class_module')
 require File.join(File.dirname(__FILE__), 'validator')
 require File.join(File.dirname(__FILE__), 'search_adapter')
-require File.join(File.dirname(__FILE__), 'enricher')
 
 module NsidcOpenSearch
   module Search
@@ -9,12 +8,10 @@ module NsidcOpenSearch
 
     include Validator::InstanceMethods
     include SearchAdapter::InstanceMethods
-    include Enricher::InstanceMethods
 
     module ClassMethods
       include Validator::ClassMethods
       include SearchAdapter::ClassMethods
-      include Enricher::ClassMethods
     end
 
     def exec(parameters)
@@ -25,10 +22,7 @@ module NsidcOpenSearch
                             'in the OpenSearch description document.'
       end
 
-      result = execute_search parameters, valid_terms
-      enrich_result result
-
-      result
+      execute_search(parameters, valid_terms)
     end
 
     def exec_rest(parameters)
