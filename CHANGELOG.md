@@ -1,3 +1,10 @@
+## v2.0.1 (2015-09-23)
+Bugfixes:
+
+  - Removed ISO enricher/calls to GI-CAT
+  - Stopped saving/adding acceptance test reports
+  - Fixed rake task bug where puma would not restart on deployment
+
 ## v2.0.0 (2015-06-29)
 
 Changes:
