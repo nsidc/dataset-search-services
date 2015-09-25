@@ -1,4 +1,5 @@
 :development:
+  :enricher_thread_count: 5
   :relative_url_root: /
   :solr_url: http://localhost:8983/solr/nsidc_oai
   :solr_auto_suggest_url: http://localhost:8983/solr/auto_suggest
@@ -6,6 +7,7 @@
   :metrics_url: http://liquid.colorado.edu:12180/metrics/projects/search/services/dataset-search-services/instances/integration
 
 :common:
+  :enricher_thread_count: 5
   :relative_url_root: /api/dataset/2
   :port: '10680'
   :num_workers: 5

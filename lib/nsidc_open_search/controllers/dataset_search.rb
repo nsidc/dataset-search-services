@@ -9,6 +9,8 @@ module NsidcOpenSearch
         app.get Routes.named(:dataset_search), provides: [:atom, :xml] do
           NsidcOpenSearch::DatasetSearch.new(
             settings.solr_url,
+            settings.dataset_catalog_services_url,
+            settings.enricher_thread_count,
             settings.query_config
           ).exec(params).to_atom(request.url, base_url)
         end
