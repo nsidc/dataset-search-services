@@ -9,6 +9,7 @@ describe NsidcOpenSearch::Search do
   let(:search) { double('search impl') }
   let(:param_factory) { double('param factory impl') }
   let(:definition)  { double('search definition') }
+  let(:entry_enricher) { double('entry enricher', enrich_entry: nil) }
   let(:results) { double('results', total_results: 2, entries: [{}, {}]) }
   let(:obj) { Object.new }
 
@@ -21,15 +22,18 @@ describe NsidcOpenSearch::Search do
     obj.class.send :search_definition, definition
     obj.class.send :search, search
     obj.class.send :param_factory, param_factory
+    obj.class.send :entry_enrichers, [entry_enricher]
 
     allow(obj).to receive(:validate!).and_call_original
     allow(obj).to receive(:execute_search).and_call_original
+    allow(obj).to receive(:enrich_result).and_call_original
   end
 
-  it 'should validate input and search' do
+  it 'should validate input, search, and enrich results with valid data' do
     obj.exec params
     expect(obj).to have_received(:validate!).with(params)
     expect(obj).to have_received(:execute_search).with(params, valid_terms)
+    expect(obj).to have_received(:enrich_result).with(results)
   end
 
   it 'should return search results' do
