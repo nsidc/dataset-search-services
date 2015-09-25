@@ -1,4 +1,13 @@
+## v2.0.2 (2015-09-25)
+
+Bugfixes:
+
+  - Re-enabled enricher calls for NSIDC results; removing them broke data access
+    links and supporting program information; the call was not actually related
+    to GI-Cat
+
 ## v2.0.1 (2015-09-23)
+
 Bugfixes:
 
   - Removed ISO enricher/calls to GI-CAT
