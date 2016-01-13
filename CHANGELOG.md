@@ -1,3 +1,9 @@
+## Unreleased
+
+Changes:
+
+  - Removed Libre Metrics connections and references
+
 ## v2.0.2 (2015-09-25)
 
 Bugfixes:
