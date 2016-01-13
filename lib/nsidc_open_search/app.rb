@@ -43,8 +43,7 @@ module NsidcOpenSearch
 
     before do
       query_string = request.env['rack.request.query_string'].gsub('&', '&amp;')
-      search_terms = request.env['rack.request.query_hash']['searchTerms']
-
+      
       # note that Puma does not play nice here, it overrides rack default env methods.
       # request.env will only be used for the tests or if the app is running with other server.
       remote_ip = remote_ip(env, request)
