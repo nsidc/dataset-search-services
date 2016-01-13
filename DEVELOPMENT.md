@@ -16,15 +16,6 @@ Development on this project uses
 See
 [`README.md`](https://github.com/nsidc/dataset-search-services/blob/master/README.md).
 
-## Libre Metrics Client gem
-
-This project uses a gem that is hosted internally at NSIDC for metrics
-collection. If you are working on this project outside of NSIDC's intranet, you
-will need to remove the line in `Gemfile` that installs the gem
-`libre_metrics_client` before running `bundle install`. No other changes are
-required; the logic in `lib/nsidc_open_search/app.rb` is set up to gracefully
-handle a failure to import the gem.
-
 ## Unit tests
 
 Run the unit tests with `bundle exec rake spec:unit`.

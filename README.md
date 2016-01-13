@@ -19,8 +19,8 @@ same instance of this service, and the same Solr store to retrieve metadata;
 however, the ADE contains metadata for datasets from variety of sources as well
 as from NSIDC, and a simple way to distinguish between the two applications was
 needed. The `source` parameter in queries made by NSIDC Search is set to
-`NSIDC`, and for queries from the ADE is set to `ADE` - this corresponds to the 
-"source" value in the solr datastore. 
+`NSIDC`, and for queries from the ADE is set to `ADE` - this corresponds to the
+"source" value in the solr datastore.
 
 ## Installation & Usage
 
@@ -48,10 +48,6 @@ file:
 1. Clone the source code - `git clone git@github.com:nsidc/dataset-search-services.git`
 1. `cd dataset-search-services`
 1. Install the dependencies - `bundle install`
-  * users not on NSIDC's internal network will need to first remove the line in
-    `Gemfile` that installs `libre_metrics_client`. See
-    [`DEVELOPMENT.md`](https://github.com/nsidc/dataset-search-services/blob/master/DEVELOPMENT.md)
-    for more detailed info.
 1. Modify the `development` section in `config/app_config.yaml` so that it has
    the values you need (if `RACK_ENV` is set to something other than
    `development`, the section matching its value will be used)
@@ -77,10 +73,6 @@ this network, follow these steps:
 1. `mkdir -p $APP_PATH`
 1. `cp -R . $APP_PATH`
 1. `cd $APP_PATH; bundle install`
-  * users not on NSIDC's internal network will need to first remove the line in
-    `Gemfile` that installs `libre_metrics_client`. See
-    [`DEVELOPMENT.md`](https://github.com/nsidc/dataset-search-services/blob/master/DEVELOPMENT.md)
-    for more detailed info.
 1. `cp $APP_PATH/deployment/puma.conf /etc/init/`
 1. `mkdir -p $APP_PATH/run/log`
 1. Set `ENV` to your desired environment (`development`, `integration`, `qa`,

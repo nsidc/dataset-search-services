@@ -41,15 +41,6 @@ module NsidcOpenSearch
       200
     end
 
-    if defined? settings.metrics_url
-      begin
-        require 'libre_metrics_client'
-        libre_metrics = LibreMetricsClient::LibreMetrics.new(settings.metrics_url)
-      rescue LoadError
-        puts 'Failed to load libre_metrics_client gem; continuing without Libre metrics.'
-      end
-    end
-
     before do
       query_string = request.env['rack.request.query_string'].gsub('&', '&amp;')
       search_terms = request.env['rack.request.query_hash']['searchTerms']
@@ -64,26 +55,6 @@ module NsidcOpenSearch
          (!request.path.include?('suggest'))
 
         puts "New request from: #{remote_ip} requested with: #{requested_with}"
-
-        if libre_metrics
-          begin
-            libre_metrics.send(
-              'ipAddress' => remote_ip,
-              'userAgent' => request.user_agent,
-              'metrics' => [
-                { name: 'ip', value: remote_ip },
-                { name: 'query_url', value: request.url.split('?')[0] },
-                { name: 'search_terms', value: search_terms },
-                { name: 'query_string', value: query_string },
-                { name: 'requested_with', value: requested_with }
-              ]
-            )
-          rescue => e
-            puts 'Could not send metrics information to libre_metrics'
-            puts e.message
-            puts e.backtrace.inspect
-          end
-        end
 
       end
     end
