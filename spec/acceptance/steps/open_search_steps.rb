@@ -29,8 +29,7 @@ module OpenSearchSteps
 
   step 'I make a request with a date time line crossing bounding box' do
     parameters['geo:box'] = '160.0,55.0,-160.0,80.0'
-    parameters['searchTerms'] = 'measurements'
-    parameters['count'] = '200'
+    parameters['count'] = '500'
   end
 
   step 'I make a request with date range :start_date to :end_date' do |start_date, end_date|
