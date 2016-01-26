@@ -205,3 +205,18 @@ Invoking a search:
 
 * Add a the facet field to SOLR first, be careful with the datatype.
 * Add the new facet field to the facet fields array in the configuration file
+
+### Search Relevance Ranking
+
+Search ranking configurations can be found in config/solr_query_config_*.yml
+
+The configuration for relevance ranking includes 'query_field_boosts', 'phrase_field_boosts', 'boost_query', and 'boost'.
+The numbers associated with each field are the boost values that indicate how closely the field should match the query. The higher the number will
+cause the result to be ranked higher when the query terms match the field. It is possible to increase or decrease the field boost values to alter
+the ranking of results but be advised that it will affect all search results.
+
+The 'boost_query' and 'boost' configurations boost the results based on other fields like popularity. There are comments in the configuration files
+that explain what each value is doing. Popularity is not the only factor in how results are ranked, but new datasets have a popularity that
+defaults to 5 (on a scale from 1-11). Increase or decrease the popularity value if the ranking of a specific dataset is not in the desired order.
+
+For more information on Solr relevance ranking, see the FAQ at https://wiki.apache.org/solr/SolrRelevancyFAQ
