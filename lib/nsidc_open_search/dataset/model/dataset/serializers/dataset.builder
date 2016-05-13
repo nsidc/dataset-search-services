@@ -60,16 +60,17 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
           rel = 'external-data'
         end
 
+        # if only a URL is present, it's an enclosure
+        if u.rel == '' && (u.title.nil? || u.title == '') && (u.description.nil? || u.description == '')
+          rel = 'enclosure'
+        end
+
         xml.link(
           'href' => u.url,
           'rel' => rel,
           'title' => u.name,
           'nsidc:description' => u.description
         )
-      end
-
-      e.data_access_urls.each do |u|
-        xml.link 'href' => u, 'rel' => 'enclosure'
       end
 
       xml.nsidc :datasetId, e.id

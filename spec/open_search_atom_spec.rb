@@ -18,7 +18,7 @@ describe 'open search response' do
             summary: 'test summary',
             last_revision_date: '2012-01-01',
             url: 'localhost/data/test',
-            data_access: [
+            data_access_urls: [
               NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
                 url: 'ftp://some.server',
                 name: 'Test FTP Link',
@@ -38,9 +38,11 @@ describe 'open search response' do
                 url: 'http://eloka-arctic.org/communities/russia/',
                 name: 'Product Web Site',
                 type: 'information'
+              ),
+              NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
+                url: 'ftp://some.other.server'
               )
             ],
-            data_access_urls: ['ftp://some.server'],
             data_centers: ['test center'],
             temporal_coverages: [
               NsidcOpenSearch::Dataset::Model::Search::DateRange.new(
@@ -50,7 +52,8 @@ describe 'open search response' do
             ],
             temporal_duration: '31',
             spatial_coverages: ['-53,180,-90,-180', '90,180,60,-180'],
-            spatial_area: '314.16'
+            spatial_area: '314.16',
+            supporting_programs: ['NASA NSIDC DAAC']
           )
         ]
       )
@@ -90,6 +93,7 @@ describe 'open search response' do
       expect(xml).to have_at_least_one_entry_with_an_enclosure_link
       expect(xml).to have_at_least_one_entry_with_at_least_one_data_center
       expect(xml).to have_at_least_one_entry_with_a_date_range
+      expect(xml).to have_at_least_one_entry_with_a_supporting_programs
       expect(xml).to have_two_geo_boxes
     end
   end

@@ -5,7 +5,7 @@ require_relative 'dataset/search/solr_search_dataset'
 require_relative 'dataset/search/factories/parameter_results_factory'
 require_relative 'dataset/search/parsers/solr_results_parser'
 require_relative 'dataset/model/search/open_search_response_builder'
-require_relative 'entry_enrichers/iso'
+#require_relative 'entry_enrichers/iso'
 
 module NsidcOpenSearch
   class DatasetSearch
@@ -25,7 +25,7 @@ module NsidcOpenSearch
           RSolr::Ext
         )
       )
-      self.class.send(:entry_enrichers, [NsidcOpenSearch::EntryEnrichers::Iso.new(iso_service_url)])
+      #self.class.send(:entry_enrichers, [NsidcOpenSearch::EntryEnrichers::Iso.new(iso_service_url)])
       self.class.send(:enricher_thread_count, enricher_thread_count)
     end
   end

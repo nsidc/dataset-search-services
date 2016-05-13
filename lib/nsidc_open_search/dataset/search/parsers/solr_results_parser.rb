@@ -1,6 +1,7 @@
 require_relative '../../model/search/result_entry'
 require_relative '../../model/search/date_range'
 require_relative '../../model/search/parameter'
+require_relative '../../model/search/data_access'
 
 module NsidcOpenSearch
   module Dataset
@@ -23,12 +24,14 @@ module NsidcOpenSearch
               last_revision_date: parse_revision_date(d['last_revision_date']),
               parameters: parse_parameters(d['full_parameters']),
               temporal_coverages: parse_temporal_coverages(d['temporal_coverages']),
-              url: d['dataset_url']
+              url: d['dataset_url'],
+              data_access_urls: parse_data_access(d['data_access_urls']),
+              supporting_programs: d['sponsored_programs']
             }
 
-            %w(authors data_access_urls data_centers dataset_version distribution_formats
-               keywords spatial_area spatial_coverages summary temporal_duration
-               title).each do |key|
+            %w(authors data_centers dataset_version distribution_formats
+               keywords spatial_area spatial_coverages summary
+               temporal_duration title).each do |key|
               entry[key.to_sym] = d[key]
             end
 
@@ -100,6 +103,30 @@ module NsidcOpenSearch
             NsidcOpenSearch::Dataset::Model::Search::Parameter.new(attrs)
           end
         end
+
+        # Data Access URLs can come in two flavors:
+        # just a URL (such as from bcodmo)
+        # A complex string, such as from NSIDC JSON, in this format:
+        #   Title | Type | URL | Description
+        def parse_data_access(data_access)
+          if data_access.nil?
+            nil
+          else
+            data_access.map { |da|
+              parts = da.split(" | ")
+              if parts.length > 1
+                NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
+                  url: parts[2], name: parts[0], description: parts[3], type: parts[1]
+                )
+              else
+                NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
+                  url: parts[0]
+                )
+              end
+            }
+          end
+        end
+
       end
     end
   end

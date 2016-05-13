@@ -80,12 +80,12 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
         'type' => 'application/atom+xml'
       )
 
-      e.data_access.each do |u|
+      e.data_access_urls.each do |access|
         rel = ''
 
-        case u.type
+        case access.type
         when 'information'
-          rel = 'download-data' if u.name == 'Product Web Site'
+          rel = 'download-data' if access.name == 'Product Web Site'
         when 'download'
           rel = 'download-data'
         when 'order'
@@ -95,16 +95,16 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
           rel = 'external-data'
         end
 
-        xml.link(
-          'href' => u.url,
-          'rel' => rel,
-          'title' => u.name,
-          'nsidc:description' => u.description
-        )
-      end
+        if rel == '' && (access.name.nil? || access.name == '') && (access.description.nil? || access.description == '')
+          rel = 'enclosure'
+        end
 
-      e.data_access_urls.each do |u|
-        xml.link 'href' => u, 'rel' => 'enclosure'
+        xml.link(
+          'href' => access.url,
+          'rel' => rel,
+          'title' => access.name,
+          'nsidc:description' => access.description
+        )
       end
 
       xml.nsidc :datasetId, e.id

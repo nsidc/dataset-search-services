@@ -14,14 +14,15 @@ response:
     - k2
     - k3
     data_access_urls:
-    - ftp://nsidc.org/data/test
+    - FTP | download | ftp://nsidc.org/data/test | A sample download
+    - Order Data | order | http://nsidc.org/data/test/order | Order test link
     authors:
     - John Doe
     - Jane Doe
     data_centers:
     - NSIDC
     - NOAA
-    supporting_programs:
+    sponsored_programs:
     - NOAA @ NSIDC
     - NASA NSIDC DAAC
     spatial_coverages:

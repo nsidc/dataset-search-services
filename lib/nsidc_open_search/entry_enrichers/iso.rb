@@ -12,24 +12,25 @@ module NsidcOpenSearch
       end
 
       def enrich_entry(entry)
-        begin
-          iso_document = RestClient.get("#{@iso_url}/#{entry.id}")
-        rescue
-          # log.info('Result entry cannot be enriched without an iso document')
-          return
-        end
-
-        doc = Nokogiri::XML iso_document.sub(
-          /<gmi:MI_Metadata version="1.0">/,
-          '<gmi:MI_Metadata xmlns:gco="http://www.isotc211.org/2005/gco" '\
-          'xmlns:gmd="http://www.isotc211.org/2005/gmd" '\
-          'xmlns:gml="http://www.opengis.net/gml/3.2" '\
-          'xmlns:gts="http://www.isotc211.org/2005/gts" '\
-          'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '\
-          'xmlns:gmi="http://www.isotc211.org/2005/gmi" version="1.0">')
-
-        entry.data_access = data_access doc
-        entry.supporting_programs = supporting_programs doc
+        return
+        # begin
+        #   iso_document = RestClient.get("#{@iso_url}/#{entry.id}")
+        # rescue
+        #   # log.info('Result entry cannot be enriched without an iso document')
+        #   return
+        # end
+        #
+        # doc = Nokogiri::XML iso_document.sub(
+        #   /<gmi:MI_Metadata version="1.0">/,
+        #   '<gmi:MI_Metadata xmlns:gco="http://www.isotc211.org/2005/gco" '\
+        #   'xmlns:gmd="http://www.isotc211.org/2005/gmd" '\
+        #   'xmlns:gml="http://www.opengis.net/gml/3.2" '\
+        #   'xmlns:gts="http://www.isotc211.org/2005/gts" '\
+        #   'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '\
+        #   'xmlns:gmi="http://www.isotc211.org/2005/gmi" version="1.0">')
+        #
+        # entry.data_access = data_access doc
+        # entry.supporting_programs = supporting_programs doc
       end
 
       private
