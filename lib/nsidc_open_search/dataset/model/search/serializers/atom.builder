@@ -95,7 +95,8 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
           rel = 'external-data'
         end
 
-        if rel == '' && (access.name.nil? || access.name == '') && (access.description.nil? || access.description == '')
+        if rel == '' && (access.name.nil? || access.name == '') &&
+           (access.description.nil? || access.description == '')
           rel = 'enclosure'
         end
 

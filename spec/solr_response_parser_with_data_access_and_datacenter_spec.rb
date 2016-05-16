@@ -26,7 +26,7 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
     end
 
     it 'should set data access urls' do
-      expect(@entry.data_access_urls.length).to be 2
+      expect(@entry.data_access_urls.length).to be 3
     end
 
     it 'should have a download url with all info needed' do
@@ -41,13 +41,18 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
       expect(@entry.data_access_urls[1].description).to eql 'Order test link'
     end
 
+    it 'should have a documentation url as an information type' do
+      expect(@entry.data_access_urls[2].type).to eql 'information'
+      expect(@entry.data_access_urls[2].name).to eql 'Documentation'
+    end
+
     it 'should have two supporting program references' do
       expect(@entry.supporting_programs.length).to be 2
     end
 
     it 'should have NASA and NOAA supporting programs' do
-      expect(@entry.supporting_programs).to include "NOAA @ NSIDC"
-      expect(@entry.supporting_programs).to include "NASA NSIDC DAAC"
+      expect(@entry.supporting_programs).to include 'NOAA @ NSIDC'
+      expect(@entry.supporting_programs).to include 'NASA NSIDC DAAC'
     end
   end
 end

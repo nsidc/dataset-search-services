@@ -16,6 +16,7 @@ response:
     data_access_urls:
     - FTP | download | ftp://nsidc.org/data/test | A sample download
     - Order Data | order | http://nsidc.org/data/test/order | Order test link
+    - Documentation | information | http://nsidc.org/data/test/documentation | Documentation Link
     authors:
     - John Doe
     - Jane Doe

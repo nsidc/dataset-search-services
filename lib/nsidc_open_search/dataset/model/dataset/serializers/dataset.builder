@@ -61,7 +61,8 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
         end
 
         # if only a URL is present, it's an enclosure
-        if u.rel == '' && (u.title.nil? || u.title == '') && (u.description.nil? || u.description == '')
+        if u.rel == '' && (u.title.nil? || u.title == '') &&
+           (u.description.nil? || u.description == '')
           rel = 'enclosure'
         end
 

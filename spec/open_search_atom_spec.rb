@@ -40,10 +40,16 @@ describe 'open search response' do
                 type: 'information'
               ),
               NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
+                url: 'http://some.server/with/documentation',
+                name: 'Documentation',
+                type: 'information'
+              ),
+              NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
                 url: 'ftp://some.other.server'
               )
             ],
             data_centers: ['test center'],
+
             temporal_coverages: [
               NsidcOpenSearch::Dataset::Model::Search::DateRange.new(
                 start_date: '2012-01-01',
@@ -90,6 +96,7 @@ describe 'open search response' do
       expect(xml).to have_at_least_two_entries_with_a_download_data_rel_link
       expect(xml).to have_at_least_one_entry_with_an_order_data_rel_link
       expect(xml).to have_at_least_one_entry_with_a_external_data_rel_link
+      expect(xml).to have_at_least_one_entry_with_a_documentation_link_with_no_rel
       expect(xml).to have_at_least_one_entry_with_an_enclosure_link
       expect(xml).to have_at_least_one_entry_with_at_least_one_data_center
       expect(xml).to have_at_least_one_entry_with_a_date_range
