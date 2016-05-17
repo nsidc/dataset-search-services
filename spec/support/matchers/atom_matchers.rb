@@ -130,6 +130,10 @@ RSpec::Matchers.define :have_at_least_one_entry_with_a_external_data_rel_link do
   match_at_least_one("#{ENTRY_SELECTOR}/xmlns:link[@rel='external-data']")
 end
 
+RSpec::Matchers.define :have_at_least_one_entry_with_a_documentation_link_with_no_rel do
+  match_at_least_one("#{ENTRY_SELECTOR}/xmlns:link[@rel=''][@title='Documentation']")
+end
+
 RSpec::Matchers.define :have_at_least_one_entry_with_an_enclosure_link do
   match_at_least_one("#{ENTRY_SELECTOR}/xmlns:link[@rel='enclosure']")
 end
