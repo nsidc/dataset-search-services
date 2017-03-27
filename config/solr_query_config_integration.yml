@@ -115,7 +115,7 @@ ADE:
       name: facet_data_center
       values:
         - 'National Snow and Ice Data Center | NSIDC'
-        - 'Advanced Cooperative Arctic Data and Information Service | ACADIS Gateway'
+        - 'NSF Arctic Data Center | NSF ADC'
         - 'UCAR/NCAR - Earth Observing Laboratory | UCAR/NCAR EOL'
         - 'UCAR/NCAR Research Data Archive | UCAR/NCAR RDA'
         - 'NOAA National Oceanographic Data Center | NOAA NODC'
