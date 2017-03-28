@@ -1,3 +1,9 @@
+## v3.0.1 (2017-03-28)
+
+Bugfixes:
+
+  - Update name for ACADIS data center to NSF Arctic Data Center.
+
 ## v3.0.0 (2016-05-19)
 
 Changes:
