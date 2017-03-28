@@ -28,9 +28,17 @@ package { 'zlib1g-dev':
 }
 
 # vagrant must be able to write to /var/log
-user { 'vagrant':
-  groups  => ['syslog'],
-  ensure  => present
+if $environment == 'ci' {
+  exec {'vagrant syslog membership':
+    unless => '/bin/grep -q "syslog\\S*vagrant" /etc/group',
+    command => '/usr/sbin/usermod -aG syslog vagrant',
+    require => User['vagrant']
+  }
+} else {
+  user { 'vagrant':
+    groups  => ['syslog'],
+    ensure  => present
+  }
 }
 
 file { '/var/log':
