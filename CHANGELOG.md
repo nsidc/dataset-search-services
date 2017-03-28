@@ -1,3 +1,10 @@
+## v3.0.0 (2016-05-19)
+
+Changes:
+
+  - Update builders to remove enricher needs
+  - Remove ISO enricher, use solr for all needed info instead
+
 ## v2.0.3 (2016-01-19)
 
 Changes:
