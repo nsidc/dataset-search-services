@@ -42,6 +42,11 @@ module NsidcOpenSearch
     end
 
     before do
+      # The X-Requested-With response header is necessary for cross-origin
+      # requests if the browser does a preflight request
+      response.headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, Content-Type, '\
+                                                         'Cache-Control, Accept, AUTHORIZATION'
+
       query_string = request.env['rack.request.query_string'].gsub('&', '&amp;')
 
       # note that Puma does not play nice here, it overrides rack default env methods.
