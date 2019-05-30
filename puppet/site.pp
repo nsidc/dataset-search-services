@@ -1,5 +1,5 @@
 # Load modules and classes
-hiera_include('classes')
+lookup('classes', {merge => unique}).include
 
 # Ensure the brightbox apt repository gets added before installing ruby
 include apt
