@@ -83,6 +83,7 @@ nsidc_jenkins::jobs:
       ENV=integration
 
       (vagrant nsidc hijack --env=$ENV || true)
+      (vagrant nsidc destroy --env=$ENV || true)
       vagrant nsidc up --env=$ENV
 
       bundle exec rake jenkins:release:tag_deployment[$ENV]
@@ -118,6 +119,7 @@ nsidc_jenkins::jobs:
       ENV=qa
 
       (vagrant nsidc hijack --env=$ENV || true)
+      (vagrant nsidc destroy --env=$ENV || true)
       vagrant nsidc up --env=$ENV
 
       bundle exec rake jenkins:release:tag_deployment[$ENV]
@@ -153,6 +155,7 @@ nsidc_jenkins::jobs:
       ENV=staging
 
       (vagrant nsidc hijack --env=$ENV || true)
+      (vagrant nsidc destroy --env=$ENV || true)
       vagrant nsidc up --env=$ENV
 
       bundle exec rake jenkins:release:tag_deployment[$ENV]
