@@ -209,7 +209,7 @@ module NsidcOpenSearch
 
         def format_query_term(term, include_params = true)
           # remove quotes from phrases and split the keywords up
-          unquoted = term.gsub(/"/, ' ').gsub('(', '\(').gsub(')', '\)')
+          unquoted = term.tr(/"/, ' ').tr('(', '\(').tr(')', '\)')
           unquoted = unquoted.split(' ').select { |t| t.length >= 2 }
           unquoted = unquoted.reject { |t| %w(and or).include?(t.downcase) }
 

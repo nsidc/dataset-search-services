@@ -44,7 +44,7 @@ describe 'Nsidc OpenSearch App' do
   end
 
   it 'should provide dataset OSDD content at its endpoint' do
-    get '/OpenSearchDescription', {},  'HTTP_ACCEPT' => 'application/opensearchdescription+xml'
+    get '/OpenSearchDescription', {}, 'HTTP_ACCEPT' => 'application/opensearchdescription+xml'
     expect(last_response).to be_ok
     expect(last_response.header['Content-Type']).to match '^application/opensearchdescription\+xml'
   end
