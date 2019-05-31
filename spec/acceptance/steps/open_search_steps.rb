@@ -15,7 +15,6 @@ module OpenSearchSteps
 
   step 'I request the open search description document' do
     osdd_url = "http://#{@valid_envs[@target_env]['Hostname']}/#{@valid_envs[@target_env]['Path']}"
-    puts "OSDD_URL: #{osdd_url}"
     @osdd = OpenSearchDescriptionPage.new(osdd_url)
   end
 
