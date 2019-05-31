@@ -83,9 +83,9 @@ nsidc_jenkins::jobs:
       ENV=integration
 
       (vagrant nsidc hijack --env=$ENV || true)
+      (vagrant nsidc destroy --env=$ENV || true)
       vagrant nsidc up --env=$ENV
 
-      bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
     workspace: "%{hiera('workspace_integration')}"
     trigger_job: "%{hiera('job_integration_acceptance')}"
@@ -119,9 +119,9 @@ nsidc_jenkins::jobs:
       ENV=qa
 
       (vagrant nsidc hijack --env=$ENV || true)
+      (vagrant nsidc destroy --env=$ENV || true)
       vagrant nsidc up --env=$ENV
 
-      bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
     workspace: "%{hiera('workspace_qa')}"
     trigger_job: "%{hiera('job_qa_acceptance')}"
@@ -155,9 +155,9 @@ nsidc_jenkins::jobs:
       ENV=staging
 
       (vagrant nsidc hijack --env=$ENV || true)
+      (vagrant nsidc destroy --env=$ENV || true)
       vagrant nsidc up --env=$ENV
 
-      bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
     workspace: "%{hiera('workspace_staging')}"
     trigger_job: "%{hiera('job_staging_acceptance')}"
@@ -188,7 +188,6 @@ nsidc_jenkins::jobs:
       vagrant nsidc destroy --env=$ENV || true
       vagrant nsidc up --env=$ENV
 
-      bundle exec rake deploy:start_puma[$ENV]
       bundle exec rake jenkins:release:tag_deployment[$ENV]
     workspace: "%{hiera('workspace_blue')}"
 

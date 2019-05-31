@@ -1,5 +1,7 @@
 project: dss
 gitrepo: git@github.com:nsidc/dataset-search-services.git
 
-puppet:
-  enabled: true
+vsphere:
+  template:
+    default: xenial64-nsidc-puppet4
+    ci: xenial64-docker-puppet4-jenkins1

@@ -8,7 +8,7 @@ describe NsidcOpenSearch::Search do
   let(:valid_terms) { [:searchterms] }
   let(:search) { double('search impl') }
   let(:param_factory) { double('param factory impl') }
-  let(:definition)  { double('search definition') }
+  let(:definition) { double('search definition') }
   let(:entry_enricher) { double('entry enricher', enrich_entry: nil) }
   let(:results) { double('results', total_results: 2, entries: [{}, {}]) }
   let(:obj) { Object.new }

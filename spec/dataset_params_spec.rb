@@ -22,7 +22,7 @@ describe NsidcOpenSearch::Dataset::Search::DatasetParameterFactory do
 
   it 'should exclude empty query parameters' do
     search_params = NsidcOpenSearch::Dataset::Search::DatasetParameterFactory.construct(
-      { splat: ['http://something.com']  },
+      { splat: ['http://something.com'] },
       @valids
     )
     expect(search_params).to eql @expected.merge(id: "\"http://something.com\"")

@@ -12,8 +12,8 @@ Feature: Must-not-break search scenarios
 
   Scenario: glacier
     When I perform a text search for "glacier"
-    Then The entries contain g01130 in the top 3
-    And The entries contain nsidc-0272 in the top 3
+    Then The entries contain g01130 in the top 5
+    And The entries contain nsidc-0272 in the top 5
 
   Scenario: snow cover
     When I perform a text search for "snow cover"
@@ -38,7 +38,7 @@ Feature: Must-not-break search scenarios
 
   Scenario: ice sounding
     When I perform a text search for "ice sounding"
-    Then The entries contain g00790 in the top 3
+    Then The entries contain g00790 in the top 5
 
   Scenario: wais firn air
     When I perform a text search for "wais firn air"

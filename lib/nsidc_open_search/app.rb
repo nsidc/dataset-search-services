@@ -1,7 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/config_file'
 require 'sinatra/cross_origin'
-require 'sinatra/advanced_routes'
 require File.join(File.dirname(__FILE__), '..', '..', 'config', 'app_config')
 require File.join(File.dirname(__FILE__), 'helpers', 'app_helpers')
 require File.join(File.dirname(__FILE__), 'controllers', 'dataset_osdd')
@@ -25,7 +24,6 @@ module NsidcOpenSearch
     end
 
     register Sinatra::CrossOrigin
-    register Sinatra::AdvancedRoutes
 
     configure do
       AppConfig[environment].each { |k, v| set k, v }
