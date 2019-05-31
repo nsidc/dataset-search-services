@@ -112,7 +112,7 @@ unless $environment == 'ci' {
     init_active_record => false,
     min_threads => '1',
     max_threads => '1',
-    port => '3000',
+    port => '10680',
     workers  => $workers,
     restart_command => 'bundle exec puma'
   } ->
