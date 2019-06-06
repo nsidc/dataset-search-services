@@ -4,10 +4,12 @@ Changes:
 
   - Updated vagrant configuration
   - Changed documentation to explain systemd setup
+  - Update Ruby, Rubocop, and Nokogiri versions to address security warnings.
 
 ## v3.0.2 (2017-07-25)
 
 Bugfixes:
+
   - Add X-Requested-With response header, which allows cross-origin requests
     from browsers that send a preflight request first.
 

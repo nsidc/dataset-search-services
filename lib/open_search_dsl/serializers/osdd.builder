@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../utils/class_extensions'
 
 xml.instruct!
@@ -25,7 +27,7 @@ xml.OpenSearchDescription xml_namespaces do
     xml << i.to_xml
   end
 
-  %i(Contact Tags LongName Developer Attribution SyndicationRight AdultContent).each do |tag|
+  %i[Contact Tags LongName Developer Attribution SyndicationRight AdultContent].each do |tag|
     val = send(tag.to_s.to_underscore.to_sym)
     xml.tag! tag, val unless val.nil?
   end

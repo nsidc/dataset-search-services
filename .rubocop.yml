@@ -28,6 +28,6 @@ Metrics/MethodLength:
 Style/Documentation:
   Enabled: false
 
-Style/MethodName:
+Naming/MethodName:
   Exclude:
   - lib/nsidc_open_search/dataset/search/definitions/definition.rb # OpenSearch uses camelCase

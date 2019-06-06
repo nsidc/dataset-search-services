@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 guard 'rake', task: 'spec:unit' do
   watch(%r{^spec/.+_spec\.rb})
   watch(%r{^lib/(.+)\.rb}) { |m| "spec/#{m[1]}_spec.rb" }
@@ -14,8 +16,7 @@ guard('puma',
       threads: '1:1',
       workers: 5,
       environment: 'development',
-      config: '-'
-     ) do
+      config: '-') do
   watch('Gemfile.lock')
   watch(%r{^config|lib/.*})
 end
