@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'rspec/core/rake_task'
 require File.join('.', 'config', 'deployment_config.rb')
@@ -12,7 +14,7 @@ $stdout.sync = true
 $stderr.sync = true
 
 # Change to the directory of this file.
-Dir.chdir(File.expand_path('../', __FILE__))
+Dir.chdir(File.expand_path(__dir__))
 
 desc 'Run local webserver instance'
 task :run do
@@ -33,13 +35,13 @@ task :routes do
   # rather than hardcoding!
   app_dir = 'lib/nsidc_open_search'
   require ['.', app_dir, 'app.rb'].join('/')
-  root_path = [File.expand_path('../', __FILE__), app_dir].join('/')
+  root_path = [File.expand_path(__dir__), app_dir].join('/')
 
   NsidcOpenSearch::App.each_route do |r|
     print r.verb.ljust(12)
     print r.path.ljust(35) unless r.path.nil?
     unless r.file.nil?
-      r.file.slice! root_path unless r.file.nil?
+      r.file&.slice! root_path
       print "#{r.file} (#{r.line})"
     end
     puts ''

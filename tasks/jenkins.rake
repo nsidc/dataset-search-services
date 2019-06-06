@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 def version_rb
-  File.expand_path('../../lib/version.rb', __FILE__)
+  File.expand_path('../lib/version.rb', __dir__)
 end
 
 # Load will reload the version file so we can get the updated value
@@ -24,7 +26,7 @@ namespace :jenkins do
 
       # change "Unreleased" version to current version, with a release date of
       # today, stage CHANGELOG.md
-      changelog_md = File.expand_path('../../CHANGELOG.md', __FILE__)
+      changelog_md = File.expand_path('../CHANGELOG.md', __dir__)
       sh %(sed -i "s/^## Unreleased$/## v#{version} (#{date})/" #{changelog_md})
       sh %(git add #{changelog_md})
 
