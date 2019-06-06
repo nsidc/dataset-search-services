@@ -1,3 +1,10 @@
+## Unreleased
+
+Changes:
+
+  - Updated vagrant configuration
+  - Changed documentation to explain systemd setup
+
 ## v3.0.2 (2017-07-25)
 
 Bugfixes:
