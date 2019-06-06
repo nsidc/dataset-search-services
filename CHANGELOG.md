@@ -1,5 +1,9 @@
 ## Unreleased
 
+Changes:
+
+  - Updated vagrant configuration
+  - Changed documentation to explain systemd setup
   - Update Ruby, Rubocop, and Nokogiri versions to address security warnings.
 
 ## v3.0.2 (2017-07-25)
