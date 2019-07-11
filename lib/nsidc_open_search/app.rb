@@ -1,6 +1,8 @@
 require 'sinatra/base'
 require 'sinatra/config_file'
 require 'sinatra/cross_origin'
+require 'yard'
+require 'yard-sinatra'
 require File.join(File.dirname(__FILE__), '..', '..', 'config', 'app_config')
 require File.join(File.dirname(__FILE__), 'helpers', 'app_helpers')
 require File.join(File.dirname(__FILE__), 'controllers', 'dataset_osdd')
@@ -68,5 +70,26 @@ module NsidcOpenSearch
     register NsidcOpenSearch::Controllers::DatasetFacets
     register NsidcOpenSearch::Controllers::DatasetRest
     register NsidcOpenSearch::Controllers::DatasetSuggestions
+
+    # Retrieve information about service endpoints
+    # @return [Array] An array of hashes containing route information
+    def self.route_summary
+      # Force YARD to reload controller files.
+      YARD::Registry.load(Dir.glob('./lib/**/controllers'), true)
+      routes = YARD::Sinatra.routes.map do |r|
+
+        # r.http_path returns the string "Routes.named(blah)", NOT the path that is
+        # encoded in the Routes module. Can't find a way to get the value represented
+        # by this string other than parsing out "blah" and actually calling the
+        # Routes method "named" with "blah" as an argument.
+        path_method = /([^(]+)\(:(.*)\)/.match(r.http_path)[2].to_sym
+        { verb:      r.http_verb,
+          http_path: '(/:api_version)' + Routes.named(path_method),
+          file:      r.file,
+          line:      r.line,
+          desc:      r.docstring.tr("\n", ' ') }
+      end
+      routes.sort_by { |r| r[:verb] }
+    end
   end
 end

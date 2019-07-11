@@ -1,6 +1,4 @@
-# NSIDC Open Search
-
-NSIDC OpenSearch web service (yet another OpenSearch)
+# NSIDC Open Search (yet another OpenSearch)
 
 The service currently exposes four endpoints:
 
@@ -24,13 +22,13 @@ needed. The `source` parameter in queries made by NSIDC Search is set to
 
 ## Installation & Usage
 
-##### Requirements
+### Requirements
 
   * Ruby (see `.ruby-version` for the required version)
   * [Bundler](http://bundler.io/)
   * Ubuntu 14.04 (only required if setting up the Upstart service)
 
-##### Configuration
+### Configuration
 
 `config/app_config.yaml` contains settings for different environments to run the
 service in. Each environment other than `development` merges in the `common`
@@ -83,7 +81,7 @@ this network, follow these steps:
 1. Create a puma run file:
    * `sudo mkdir /etc/search_services`
    * Create a file `/etc/search_services/puma.rb` file; see below for an example.  As above,
-     this example assumes the $APP_PATH is /opt/search_services 
+     this example assumes the $APP_PATH is /opt/search_services
 1. `sudo systemctl start search_services.service`
    * the service must be able to write to `/var/log` and `/var/run/puma` (the
      full paths of the relevant files can be seen in `config/app_config.yaml`)
@@ -93,12 +91,12 @@ this network, follow these steps:
     `/api/dataset/2`, you can access the OpenSearch Description Document provided
     by the service at
     [http://localhost:10680/api/dataset/2/OpenSearchDescription](http://localhost:10680/api/dataset/2/OpenSearchDescription).
-    
+
 #### Example search_services.service file
 ```
 [Unit]
 Description=search_services - puma application
-   
+
 [Service]
 Type=forking
 WorkingDirectory=/opt/search_services
@@ -106,11 +104,11 @@ RuntimeDirectory=search_services
 PIDFile=/var/run/search_services/puma.pid
 User=www
 Group=www
-   
+
 # The command to start puma
 ExecStart=/usr/local/bin/bundle exec puma -C /etc/search_services/puma.rb
 Restart=on-failure
-   
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -144,17 +142,17 @@ Instructions and notes for developing this project are in
 
 ## How to contact NSIDC
 
-User Services and general information:  
-Support: [http://support.nsidc.org](http://support.nsidc.org)  
-Email: nsidc@nsidc.org  
+User Services and general information:
+Support: [http://support.nsidc.org](http://support.nsidc.org)
+Email: nsidc@nsidc.org
 
-Phone: +1 303.492.6199  
-Fax: +1 303.492.2468  
+Phone: +1 303.492.6199
+Fax: +1 303.492.2468
 
-Mailing address:  
-National Snow and Ice Data Center  
-CIRES, 449 UCB  
-University of Colorado  
+Mailing address:
+National Snow and Ice Data Center
+CIRES, 449 UCB
+University of Colorado
 Boulder, CO 80309-0449 USA
 
 ## License

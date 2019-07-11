@@ -19,6 +19,16 @@ NSIDC:
     -
       name: facet_spatial_coverage
     -
+    # Metadata for spatial and temporal resolution.
+    # To re-instate the facet for spatial resolution, uncomment the following
+    # lines and add additional sort_order options as needed.
+      #name: facet_spatial_resolution
+      #sort: defined_sort
+      #sort_order:
+      #  - '0 - 500 m'
+      #  - '501 m - 1 km'
+      #  etc.
+    -
       name: facet_temporal_duration
       sort: defined_sort
       sort_order:
@@ -27,6 +37,16 @@ NSIDC:
         - '5+ years'
         - '10+ years'
         - 'Not specified'
+    -
+    # To re-instate the facet for temporal resolution, uncomment the following
+    # lines and add additional sort_order options as needed.
+      #name: facet_temporal_resolution
+      #sort: defined_sort
+      #sort_order:
+      #  - 'Subhourly'
+      #  - 'Hourly'
+      #  - 'Subdaily'
+      #  etc.
     -
       name: facet_format
       sort: not_specified_last
