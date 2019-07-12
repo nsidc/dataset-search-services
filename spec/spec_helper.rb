@@ -1,5 +1,7 @@
 require 'bundler/setup'
 
+ENV['RACK_ENV'] = 'test'
+
 Bundler.require(:default, :test)
 
 # Require all support files

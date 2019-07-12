@@ -8,7 +8,8 @@ module AppConfig
 
   def self.[](env = :development)
     env = env.to_sym
-    app_config = if env == :development
+    app_config = case env
+                 when :development, :test
                    APP_CONFIGS[:development]
                  else
                    APP_CONFIGS[:common].merge(APP_CONFIGS[env])
@@ -16,7 +17,6 @@ module AppConfig
 
     query_config_file = env == :test ? '../solr_query_config_test.yml' : '../solr_query_config.yml'
     app_config[:query_config] = YAML.load_file(File.expand_path(query_config_file, __FILE__))
-
     app_config
   end
 end
