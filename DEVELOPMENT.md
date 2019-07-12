@@ -217,10 +217,10 @@ Search ranking configurations can be found in config/solr_query_config_*.yml
 The configuration for relevance ranking includes 'query_field_boosts',
 'phrase_field_boosts', 'boost_query', and 'boost'.  The numbers associated with
 each field are the boost values that indicate how closely the field should match
-the query. The higher the number will cause the result to be ranked higher when
-the query terms match the field. It is possible to increase or decrease the
-field boost values to alter the ranking of results but be advised that it will
-affect all search results.
+the query. Higher numbers will cause the result to be ranked higher when the
+query terms match the field. It is possible to increase or decrease the field
+boost values to alter the ranking of results but be advised that it will affect
+all search results.
 
 The 'boost_query' and 'boost' configurations boost the results based on other
 fields like popularity. There are comments in the configuration files that
