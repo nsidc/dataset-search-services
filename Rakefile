@@ -33,18 +33,12 @@ desc 'List all routes'
 task :routes do
   # Figure out how to Get this path from the environment
   # rather than hardcoding!
-  app_dir = 'lib/nsidc_open_search'
-  require ['.', app_dir, 'app.rb'].join('/')
-  root_path = [File.expand_path(__dir__), app_dir].join('/')
+  require_relative './lib/nsidc_open_search/app'
 
-  NsidcOpenSearch::App.each_route do |r|
-    print r.verb.ljust(12)
-    print r.path.ljust(35) unless r.path.nil?
-    unless r.file.nil?
-      r.file&.slice! root_path
-      print "#{r.file} (#{r.line})"
-    end
-    puts ''
+  NsidcOpenSearch::App.route_summary.each do |route|
+    print route[:verb].ljust(8)
+    print route[:http_path].to_s.ljust(50, '.') unless route[:http_path].nil?
+    print "#{route[:file]} (#{route[:line]})\n"
   end
 end
 

@@ -1,4 +1,8 @@
-## Git workflow
+# NSIDC Open Search
+
+## Development Environment and Workflow
+
+### Git workflow
 
 Development on this project uses
 [the GitHub Flow](https://guides.github.com/introduction/flow/index.html):
@@ -11,16 +15,16 @@ Development on this project uses
 4. Push to the branch (`git push -u origin my-new-feature`)
 5. [Create a new Pull Request](https://github.com/nsidc/dataset-search-services/compare)
 
-## Installation & Usage
+### Installation & Usage
 
 See
 [`README.md`](https://github.com/nsidc/dataset-search-services/blob/master/README.md).
 
-## Unit tests
+### Unit tests
 
 Run the unit tests with `bundle exec rake spec:unit`.
 
-## Acceptance tests
+### Acceptance tests
 
 Acceptance tests are a little trickier. One way to run them on your local dev machine is thus:
 
@@ -30,14 +34,14 @@ Acceptance tests are a little trickier. One way to run them on your local dev ma
 
 Don't check these changes in though!
 
-## RuboCop
+### RuboCop
 
 [RuboCop](https://github.com/bbatsov/rubocop) is a style checker for Ruby,
 designed to enforce rules specified in the community-driven
 [Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide). Settings are
 configured in `.rubocop.yml`. It can be run simply with `bundle exec rubocop`.
 
-## Guard
+### Guard
 
 Guard can be used to automatically restart the puma server or run RuboCop and unit tests whenever a file changes.
 
@@ -210,13 +214,20 @@ Invoking a search:
 
 Search ranking configurations can be found in config/solr_query_config_*.yml
 
-The configuration for relevance ranking includes 'query_field_boosts', 'phrase_field_boosts', 'boost_query', and 'boost'.
-The numbers associated with each field are the boost values that indicate how closely the field should match the query. The higher the number will
-cause the result to be ranked higher when the query terms match the field. It is possible to increase or decrease the field boost values to alter
-the ranking of results but be advised that it will affect all search results.
+The configuration for relevance ranking includes 'query_field_boosts',
+'phrase_field_boosts', 'boost_query', and 'boost'.  The numbers associated with
+each field are the boost values that indicate how closely the field should match
+the query. Higher numbers will cause the result to be ranked higher when the
+query terms match the field. It is possible to increase or decrease the field
+boost values to alter the ranking of results but be advised that it will affect
+all search results.
 
-The 'boost_query' and 'boost' configurations boost the results based on other fields like popularity. There are comments in the configuration files
-that explain what each value is doing. Popularity is not the only factor in how results are ranked, but new datasets have a popularity that
-defaults to 5 (on a scale from 1-11). Increase or decrease the popularity value if the ranking of a specific dataset is not in the desired order.
+The 'boost_query' and 'boost' configurations boost the results based on other
+fields like popularity. There are comments in the configuration files that
+explain what each value is doing. Popularity is not the only factor in how
+results are ranked, but new datasets have a popularity that defaults to 5 (on a
+scale from 1-11). Increase or decrease the popularity value if the ranking of a
+specific dataset is not in the desired order.
 
-For more information on Solr relevance ranking, see the FAQ at https://wiki.apache.org/solr/SolrRelevancyFAQ
+For more information on Solr relevance tuning, see the [Solr Reference
+Relevance Chapter](https://lucene.apache.org/solr/guide/8_1/relevance.html).

@@ -7,17 +7,16 @@ module AppConfig
   APP_CONFIGS = YAML.load_file(File.expand_path('../app_config.yaml', __FILE__))
 
   def self.[](env = :development)
-    if env.to_sym == :development
-      app_config = APP_CONFIGS[:development]
-      query_config_env = :integration
-    else
-      app_config = APP_CONFIGS[:common].merge(APP_CONFIGS[env.to_sym])
-      query_config_env = env.to_sym == :staging ? :production : env
-    end
+    env = env.to_sym
+    app_config = case env
+                 when :development, :test
+                   APP_CONFIGS[:development]
+                 else
+                   APP_CONFIGS[:common].merge(APP_CONFIGS[env])
+                 end
 
-    query_config_file = File.expand_path("../solr_query_config_#{query_config_env}.yml", __FILE__)
-    app_config[:query_config] = YAML.load_file(query_config_file)
-
+    query_config_file = env == :test ? '../solr_query_config_test.yml' : '../solr_query_config.yml'
+    app_config[:query_config] = YAML.load_file(File.expand_path(query_config_file, __FILE__))
     app_config
   end
 end

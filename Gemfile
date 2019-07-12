@@ -14,6 +14,8 @@ gem 'sinatra', '~>2.0.5'
 gem 'sinatra-contrib', '~>2.0.5'
 gem 'sinatra-cross_origin', '~>0.4.0'
 gem 'tilt'
+gem 'yard', '~>0.9.9'
+gem 'yard-sinatra', '~>1.0.0'
 
 group :test do
   gem 'awesome_print'

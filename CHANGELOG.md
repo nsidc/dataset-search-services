@@ -1,3 +1,13 @@
+## Unreleased
+
+Changes:
+
+  - Switched from environment-specific Solr query configuration files to one
+    common configuration file. The exception is the configuration for the test
+    environment, which still has its own configuration.
+  - Added YARD gems to support a `rake routes` task.
+  - Minor documentation reformatting.
+
 ## v3.1.0 (2019-06-07)
 
 Changes:
