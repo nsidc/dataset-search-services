@@ -1,3 +1,10 @@
+## Unreleased
+
+Changes:
+
+  - Removed ISO Topic from the list of fields queried for search terms
+  - No longer boosting Authoritative ID matches
+
 ## v3.2.0 (2019-07-12)
 
 Changes:
