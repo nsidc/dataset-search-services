@@ -42,7 +42,6 @@ NSIDC:
   query_field_boosts:
     title: 15
     parameters: 3
-    keywords: 3
     sensors: 2
     platforms: 2
     summary: 5
@@ -55,7 +54,6 @@ NSIDC:
     title: 25
     summary: 25
     parameters: 5
-    keywords: 5
   phrase_slop: 1
   boost_query: brokered:false^100 published_date:[NOW-2YEARS/DAY TO NOW/DAY]^15 #boost non-brokered datasets and datasets published in the last 2 years
   boost: product(popularity,query({!type=edismax qf=$qf pf=$pf ps=$ps bq=$bq bf=sum(1,product(tan(div(popularity,8)),50))^55 v=$q boost=})) #scale documents by how well they satisfy the query and their popularity
