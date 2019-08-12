@@ -7,7 +7,7 @@ responseHeader:
     - true,
     - 'true'
     facet.limit: "-1"
-    qf: title^15 parameters^3 summary^5 topics keywords^3 platforms^2 sensors^2 normalized_authoritative_id^100 authors
+    qf: title^15 parameters^3 summary^5 keywords^3 platforms^2 sensors^2 normalized_authoritative_id^100 authors
     f.facet_temporal_duration.facet.sort: index
     f.facet_spatial_coverage.facet.sort: index
     wt: ruby
