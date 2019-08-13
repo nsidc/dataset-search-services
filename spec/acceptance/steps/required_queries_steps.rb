@@ -19,13 +19,13 @@ module RequiredQueriesSteps
   end
 
   step 'The entries contain :auth_id in the top :limit' do |auth_id, limit|
-    result_entries_authoritative_ids.should include auth_id.upcase
-    result_entries_authoritative_ids.index(auth_id.upcase).should be < limit.to_i
+    expect(result_entries_authoritative_ids).to include(auth_id.upcase)
+    expect(result_entries_authoritative_ids.index(auth_id.upcase)).to be < limit.to_i
   end
 
   step 'The entries don\'t contain :auth_id in the top :limit' do |auth_id, limit|
-    result_entries_authoritative_ids.should include auth_id.upcase
-    result_entries_authoritative_ids.index(auth_id.upcase).should be >= limit.to_i
+    expect(result_entries_authoritative_ids).to include(auth_id.upcase)
+    expect(result_entries_authoritative_ids.index(auth_id.upcase)).to be >= limit.to_i
   end
 end
 
