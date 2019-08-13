@@ -1,7 +1,7 @@
 q: "*:*"
-qf: title^15 parameters^3 summary^5 keywords^3 platforms^2 sensors^2 normalized_authoritative_id
+qf: title^15 parameters^3 summary^5 keywords platforms^2 sensors^2 normalized_authoritative_id
   authors
-pf: title^25 parameters^5 summary^25 keywords^5
+pf: title^25 parameters^5 summary^25 keywords
 ps: 1
 rows: '0'
 bq: brokered:false^100 published_date:[NOW-2YEARS/DAY TO NOW/DAY]^15
