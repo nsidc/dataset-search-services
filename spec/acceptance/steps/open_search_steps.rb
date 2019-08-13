@@ -44,11 +44,11 @@ module OpenSearchSteps
 
   # Then steps
   step 'I should get :code response code' do |code|
-    osdd.response_code.should be code.to_i
+    expect(osdd.response_code).to be(code.to_i)
   end
 
   step 'it should have a template with this environments hostname' do
-    osdd.url_template_hostname.should eql @valid_envs[@target_env]['Hostname']
+    expect(osdd.url_template_hostname).to eq(@valid_envs[@target_env]['Hostname'])
   end
 
   step 'the values should contain:' do |values|
@@ -56,27 +56,27 @@ module OpenSearchSteps
     values.hashes.each do |vhash|
       expected_values.push(vhash['Value'])
     end
-    osdd.url_template_parameters.should =~ expected_values
+    expect(osdd.url_template_parameters).to match_array(expected_values)
   end
 
   step 'I get a valid response with entries' do
-    page.valid?.should be true
-    page.total_results.should be > 10
-    page.result_entries.size.should be > 10
+    expect(page.valid?).to be(true)
+    expect(page.total_results).to be > 10
+    expect(page.result_entries.size).to be > 10
   end
 
   step 'I get a valid response with :count entries' do |count|
-    page.valid?.should be true
-    page.total_results.should be count.to_i
-    page.result_entries.size.should be count.to_i
+    expect(page.valid?).to be true
+    expect(page.total_results).to be(count.to_i)
+    expect(page.result_entries.size).to be(count.to_i)
   end
 
   step 'The entries contain :auth_id' do |auth_id|
-    result_entries_authoritative_ids.should include auth_id.upcase
+    expect(result_entries_authoritative_ids).to include(auth_id.upcase)
   end
 
   step 'The entries don\'t contain :auth_id' do |auth_id|
-    result_entries_authoritative_ids.should_not include auth_id.upcase
+    expect(result_entries_authoritative_ids).not_to include(auth_id.upcase)
   end
 
   private

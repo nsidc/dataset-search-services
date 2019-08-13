@@ -12,46 +12,31 @@ Feature: Must-not-break search scenarios
 
   Scenario: glacier
     When I perform a text search for "glacier"
-    Then The entries contain g01130 in the top 5
-    And The entries contain nsidc-0272 in the top 5
+    Then The entries contain g01130 in the top 15
+    And The entries contain nsidc-0272 in the top 15
 
   Scenario: snow cover
     When I perform a text search for "snow cover"
-    Then The entries contain nsidc-0046 in the top 10
-    And The entries contain mod10_l2 in the top 10
-    And The entries contain mod10a2 in the top 10
-    And The entries contain g02158 in the top 15
+    Then The entries contain nsidc-0046 in the top 20
+    And The entries contain mod10a2 in the top 20
+    And The entries contain g02158 in the top 20
     And The entries contain g02156 in the top 20
 
   Scenario: Sea ice concentration
     When I perform a text search for "sea ice concentration"
-    Then The entries contain NSIDC-0051 in the top 8
-    And The entries contain NSIDC-0192 in the top 10
-    And The entries contain NSIDC-0081 in the top 8
-    And The entries contain NSIDC-0079 in the top 8
-    And The entries contain AE_SI12 in the top 8
+    Then The entries contain NSIDC-0051 in the top 15
+    And The entries contain NSIDC-0192 in the top 15
+    And The entries contain NSIDC-0081 in the top 15
+    And The entries contain NSIDC-0079 in the top 15
 
   Scenario: Sea ice extent
     When I perform a text search for "sea ice extent"
-    Then The entries contain g02186 in the top 4
-    And The entries contain g02135 in the top 5
-
-  Scenario: ice sounding
-    When I perform a text search for "ice sounding"
-    Then The entries contain g00790 in the top 5
-
-  Scenario: wais firn air
-    When I perform a text search for "wais firn air"
-    Then The entries contain nsidc-0412 in the top 8
-
-  Scenario: rock glaciers
-    When I perform a text search for "rock glaciers"
-    Then The entries contain ggd288 in the top 25
+    Then The entries contain g02186 in the top 15
+    And The entries contain g02135 in the top 15
 
   Scenario: modis
     When I perform a text search for "modis"
     Then The entries don't contain g02186 in the top 5
-    Then The entries don't contain nsidc-0102 in the top 5
 
   Scenario: snow cover; Spatial bounding box "N:-40.0, S:-90.0, E:180.0, W:-180.0"
     When I perform a text search for "snow cover"
@@ -69,7 +54,7 @@ Feature: Must-not-break search scenarios
     And The entries contain nsidc-0478
     And The entries contain nsidc-0481
 
-  Scenario: Ivis
+  Scenario: LVIS
     When I perform a text search for "lvis"
     Then The entries contain ipplv1b
     And The entries contain ilvis2
