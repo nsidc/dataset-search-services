@@ -64,6 +64,7 @@ NSIDC:
     sensors: 2
     platforms: 2
     summary: 5
+    normalized_authoritative_id: 5
   phrase_fields:
     - title
     - parameters
