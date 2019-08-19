@@ -1,4 +1,4 @@
-## Unreleased
+## v3.3.0 (2019-08-19)
 
 Changes:
 
