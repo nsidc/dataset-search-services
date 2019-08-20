@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
-require 'rspec/core/rake_task'
 require File.join('.', 'config', 'deployment_config.rb')
 require File.join('.', 'config', 'app_config.rb')
 require File.join('.', 'lib', 'version.rb')

@@ -40,10 +40,6 @@ module OpenSearchSteps
     parameters['count'] = '200'
   end
 
-  step 'I make a request with investigator :data_contributor' do |data_contributor|
-    parameters['searchTerms'] = data_contributor
-  end
-
   # Then steps
   step 'I should get :code response code' do |code|
     expect(osdd.response_code).to be(code.to_i)

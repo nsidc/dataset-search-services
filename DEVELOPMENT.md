@@ -28,6 +28,7 @@ Run the unit tests with `bundle exec rake spec:unit`.
 
 Acceptance tests are a little trickier. One way to run them on your local dev machine is thus:
 Need to do export TARGET_ENVIRONMENT=integration
+To list tags: export LIST_TAGS=true; bundle exec rake spec:acceptance
   1. Change `config/app_config.rb` and set the `development`:`solr_url` to point to the same as the `integration`:`solr_url` (it's a url on liquid for NSIDC internal use)
   2. Run `bundle exec rake run` to get the service running locally
   3. Run `bundle exec rake spec:acceptance`
