@@ -19,4 +19,20 @@ end
 
 RSpec.configure do |c|
   c.filter_run_excluding disabled: true
+
+  # Approach suggested by https://github.com/rspec/rspec-core/issues/1793
+  if ENV['LIST_TAGS']
+    def tags_in(groups)
+      groups.flat_map do |g|
+        g.metadata.keys + tags_in(g.children)
+      end.uniq - RSpec::Core::Metadata::RESERVED_KEYS
+    end
+
+    c.before(:suite) do
+      tags = tags_in(RSpec.world.example_groups)
+      puts "Tags:"
+      puts tags.join("\n")
+      exit(0)
+    end
+  end
 end

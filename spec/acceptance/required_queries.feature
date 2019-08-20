@@ -1,13 +1,7 @@
 Feature: Must-not-break search scenarios
 
   Background:
-    Given there are the following valid environments:
-      | Environment | Hostname              | Path                                |
-      | development | localhost:3000        | OpenSearchDescription               |
-      | integration | integration.nsidc.org | api/dataset/2/OpenSearchDescription |
-      | qa          | qa.nsidc.org          | api/dataset/2/OpenSearchDescription |
-      | staging     | staging.nsidc.org     | api/dataset/2/OpenSearchDescription |
-      | production  | nsidc.org             | api/dataset/2/OpenSearchDescription |
+    Given a valid environment
     And I request the open search description document
 
   Scenario: glacier
