@@ -17,7 +17,7 @@ Feature: Must-not-break search scenarios
     Then I get a valid response with entries
     And The entries don't contain NSIDC-0478
     And The entries contain NSIDC-0433
-    And The entries contain NSIDC-0032
+    And The entries contain NSIDC-9999
 
   @search_temporal_single
   Scenario: Temporal query with a single year range
