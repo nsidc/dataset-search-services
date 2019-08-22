@@ -11,7 +11,6 @@ class OpenSearchQueryPage
     parameters.each do |pkey, pvalue|
       query_url.sub!("{#{pkey}?}", CGI.escape(pvalue))
     end
-    puts "Querying: #{query_url} ..."
     @response = RestClient.get(query_url, 'X-Requested-With' => 'AceptanceTest')
     @response_doc = Nokogiri::XML @response.body
   end
