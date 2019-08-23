@@ -29,7 +29,7 @@ group :test do
   gem 'rb-readline'
   gem 'rspec', '~>3.8.0'
   gem 'rubocop', '~>0.71.0'
-  gem 'turnip', '~>3.0.0'
-  gem 'turnip_formatter'
+  gem 'turnip', '~>3.1.0'
+  gem 'turnip_formatter', '~>0.7.1'
   gem 'yarjuf'
 end

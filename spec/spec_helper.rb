@@ -37,3 +37,7 @@ RSpec.configure do |c|
     end
   end
 end
+
+TurnipFormatter.configure do |config|
+  config.title = 'Acceptance test results'
+end
