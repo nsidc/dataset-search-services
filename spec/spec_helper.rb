@@ -23,9 +23,10 @@ RSpec.configure do |c|
   # Approach suggested by https://github.com/rspec/rspec-core/issues/1793
   if ENV['LIST_TAGS']
     def tags_in(groups)
-      groups.flat_map do |g|
+      tags = groups.flat_map do |g|
         g.metadata.keys + tags_in(g.children)
       end.uniq - RSpec::Core::Metadata::RESERVED_KEYS
+      tags.select { |tag| tag =~ /search_|osdd_/ }
     end
 
     c.before(:suite) do

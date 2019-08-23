@@ -20,20 +20,39 @@ Development on this project uses
 See
 [`README.md`](https://github.com/nsidc/dataset-search-services/blob/master/README.md).
 
+### Running a development instance
+
+By default, the development environment tries to query a development version of
+the machine running Solr. Modify the `:development:solr_url` and
+`development:solr_auto_suggest_url` values in [app_config.yaml](./config/app_config.yaml)
+to reflect the actual name of your development machine (or use the values from
+the `integration` section of the configuration). Start up a local instance of
+`dataset-search-services` with `bundle exec rake run`.
+
 ### Unit tests
 
 Run the unit tests with `bundle exec rake spec:unit`.
 
 ### Acceptance tests
 
-Acceptance tests are a little trickier. One way to run them on your local dev machine is thus:
-Need to do export TARGET_ENVIRONMENT=integration
-To list tags: export LIST_TAGS=true; bundle exec rake spec:acceptance
-  1. Change `config/app_config.rb` and set the `development`:`solr_url` to point to the same as the `integration`:`solr_url` (it's a url on liquid for NSIDC internal use)
-  2. Run `bundle exec rake run` to get the service running locally
-  3. Run `bundle exec rake spec:acceptance`
+tl;dr:
+* `export TARGET_ENVIRONMENT=integration`
+* `bundle exec rake spec:acceptance`
+* `bundle exec rake spec:acceptance[search_glacier]` (to run only the test tagged with `search_glacier`)
 
-Don't check these changes in though!
+Acceptance tests refer to the `TARGET_ENVIRONMENT` environment variable to
+determine the endpoints to be tested. If the environment variable is not set,
+the target environment defaults to `development`, and you'll need to have an
+instance of DSS running at `localhost:3000`. The method
+[`OpenSearchSteps::full_hostname`](./spec/acceptance/steps/open_search_steps.rb)
+generates the full DSS URL used to power the acceptance tests.
+
+The acceptance tests are each tagged with a string starting with `osdd_` or
+`search_` to facilitate Ops monitoring. Be sure to include a similar tag for
+each new test you add (if you want Ops to monitor the behavior). To see all of
+the tags:
+
+    export LIST_TAGS=true; bundle exec rake spec:acceptance; unset LIST_TAGS
 
 ### RuboCop
 
