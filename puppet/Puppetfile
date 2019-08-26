@@ -8,6 +8,10 @@ mod "nsidc/nsidc_nfs",
   :git => "git@bitbucket.org:/nsidc/puppet-nsidc-nfs.git",
   :ref => 'latest'
 
+# Module for webserver (nginx) install
+mod "nsidc/puppet-nginx",
+    :git => 'https://github.com/nsidc/puppet-nginx'
+
 # Modules for webserver (puma) install
 mod "nsidc/puppet-puma",
     :git => 'https://github.com/nsidc/puppet-puma'
