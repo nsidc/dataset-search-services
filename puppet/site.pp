@@ -63,6 +63,25 @@ file { '/var/run/puma':
 
 
 unless $environment == 'ci' {
+  # nginx configuration
+
+  class { 'nginx' :
+    gzip => 'off'
+  }
+
+  exec { 'make_cert':
+    path => ['/bin', '/usr/bin'],
+    command => 'mkdir -p /etc/nginx/ssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/CN=nsidc"'
+  } ->
+  nginx::resource::vhost { 'dss' :
+    www_root => $application_root,
+    proxy => 'http://localhost:10680',
+    ssl => true,
+    ssl_cert => '/etc/nginx/ssl/nginx.crt',
+    ssl_key => '/etc/nginx/ssl/nginx.key',
+  }
+
+
   # Install puma
   # See https://github.com/nsidc/puppet-puma
   # Note: port value is also set in config/app_config.rb
