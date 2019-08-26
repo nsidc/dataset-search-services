@@ -1,3 +1,7 @@
+## Unreleased  
+  
+  - Add nginx server and reverse proxy to allow for HTTPS
+
 ## v3.4.0 (2019-08-26)
 
   - Update `bundler` to 2.0.1
