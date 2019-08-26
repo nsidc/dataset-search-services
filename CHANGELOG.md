@@ -1,5 +1,6 @@
 ## Unreleased
 
+  - Update `bundler` to 2.0.1
   - Update Nokogiri version (security update).
   - Add acceptance test documentation to DEVELOPMENT.md.
   - Add custom formatter for RSpec to support Ops monitoring of acceptance test
