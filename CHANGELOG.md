@@ -1,4 +1,4 @@
-## Unreleased  
+## v3.5.0 (2019-08-26)  
   
   - Add nginx server and reverse proxy to allow for HTTPS
 
