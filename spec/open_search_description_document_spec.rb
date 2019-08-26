@@ -11,7 +11,7 @@ describe 'osdd dsl' do
   end
 
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Url do
-    it 'cannot be contructed without type,  base url, and parameters' do
+    it 'cannot be constructed without type,  base url, and parameters' do
       expect do
         OpenSearchDsl::OpenSearchDescriptionDocument::Url.new
       end.to raise_error(ArgumentError)
