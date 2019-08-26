@@ -1,4 +1,14 @@
-## Unreleased
+## v3.4.0 (2019-08-26)
+
+  - Update `bundler` to 2.0.1
+  - Update Nokogiri version (security update).
+  - Add acceptance test documentation to DEVELOPMENT.md.
+  - Add custom formatter for RSpec to support Ops monitoring of acceptance test
+    jobs and enable an option to list all tags associated with acceptance test
+    scenarios.
+  - Remove duplicate bootstrapping information from acceptance test feature set-up.
+
+## v3.3.0 (2019-08-19)
 
 Changes:
 

@@ -1,20 +1,22 @@
 require 'acceptance/page_objects/open_search_description_page'
 require 'acceptance/page_objects/open_search_query_page'
+require './config/app_config.rb'
 
 module OpenSearchSteps
   attr_reader :osdd
 
   # Given steps
-  step 'there are the following valid environments:' do |envTable|
+  # Use the TARGET_ENVIRONMENT environment variable, and the "relative_url_root"
+  # value in app_config.yaml, to construct the OSDD URL.
+  step 'a valid environment' do
     @target_env = ENV['TARGET_ENVIRONMENT'] || 'development'
-    @valid_envs = {}
-    envTable.hashes.each do |hash|
-      @valid_envs[hash['Environment']] = hash
-    end
+    config = AppConfig[@target_env]
+    @host = full_hostname(@target_env)
+    @path = [config[:relative_url_root], 'OpenSearchDescription'].join('/')
   end
 
   step 'I request the open search description document' do
-    osdd_url = "http://#{@valid_envs[@target_env]['Hostname']}/#{@valid_envs[@target_env]['Path']}"
+    osdd_url = "http://#{@host}#{@path}"
     @osdd = OpenSearchDescriptionPage.new(osdd_url)
   end
 
@@ -38,17 +40,13 @@ module OpenSearchSteps
     parameters['count'] = '200'
   end
 
-  step 'I make a request with investigator :data_contributor' do |data_contributor|
-    parameters['searchTerms'] = data_contributor
-  end
-
   # Then steps
   step 'I should get :code response code' do |code|
     expect(osdd.response_code).to be(code.to_i)
   end
 
   step 'it should have a template with this environments hostname' do
-    expect(osdd.url_template_hostname).to eq(@valid_envs[@target_env]['Hostname'])
+    expect(osdd.url_template_hostname).to eq(@host)
   end
 
   step 'the values should contain:' do |values|
@@ -98,6 +96,19 @@ module OpenSearchSteps
   def result_entries_authoritative_ids
     @results = page.result_entries_authoritative_ids if @results.nil?
     @results
+  end
+
+  # Generate a full hostname for the target environment
+  def full_hostname(env)
+    domain = 'nsidc.org'
+    case env
+    when 'development'
+      'localhost:3000'
+    when 'production'
+      domain
+    else
+      [env, domain].join('.')
+    end
   end
 end
 

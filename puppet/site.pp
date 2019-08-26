@@ -25,7 +25,7 @@ exec { 'switch-ruby' :
 }->
 package { 'bundler':
   provider => 'gem',
-  ensure   => '1.16.2'
+  ensure   => '2.0.1'
 } ->
 # puma native extension dep
 package { 'libssl-dev':
