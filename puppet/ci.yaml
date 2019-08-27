@@ -39,6 +39,10 @@ job_release_push: "%{hiera('project')}_E02_Release_Push_to_Git"
 job_cleanup_vms: "%{hiera('project')}_Z01_Destroy_Non_Production_Deployed_VMs"
 
 # WORKSPACES
+# NOTE: The Ops Jenkins jobs Dataset_Search_Acceptance_Tests and
+# Dataset_Search_Acceptance_Test_Configuration depend on the workspace locations
+# defined below. If any workspace paths change, the Ops Jenkins jobs must be
+# updated accordingly.
 workspace_base: /var/lib/jenkins/workspaces/%{hiera('project')}
 workspace_integration: "%{hiera('workspace_base')}/integration"
 workspace_qa: "%{hiera('workspace_base')}/qa"
