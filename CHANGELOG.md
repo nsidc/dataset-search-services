@@ -1,3 +1,7 @@
+## Unreleased
+
+  - Update RubyGem per security announcement
+
 ## v3.5.0 (2019-08-26)  
   
   - Add nginx server and reverse proxy to allow for HTTPS

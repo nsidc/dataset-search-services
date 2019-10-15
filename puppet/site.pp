@@ -35,6 +35,10 @@ package { 'libssl-dev':
 # nokogiri native extension dep
 package { 'zlib1g-dev':
   ensure => present
+}->
+exec { 'update-gem':
+  command => 'gem update --system',
+  path => ['/usr/bin']
 }
 
 
