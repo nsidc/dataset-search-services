@@ -23,9 +23,13 @@ exec { 'switch-ruby' :
   path => ['/usr/bin'],
   require => Package['ruby-switch']
 }->
-package { 'bundler':
-  provider => 'gem',
-  ensure   => '2.0.1'
+exec { 'update-gem':
+  command => 'gem update --system',
+  path => ['/usr/bin']
+}->
+exec { 'bundler':
+  command => 'gem install bundler',
+  path => ['/usr/bin']
 } ->
 # puma native extension dep
 package { 'libssl-dev':
@@ -35,10 +39,6 @@ package { 'libssl-dev':
 # nokogiri native extension dep
 package { 'zlib1g-dev':
   ensure => present
-}->
-exec { 'update-gem':
-  command => 'gem update --system',
-  path => ['/usr/bin']
 }
 
 
@@ -121,7 +121,7 @@ unless $environment == 'ci' {
     path => ['/usr/local/bin','/usr/bin', '/bin'],
     user => 'vagrant',
     group => 'vagrant',
-    require => [ Package['bundler'] ]
+    require => [ Exec['bundler'] ]
   } ->
 
   puma::app {"${project}":
