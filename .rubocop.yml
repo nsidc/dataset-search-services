@@ -9,6 +9,27 @@ AllCops:
     - puppet/**/*
     - vendor/bundle/**/*
 
+Layout/LineLength:
+  Max: 100
+
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
 Metrics/AbcSize:
   Max: 20
   Exclude:
@@ -17,9 +38,6 @@ Metrics/AbcSize:
 Metrics/ClassLength:
   Max: 125
 
-Metrics/LineLength:
-  Max: 100
-
 Metrics/MethodLength:
   Max: 15
   Exclude:
@@ -27,6 +45,30 @@ Metrics/MethodLength:
 
 Style/Documentation:
   Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: true
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
+Style/SlicingWithRange:
+  Enabled: true
 
 Naming/MethodName:
   Exclude:

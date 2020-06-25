@@ -1,3 +1,7 @@
+## Unreleased
+
+  - Update Ruby version to 2.6.5, as well as various gem dependencies
+
 ## v3.5.1 (2019-10-17)
 
   - Update RubyGem per security announcement
