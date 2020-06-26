@@ -1,4 +1,4 @@
-project: dss
+project: dss-glewistest
 gitrepo: git@github.com:nsidc/dataset-search-services.git
 
 vsphere:

@@ -10,16 +10,16 @@ apt::ppa{'ppa:brightbox/ruby-ng':}
 package { "ruby-switch":
   ensure => present
 }
-package { 'ruby2.5':
+package { 'ruby2.6':
   ensure => present,
   require => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
 } ->
-package { 'ruby2.5-dev':
+package { 'ruby2.6-dev':
   ensure => present,
   require => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
 } ->
 exec { 'switch-ruby' :
-  command => 'ruby-switch --set ruby2.5',
+  command => 'ruby-switch --set ruby2.6',
   path => ['/usr/bin'],
   require => Package['ruby-switch']
 }->
