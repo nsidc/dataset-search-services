@@ -3,7 +3,7 @@ ruby '~>2.6.5'
 
 gem 'bump', '~> 0.9.0'
 gem 'json', '~> 2.3.0'
-gem 'nokogiri', '~>1.10.9'
+gem 'nokogiri', '~>1.13.2'
 gem 'peach', '~>0.5.1'
 gem 'puma', '~>4.3.5'
 gem 'rake', '~>13.0.1'
