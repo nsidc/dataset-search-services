@@ -1,4 +1,4 @@
-## Unreleased
+## v3.7.0 (2023-07-12)
 
   - CI updates to reflect the change from `master` to `main` as the default
     branch. Note that these changes have *not* been tested by building a new CI
