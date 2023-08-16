@@ -1,9 +1,14 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
   Include:
     - tasks/*.rake
     - Guardfile
     - Rakefile
     - '**/*.builder'
+    - '**/*.rb'
   Exclude:
     - gem/**/*
     - puppet/**/*

@@ -32,7 +32,7 @@ desc 'List all routes'
 task :routes do
   # Figure out how to Get this path from the environment
   # rather than hardcoding!
-  require_relative './lib/nsidc_open_search/app'
+  require_relative 'lib/nsidc_open_search/app'
 
   NsidcOpenSearch::App.route_summary.each do |route|
     print route[:verb].ljust(8)

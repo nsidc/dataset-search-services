@@ -31,7 +31,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
   xml.link 'href' => first_page_search_url, 'rel' => 'first'
 
   next_start_index = (search_parameters[:startIndex].to_i + search_parameters[:count].to_i)
-  next_start_index = next_start_index > total_results ? nil : next_start_index
+  next_start_index = nil if next_start_index > total_results
   unless next_start_index.nil?
     xml.link(
       'href' => build_search_url_with_index(current_search_url, next_start_index),
@@ -39,7 +39,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
     )
   end
   previous_start_index = (search_parameters[:startIndex].to_i - search_parameters[:count].to_i)
-  previous_start_index = previous_start_index < 1 ? nil : previous_start_index
+  previous_start_index = nil if previous_start_index < 1
   unless previous_start_index.nil?
     xml.link(
       'href' => build_search_url_with_index(current_search_url, previous_start_index),
@@ -125,6 +125,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
         xml.nsidc :supportingProgram, s
       end
 
+      # rubocop:disable Naming/VariableNumber
       e.parameters.each do |p|
         xml.dif :Parameters do
           xml.dif :Category, p.category
@@ -136,6 +137,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
           xml.dif :Detailed_Variable, p.name
         end
       end
+      # rubocop:enable Naming/VariableNumber
 
       e.keywords.each do |k|
         xml.dif :Keyword, k

@@ -93,6 +93,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
         xml.nsidc :supportingProgram, s
       end
 
+      # rubocop:disable Naming/VariableNumber
       e.parameters.each do |p|
         xml.dif :Parameters do
           xml.dif :Category, p.category
@@ -104,6 +105,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
           xml.dif :Detailed_Variable, p.name
         end
       end
+      # rubocop:enable Naming/VariableNumber
 
       e.keywords.each do |k|
         xml.dif :Keyword, k
