@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites errors="0" failures="0" skipped="0" tests="18" time="5.305360999" timestamp="2023-08-17T15:41:13-06:00">
+<testsuites errors="0" failures="0" skipped="0" tests="18" time="5.59712733" timestamp="2023-08-18T11:50:46-06:00">
   <testsuite name="Successful response" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Open Search Definition Basics Successful response Given a valid environment -&gt; And I request the open search description document -&gt; Then I should get 200 response code" time="0.138085999">
+    <testcase name="Open Search Definition Basics Successful response Given a valid environment -&gt; And I request the open search description document -&gt; Then I should get 200 response code" time="0.140490903">
     </testcase>
   </testsuite>
   <testsuite name="Contains correct template hostname" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Open Search Definition Basics Contains correct template hostname Given a valid environment -&gt; And I request the open search description document -&gt; Then it should have a template with this environments hostname" time="0.048471689">
+    <testcase name="Open Search Definition Basics Contains correct template hostname Given a valid environment -&gt; And I request the open search description document -&gt; Then it should have a template with this environments hostname" time="0.045426421">
     </testcase>
   </testsuite>
   <testsuite name="Template has expected values" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Open Search Definition Basics Template has expected values Given a valid environment -&gt; And I request the open search description document -&gt; Then the values should contain:" time="0.049002974">
+    <testcase name="Open Search Definition Basics Template has expected values Given a valid environment -&gt; And I request the open search description document -&gt; Then the values should contain:" time="0.045121361">
     </testcase>
   </testsuite>
   <testsuite name="Template url works with blanks" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Open Search Definition Basics Template url works with blanks Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request to the template url with blanks for optional parameters -&gt; Then I get a valid response with entries" time="0.377567407">
+    <testcase name="Open Search Definition Basics Template url works with blanks Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request to the template url with blanks for optional parameters -&gt; Then I get a valid response with entries" time="0.325998204">
     </testcase>
   </testsuite>
   <testsuite name="Template url works with the example values" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Open Search Definition Basics Template url works with the example values Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request to the template url with using the example query values -&gt; Then I get a valid response with entries" time="0.194817691">
+    <testcase name="Open Search Definition Basics Template url works with the example values Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request to the template url with using the example query values -&gt; Then I get a valid response with entries" time="0.229491881">
     </testcase>
   </testsuite>
   <testsuite name="Spatial query crossing date time line" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Spatial query crossing date time line Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request with a date time line crossing bounding box -&gt; Then I get a valid response with entries -&gt; And The entries contain GGD904 -&gt; And The entries contain AE_L2A" time="1.196036508">
+    <testcase name="Must-not-break search scenarios Spatial query crossing date time line Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request with a date time line crossing bounding box -&gt; Then I get a valid response with entries -&gt; And The entries contain GGD904 -&gt; And The entries contain AE_L2A" time="1.47196169">
     </testcase>
   </testsuite>
   <testsuite name="Temporal query with a single day range" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Temporal query with a single day range Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request with date range &quot;2003-07-02&quot; to &quot;2003-07-02&quot; -&gt; Then I get a valid response with entries -&gt; And The entries don't contain NSIDC-0478 -&gt; And The entries contain NSIDC-0433 -&gt; And The entries contain NSIDC-0051 -&gt; And The entries contain IDBMG4" time="0.670186915">
+    <testcase name="Must-not-break search scenarios Temporal query with a single day range Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request with date range &quot;2003-07-02&quot; to &quot;2003-07-02&quot; -&gt; Then I get a valid response with entries -&gt; And The entries don't contain NSIDC-0478 -&gt; And The entries contain NSIDC-0433 -&gt; And The entries contain NSIDC-0051 -&gt; And The entries contain IDBMG4" time="0.671277169">
     </testcase>
   </testsuite>
   <testsuite name="Temporal query with a single year range" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Temporal query with a single year range Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request with date range &quot;1991-01-01&quot; to &quot;1992-01-01&quot; -&gt; Then I get a valid response with entries -&gt; And The entries don't contain GGD648 -&gt; And The entries contain GGD601" time="0.724172306">
+    <testcase name="Must-not-break search scenarios Temporal query with a single year range Given a valid environment -&gt; And I request the open search description document -&gt; When I make a request with date range &quot;1991-01-01&quot; to &quot;1992-01-01&quot; -&gt; Then I get a valid response with entries -&gt; And The entries don't contain GGD648 -&gt; And The entries contain GGD601" time="0.746571668">
     </testcase>
   </testsuite>
   <testsuite name="Text search for glacier" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for glacier Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;glacier&quot; -&gt; Then The entries contain g01130 in the top 15 -&gt; And The entries contain nsidc-0272 in the top 15" time="0.185742395">
+    <testcase name="Must-not-break search scenarios Text search for glacier Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;glacier&quot; -&gt; Then The entries contain g01130 in the top 15 -&gt; And The entries contain nsidc-0272 in the top 15" time="0.19386776">
     </testcase>
   </testsuite>
   <testsuite name="Text search for snow cover" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for snow cover Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;snow cover&quot; -&gt; Then The entries contain nsidc-0046 in the top 20 -&gt; And The entries contain mod10a2 in the top 20 -&gt; And The entries contain g02158 in the top 20 -&gt; And The entries contain g02156 in the top 20" time="0.183379756">
+    <testcase name="Must-not-break search scenarios Text search for snow cover Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;snow cover&quot; -&gt; Then The entries contain nsidc-0046 in the top 20 -&gt; And The entries contain mod10a2 in the top 20 -&gt; And The entries contain g02158 in the top 20 -&gt; And The entries contain g02156 in the top 20" time="0.182231563">
     </testcase>
   </testsuite>
   <testsuite name="Text search for sea ice concentration" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for sea ice concentration Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;sea ice concentration&quot; -&gt; Then The entries contain NSIDC-0051 in the top 15 -&gt; And The entries contain NSIDC-0192 in the top 15 -&gt; And The entries contain NSIDC-0081 in the top 15 -&gt; And The entries contain NSIDC-0079 in the top 15" time="0.193901294">
+    <testcase name="Must-not-break search scenarios Text search for sea ice concentration Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;sea ice concentration&quot; -&gt; Then The entries contain NSIDC-0051 in the top 15 -&gt; And The entries contain NSIDC-0192 in the top 15 -&gt; And The entries contain NSIDC-0081 in the top 15 -&gt; And The entries contain NSIDC-0079 in the top 15" time="0.208576578">
     </testcase>
   </testsuite>
   <testsuite name="Text search for sea ice extent" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for sea ice extent Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;sea ice extent&quot; -&gt; Then The entries contain g02186 in the top 15 -&gt; And The entries contain g02135 in the top 15" time="0.195959698">
+    <testcase name="Must-not-break search scenarios Text search for sea ice extent Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;sea ice extent&quot; -&gt; Then The entries contain g02186 in the top 15 -&gt; And The entries contain g02135 in the top 15" time="0.184406411">
     </testcase>
   </testsuite>
   <testsuite name="Text search for modis" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for modis Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;modis&quot; -&gt; Then The entries don't contain g02186 in the top 5" time="0.180949393">
+    <testcase name="Must-not-break search scenarios Text search for modis Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;modis&quot; -&gt; Then The entries don't contain g02186 in the top 5" time="0.188533972">
     </testcase>
   </testsuite>
   <testsuite name="Text search for snow cover with a spatial bounding box" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for snow cover with a spatial bounding box Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;snow cover&quot; -&gt; And I set the spatial bounding box to &quot;N:-40.0, S:-90.0, E:180.0, W:-180.0&quot; -&gt; Then The entries don't contain nsidc-0046" time="0.19891537">
+    <testcase name="Must-not-break search scenarios Text search for snow cover with a spatial bounding box Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;snow cover&quot; -&gt; And I set the spatial bounding box to &quot;N:-40.0, S:-90.0, E:180.0, W:-180.0&quot; -&gt; Then The entries don't contain nsidc-0046" time="0.178042994">
     </testcase>
   </testsuite>
   <testsuite name="Text search for snow cover with temporal Coverage" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for snow cover with temporal Coverage Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;snow cover&quot; -&gt; And I make a request with date range 1995-01-01 to 1999-12-31 -&gt; Then The entries don't contain mod10_l2" time="0.302406696">
+    <testcase name="Must-not-break search scenarios Text search for snow cover with temporal Coverage Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;snow cover&quot; -&gt; And I make a request with date range 1995-01-01 to 1999-12-31 -&gt; Then The entries don't contain mod10_l2" time="0.365413075">
     </testcase>
   </testsuite>
   <testsuite name="Text search for Joughin" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for Joughin Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;Joughin&quot; -&gt; Then The entries contain nsidc-0523 -&gt; And The entries contain nsidc-0478 -&gt; And The entries contain nsidc-0481" time="0.143363686">
+    <testcase name="Must-not-break search scenarios Text search for Joughin Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;Joughin&quot; -&gt; Then The entries contain nsidc-0523 -&gt; And The entries contain nsidc-0478 -&gt; And The entries contain nsidc-0481" time="0.134309219">
     </testcase>
   </testsuite>
   <testsuite name="Text search for paden" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for paden Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;paden&quot; -&gt; Then I get a valid response with 10 entries -&gt; And The entries contain IRKUB1B -&gt; And The entries contain IRMCR1B -&gt; And The entries contain BRMCR1B" time="0.144521018">
+    <testcase name="Must-not-break search scenarios Text search for paden Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;paden&quot; -&gt; Then I get a valid response with 10 entries -&gt; And The entries contain IRKUB1B -&gt; And The entries contain IRMCR1B -&gt; And The entries contain BRMCR1B" time="0.138523704">
     </testcase>
   </testsuite>
   <testsuite name="Text search for LVIS" tests="1" errors="0" failures="0" skipped="0">
     <properties/>
-    <testcase name="Must-not-break search scenarios Text search for LVIS Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;lvis&quot; -&gt; Then The entries contain ipplv1b -&gt; And The entries contain ilvis2 -&gt; And The entries contain blvis2 -&gt; And The entries contain blvis0 -&gt; And The entries contain ilvis1b" time="0.171919603">
+    <testcase name="Must-not-break search scenarios Text search for LVIS Given a valid environment -&gt; And I request the open search description document -&gt; When I perform a text search for &quot;lvis&quot; -&gt; Then The entries contain ipplv1b -&gt; And The entries contain ilvis2 -&gt; And The entries contain blvis2 -&gt; And The entries contain blvis0 -&gt; And The entries contain ilvis1b" time="0.141668036">
     </testcase>
   </testsuite>
 </testsuites>
