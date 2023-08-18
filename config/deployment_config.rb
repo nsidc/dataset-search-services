@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'app_config')
 
 module DeploymentConfig
@@ -12,27 +14,25 @@ module DeploymentConfig
   end
 
   def self.[](key)
-    key = key.is_a?(String) ? key.to_sym : key
+    key = key.to_sym if key.is_a?(String)
     DEPLOYMENT_SETTINGS[key]
   end
-
-  private
 
   ENVIRONMENTS = {
     integration: 'liquid',
     qa: 'brash',
     staging: 'freeze',
     production: 'frozen'
-  }
+  }.freeze
 
   DEPLOYMENT_SETTINGS = {
     app_name: AppConfig::APPLICATION_NAME,
     deployment_directory: AppConfig::APPLICATION_NAME,
     artifact_repo: "/disks/integration/san/INTRANET/REPO/#{AppConfig::APPLICATION_NAME}",
-    deployment_log: "/disks/integration/san/INTRANET/REPO/#{AppConfig::APPLICATION_NAME}/"\
+    deployment_log: "/disks/integration/san/INTRANET/REPO/#{AppConfig::APPLICATION_NAME}/" \
                     'deployable_versions_vm',
-    deploy_dirs: %w(config lib config.ru Gemfile Gemfile.lock README.md deployment)
-  }
+    deploy_dirs: %w[config lib config.ru Gemfile Gemfile.lock README.md deployment]
+  }.freeze
 
   DEPLOYMENT_LOG = {
     compile_and_deploy: 'deployable_versions_integration',
@@ -41,5 +41,5 @@ module DeploymentConfig
     staging: 'deployable_versions_production',
     production: 'deployed_versions_production',
     vm: 'deployable_versions_vm'
-  }
+  }.freeze
 end

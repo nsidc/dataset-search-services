@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rest_client'
 require 'nokogiri'
 
@@ -38,7 +40,7 @@ class OpenSearchDescriptionPage
     example_query = @doc.at_xpath('//xmlns:Query[@role="example"]')
     params = {}
     # ignore all namespaced parameters and just fill in search terms and index
-    example_query.attributes.select { |akey| !akey.eql?('role') }.each do |_akey, aval|
+    example_query.attributes.reject { |akey| akey.eql?('role') }.each do |_akey, aval|
       if aval.namespace.nil?
         params[aval.name] = aval.value
       else

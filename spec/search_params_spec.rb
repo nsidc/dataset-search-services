@@ -1,38 +1,39 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 require_relative '../lib/nsidc_open_search/dataset/search/factories/parameter_results_factory'
 
 describe NsidcOpenSearch::Dataset::Search::ResultsParameterFactory do
-  before :each do
-    @expected = {
+  let(:expected) do
+    {
       source: 'NSIDC',
       count: '25',
       startIndex: '1'
     }
-
-    @valids = [:searchTerms, :authors]
   end
+  let(:valids) { %i[searchTerms authors] }
 
-  it 'should insert defaults search values' do
-    search_params = NsidcOpenSearch::Dataset::Search::ResultsParameterFactory.construct(
+  it 'inserts defaults search values' do
+    search_params = described_class.construct(
       {},
-      @valids
+      valids
     )
-    expect(search_params).to eql @expected
+    expect(search_params).to eql expected
   end
 
-  it 'should exclude empty query parameters' do
-    search_params = NsidcOpenSearch::Dataset::Search::ResultsParameterFactory.construct(
+  it 'excludes empty query parameters' do
+    search_params = described_class.construct(
       { searchTerms: 'sea ice', authors: '' },
-      @valids
+      valids
     )
-    expect(search_params).to eql @expected.merge(searchTerms: 'sea ice')
+    expect(search_params).to eql expected.merge(searchTerms: 'sea ice')
   end
 
-  it 'should exclude invalid query parameters' do
-    search_params = NsidcOpenSearch::Dataset::Search::ResultsParameterFactory.construct(
+  it 'excludes invalid query parameters' do
+    search_params = described_class.construct(
       { searchTerms: 'sea ice', temp: '' },
-      @valids
+      valids
     )
-    expect(search_params).to eql @expected.merge(searchTerms: 'sea ice')
+    expect(search_params).to eql expected.merge(searchTerms: 'sea ice')
   end
 end

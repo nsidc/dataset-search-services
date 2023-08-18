@@ -45,9 +45,27 @@ Metrics/ClassLength:
   Max: 125
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 25
   Exclude:
   - lib/nsidc_open_search/dataset_osdd.rb
+
+Naming/MethodParameterName:
+  AllowedNames: [x, y]
+
+Naming/VariableNumber:
+  CheckSymbols: false
+
+RSpec/ExampleLength:
+  Max: 25
+
+RSpec/FilePath:
+  SpecSuffixOnly: true
+
+RSpec/MultipleExpectations:
+  Max: 10
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
 
 Style/Documentation:
   Enabled: false
@@ -63,6 +81,9 @@ Style/HashTransformKeys:
 
 Style/HashTransformValues:
   Enabled: true
+
+Style/OptionalBooleanParameter:
+  AllowedMethods: ['initialize']
 
 Style/RedundantFetchBlock:
   Enabled: true

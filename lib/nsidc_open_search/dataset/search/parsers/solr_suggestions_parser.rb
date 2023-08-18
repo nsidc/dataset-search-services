@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), '..', '..', 'model', 'suggestions', 'suggestion_entry')
 
 module NsidcOpenSearch
@@ -23,9 +25,9 @@ module NsidcOpenSearch
         # returned by solr
         def extract_suggestions_array(solr_suggestions)
           arr = solr_suggestions.map do |s|
-            s.class == Hash ? s['text_suggest'] : nil
+            s.instance_of?(Hash) ? s['text_suggest'] : nil
           end
-          arr.select { |s| !s.nil? }.flatten
+          arr.compact.flatten
         end
       end
     end

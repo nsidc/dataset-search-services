@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'json'
 require_relative 'spec_helper'
 require_relative '../lib/nsidc_open_search/dataset/model/suggestions/suggestions_response_builder'
 require_relative '../lib/nsidc_open_search/dataset/model/suggestions/suggestion_entry'
 
-describe 'suggestions response' do
+describe NsidcOpenSearch::Dataset::Model::Suggestions::SuggestionsResponseBuilder do
   describe 'result to json' do
-    before :each do
-      @result = NsidcOpenSearch::Dataset::Model::Suggestions::SuggestionsResponseBuilder.new(
+    let(:result) do
+      described_class.new(
         query_string: 'sea',
         entries: [
           NsidcOpenSearch::Dataset::Model::Suggestions::SuggestionEntry.new(
@@ -23,8 +25,8 @@ describe 'suggestions response' do
       )
     end
 
-    it 'should output a valid json format' do
-      json = @result.to_json
+    it 'outputs a valid json format' do
+      json = result.to_json
       expect(json).to eql [
         'sea',
         ['sea ice', 'sea ice concentration']

@@ -11,7 +11,7 @@ class CustomFormatter < RSpec::Core::Formatters::BaseTextFormatter
     @output = output
   end
 
-  def example_passed(notification)
+  def example_passed(_notification)
     @output << ".\n"
   end
 
@@ -20,7 +20,7 @@ class CustomFormatter < RSpec::Core::Formatters::BaseTextFormatter
     @output << RSpec::Core::Formatters::ConsoleCodes.wrap("F#{failed}\n", :failure)
   end
 
-  def start_dump(notification)
+  def start_dump(_notification)
     @output << "\n"
   end
 end

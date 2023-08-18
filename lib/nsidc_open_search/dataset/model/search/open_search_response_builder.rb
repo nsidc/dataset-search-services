@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../../utils/auto_initializer'
 
 module NsidcOpenSearch
@@ -14,10 +16,10 @@ module NsidcOpenSearch
             )
           end
 
-          def build_search_url_with_index(current_search_url, startIndex)
-            return if startIndex.nil? || startIndex == 0
+          def build_search_url_with_index(current_search_url, start_index)
+            return if start_index.nil? || start_index.zero?
 
-            current_search_url.clone.gsub!(/startIndex=([^&]+)/, 'startIndex=' + startIndex.to_s)
+            current_search_url.dup.gsub!(/startIndex=([^&]+)/, "startIndex=#{start_index}".dup)
           end
         end
       end

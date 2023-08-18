@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 module NsidcOpenSearch
   module Routes
     def self.named(name)
       @named[name]
     end
-
-    private
 
     @named = {
       dataset_osdd: '/OpenSearchDescription',

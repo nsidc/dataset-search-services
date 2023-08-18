@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'osdd_base')
 
 module OpenSearchDsl
@@ -8,7 +10,7 @@ module OpenSearchDsl
       dsl_methods :height, :width, :type, :url
 
       def initialize(url, height = nil, width = nil, type = nil)
-        fail ArgumentError, 'Missing url' if url.nil_or_whitespace?
+        raise ArgumentError, 'Missing url' if url.nil_or_whitespace?
 
         @url = url
         @height = height

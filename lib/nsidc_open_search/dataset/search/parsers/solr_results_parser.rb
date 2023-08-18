@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../model/search/result_entry'
 require_relative '../../model/search/date_range'
 require_relative '../../model/search/parameter'
@@ -27,8 +29,8 @@ module NsidcOpenSearch
               data_access_urls: parse_data_access(d['data_access_urls']),
               supporting_programs: d['sponsored_programs']
             }
-            %w(authors data_centers dataset_version distribution_formats keywords spatial_area
-               spatial_coverages summary temporal_duration title).each do |key|
+            %w[authors data_centers dataset_version distribution_formats keywords spatial_area
+               spatial_coverages summary temporal_duration title].each do |key|
               entry[key.to_sym] = d[key]
             end
 
@@ -38,7 +40,7 @@ module NsidcOpenSearch
 
         def parse_date(str)
           Date.parse(str)
-        rescue
+        rescue StandardError
           nil
         end
 
@@ -113,10 +115,12 @@ module NsidcOpenSearch
               parts = da.split(' | ')
               if parts.length > 1
                 NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
-                  url: parts[2], name: parts[0], description: parts[3], type: parts[1])
+                  url: parts[2], name: parts[0], description: parts[3], type: parts[1]
+                )
               else
                 NsidcOpenSearch::Dataset::Model::Search::DataAccess.new(
-                  url: parts[0])
+                  url: parts[0]
+                )
               end
             end
           end

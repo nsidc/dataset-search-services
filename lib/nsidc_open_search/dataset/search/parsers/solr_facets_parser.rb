@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../model/facets/facet_entry'
 require_relative '../../model/facets/facet_value'
 
@@ -39,6 +41,7 @@ module NsidcOpenSearch
           if !facet_config.nil? && !facet_config['sort'].nil?
             return send(facet_config['sort'], facet, facet_config)
           end
+
           facet
         end
 
@@ -49,15 +52,15 @@ module NsidcOpenSearch
         def defined_sort(facet, facet_config)
           result = facet.items.sort do |x, y|
             (facet_config['sort_order'].index { |el| el == x.value } || facet.items.size) <=>
-            (facet_config['sort_order'].index { |el| el == y.value } || facet.items.size)
+              (facet_config['sort_order'].index { |el| el == y.value } || facet.items.size)
           end
           RSolr::Ext::Response::Facets::FacetField.new(facet.name, result)
         end
 
         def short_name_sort(facet, _facet_config)
           result = facet.items.sort do |x, y|
-            x_long_name, x_short_name = x.value.split(/ \| /)
-            y_long_name, y_short_name = y.value.split(/ \| /)
+            x_long_name, x_short_name = x.value.split(' | ')
+            y_long_name, y_short_name = y.value.split(' | ')
 
             if x_short_name.nil? || y_short_name.nil?
               x_long_name <=> y_long_name

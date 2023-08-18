@@ -1,32 +1,23 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 require_relative '../lib/open_search_dsl/open_search_description_document'
 
-describe 'osdd dsl' do
+describe OpenSearchDsl::OpenSearchDescriptionDocument do
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Url::TemplateParameter do
     it 'cannont be created without name and replace val' do
       expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument::Url::TemplateParameter.new '', ''
+        described_class.new '', ''
       end.to raise_error(ArgumentError)
     end
   end
 
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Url do
-    it 'cannot be constructed without type,  base url, and parameters' do
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new
-      end.to raise_error(ArgumentError)
-
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { type 'atom' }
-      end.to raise_error(ArgumentError)
-
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { base_url 'url' }
-      end.to raise_error(ArgumentError)
-
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument::Url.new { parameter 'name', 'val' }
-      end.to raise_error(ArgumentError)
+    it 'cannot be constructed without type, base url, and parameters' do
+      expect { described_class.new }.to raise_error(ArgumentError)
+      expect { described_class.new { type 'atom' } }.to raise_error(ArgumentError)
+      expect { described_class.new { base_url 'url' } }.to raise_error(ArgumentError)
+      expect { described_class.new { parameter 'name', 'val' } }.to raise_error(ArgumentError)
     end
 
     it 'outputs a valid OSDD Url element' do
@@ -34,7 +25,7 @@ describe 'osdd dsl' do
         'st' => 'searchTerm',
         'bbox' => 'bbox?'
       }
-      url = OpenSearchDsl::OpenSearchDescriptionDocument::Url.new do
+      url = described_class.new do
         type 'atom'
         base_url 'http://test.org/dataset'
         parameters.each do |k, v|
@@ -50,7 +41,7 @@ describe 'osdd dsl' do
     end
 
     it 'preserves the https protocol' do
-      url = OpenSearchDsl::OpenSearchDescriptionDocument::Url.new do
+      url = described_class.new do
         type 'atom'
         base_url 'https://test.org/dataset'
         parameter 'st', 'searchTerm', true
@@ -67,12 +58,12 @@ describe 'osdd dsl' do
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Image do
     it 'cannot be constructed without url' do
       expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument::Image.new ''
+        described_class.new ''
       end.to raise_error(ArgumentError)
     end
 
     it 'outputs a valid OSDD Image element' do
-      img = OpenSearchDsl::OpenSearchDescriptionDocument::Image.new 'http://test.org/image.jpg'
+      img = described_class.new 'http://test.org/image.jpg'
       xml = img.to_xml
       expect(xml).to have_an_image_url
     end
@@ -81,12 +72,12 @@ describe 'osdd dsl' do
   describe OpenSearchDsl::OpenSearchDescriptionDocument::Query do
     it 'cannot be constructed without role' do
       expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument::Query.new ''
+        described_class.new ''
       end.to raise_error(ArgumentError)
     end
 
-    it 'should allow multiple parameters' do
-      q = OpenSearchDsl::OpenSearchDescriptionDocument::Query.new do
+    it 'allows multiple parameters' do
+      q = described_class.new do
         parameter 'name', 'val'
         parameter 'name2', 'val2'
       end
@@ -94,13 +85,13 @@ describe 'osdd dsl' do
       expect(q.parameters.length).to be 2
     end
 
-    it 'should output a valid OSDD Query element' do
+    it 'outputs a valid OSDD Query element' do
       parameters = {
         'st' => 'searchTerm',
         'bbox' => 'bbox'
       }
 
-      q = OpenSearchDsl::OpenSearchDescriptionDocument::Query.new do
+      q = described_class.new do
         parameters.each do |k, v|
           parameter k, v
         end
@@ -120,25 +111,14 @@ describe 'osdd dsl' do
         parameter 'name', 'val'
       end
 
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument.new
-      end.to raise_error(ArgumentError)
-
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument.new { short_name 'Short Name' }
-      end.to raise_error(ArgumentError)
-
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument.new { description 'Description' }
-      end.to raise_error(ArgumentError)
-
-      expect do
-        OpenSearchDsl::OpenSearchDescriptionDocument.new { url(&url_block) }
-      end.to raise_error(ArgumentError)
+      expect { described_class.new }.to raise_error(ArgumentError)
+      expect { described_class.new { short_name 'Short Name' } }.to raise_error(ArgumentError)
+      expect { described_class.new { description 'Description' } }.to raise_error(ArgumentError)
+      expect { described_class.new { url(&url_block) } }.to raise_error(ArgumentError)
     end
 
-    it 'should allow multiple languages' do
-      osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
+    it 'allows multiple languages' do
+      osdd = described_class.new do
         short_name 'Short Name'
         description 'Description'
         url do
@@ -153,8 +133,8 @@ describe 'osdd dsl' do
       expect(osdd.languages.length).to be 2
     end
 
-    it 'should allow multiple input encodings' do
-      osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
+    it 'allows multiple input encodings' do
+      osdd = described_class.new do
         short_name 'Short Name'
         description 'Description'
         url do
@@ -169,8 +149,8 @@ describe 'osdd dsl' do
       expect(osdd.input_encodings.length).to be 2
     end
 
-    it 'should allow multiple output encodings' do
-      osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
+    it 'allows multiple output encodings' do
+      osdd = described_class.new do
         short_name 'Short Name'
         description 'Description'
         url do
@@ -186,7 +166,7 @@ describe 'osdd dsl' do
     end
 
     it 'outputs a valid OSDD' do
-      osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
+      osdd = described_class.new do
         short_name 'Short Name'
         description 'Description'
         url do
@@ -216,7 +196,7 @@ describe 'osdd dsl' do
     end
 
     it 'outputs a valid OSDD with optional elements' do
-      osdd = OpenSearchDsl::OpenSearchDescriptionDocument.new do
+      osdd = described_class.new do
         namespace 'time', 'http://a9.com/-/opensearch/extensions/time/1.0/'
         short_name 'Short Name'
         description 'Description'

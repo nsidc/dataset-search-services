@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'acceptance/steps/open_search_steps'
 require 'acceptance/page_objects/open_search_description_page'
 require 'acceptance/page_objects/open_search_query_page'

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Nokogiri
   module XML
     class Node
       def iso_character_string
         res = at_xpath('gco:CharacterString')
-        res.text.strip unless res.nil?
+        res&.text&.strip
       end
 
       def iso_decimal
@@ -12,6 +14,7 @@ module Nokogiri
 
       def iso_date
         return nil if children.empty?
+
         Date.parse(text.strip)
       end
     end

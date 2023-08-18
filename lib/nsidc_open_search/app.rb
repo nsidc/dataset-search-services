@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 require 'sinatra/config_file'
 require 'sinatra/cross_origin'
@@ -44,19 +46,19 @@ module NsidcOpenSearch
     before do
       # The X-Requested-With response header is necessary for cross-origin
       # requests if the browser does a preflight request
-      response.headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, Content-Type, '\
+      response.headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, Content-Type, ' \
                                                          'Cache-Control, Accept, AUTHORIZATION'
 
       query_string = request.env['rack.request.query_string'].gsub('&', '&amp;')
 
-      # note that Puma does not play nice here, it overrides rack default env methods.
+      # NOTE: that Puma does not play nice here, it overrides rack default env methods.
       # request.env will only be used for the tests or if the app is running with other server.
       remote_ip = remote_ip(env, request)
       requested_with = env['HTTP_X_REQUESTED_WITH'] || request.env['X-Requested-With']
 
-      if (query_string.length > 0) &&
+      if query_string.length.positive? &&
          (requested_with != 'spec_test') &&
-         (!request.path.include?('suggest'))
+         !request.path.include?('suggest')
 
         puts "New request from: #{remote_ip} requested with: #{requested_with}"
 
@@ -77,17 +79,16 @@ module NsidcOpenSearch
       # Force YARD to reload controller files.
       YARD::Registry.load(Dir.glob('./lib/**/controllers'), true)
       routes = YARD::Sinatra.routes.map do |r|
-
         # r.http_path returns the string "Routes.named(blah)", NOT the path that is
         # encoded in the Routes module. Can't find a way to get the value represented
         # by this string other than parsing out "blah" and actually calling the
         # Routes method "named" with "blah" as an argument.
         path_method = /([^(]+)\(:(.*)\)/.match(r.http_path)[2].to_sym
-        { verb:      r.http_verb,
-          http_path: '(/:api_version)' + Routes.named(path_method),
-          file:      r.file,
-          line:      r.line,
-          desc:      r.docstring.tr("\n", ' ') }
+        { verb: r.http_verb,
+          http_path: "(/:api_version)#{Routes.named(path_method)}",
+          file: r.file,
+          line: r.line,
+          desc: r.docstring.tr("\n", ' ') }
       end
       routes.sort_by { |r| r[:verb] }
     end

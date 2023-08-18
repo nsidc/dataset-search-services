@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class String
   def to_underscore!
     gsub!(/(.)([A-Z])/, '\1_\2') || self

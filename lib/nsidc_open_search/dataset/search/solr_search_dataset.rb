@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'solr_search_standard')
 
 module NsidcOpenSearch
@@ -13,8 +15,8 @@ module NsidcOpenSearch
           count = search_params[:count].to_i
 
           super(search_params, config).merge(
-            'start' => (start if start > 0),
-            'rows' => (count if count > 0),
+            'start' => (start if start.positive?),
+            'rows' => (count if count.positive?),
             'sort' => build_sort_parameter(search_params)
           )
         end
@@ -27,15 +29,15 @@ module NsidcOpenSearch
           'updated' => 'last_revision_date',
           'temporal_duration' => 'temporal_duration',
           'spatial_area' => 'spatial_area'
-        }
+        }.freeze
 
         DEFAULT_SORT = 'score desc'
 
         def build_sort_parameter(search_params)
           return DEFAULT_SORT unless search_params.key?(:sortKeys)
 
-          sort_keys = search_params[:sortKeys].split(' ')
-          return DEFAULT_SORT if sort_keys.length == 0
+          sort_keys = search_params[:sortKeys].split
+          return DEFAULT_SORT if sort_keys.empty?
 
           solr_sort_params = []
           sort_keys.each do |key|
@@ -61,7 +63,7 @@ module NsidcOpenSearch
 
           # values that can be used in the opensearch to indicate to sort in
           # ascending order (descending is default)
-          asc = %w(asc true 1)
+          asc = %w[asc true 1]
 
           direction = asc.include?(ascending) ? 'asc' : 'desc'
           "#{field_name} #{direction}"

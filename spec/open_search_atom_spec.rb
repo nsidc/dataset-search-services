@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 require_relative '../lib/nsidc_open_search/dataset/model/search/open_search_response_builder'
 require_relative '../lib/nsidc_open_search/dataset/model/search/result_entry'
 require_relative '../lib/nsidc_open_search/dataset/model/search/data_access'
 require_relative '../lib/nsidc_open_search/dataset/model/search/date_range'
 
-describe 'open search response' do
+describe NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder do
   describe 'result to atom' do
-    before :each do
-      @result = NsidcOpenSearch::Dataset::Model::Search::OpenSearchResponseBuilder.new(
+    let(:result) do
+      described_class.new(
         total_results: 100,
         search_parameters: { startIndex: '11', count: '10', searchTerms: 'sea ice' },
         entries: [
@@ -65,8 +67,10 @@ describe 'open search response' do
       )
     end
 
-    it 'should output a valid atom format' do
-      xml = @result.to_atom 'localhost/dataset?searchTerms=sea ice', 'localhost'
+    # rubocop:disable RSpec/ExampleLength
+    # rubocop:disable RSpec/MultipleExpectations
+    it 'outputs a valid atom format' do
+      xml = result.to_atom 'localhost/dataset?searchTerms=sea ice', 'localhost'
 
       expect(xml).to have_atom_root_element
       expect(xml).to have_atom_namespace
@@ -103,5 +107,7 @@ describe 'open search response' do
       expect(xml).to have_at_least_one_entry_with_a_supporting_programs
       expect(xml).to have_two_geo_boxes
     end
+    # rubocop:enable RSpec/MultipleExpectations
+    # rubocop:enable RSpec/ExampleLength
   end
 end

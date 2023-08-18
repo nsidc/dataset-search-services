@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'solr_search_standard'
 
 module NsidcOpenSearch
@@ -40,9 +42,11 @@ module NsidcOpenSearch
         def get_facet_override_parameters(facet_config)
           override_params = {}
           facet_config.each do |f|
+            next if f['solr'].nil?
+
             f['solr'].each do |solr_key, solr_val|
               override_params["f.#{f['name']}.facet.#{solr_key}"] = solr_val
-            end unless f['solr'].nil?
+            end
           end
           override_params
         end

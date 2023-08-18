@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # basic configuration for the application
 require('yaml')
 
 module AppConfig
   APPLICATION_NAME = 'dataset-search-services'
   APP_PATH = '/opt/search_services'
-  APP_CONFIGS = YAML.load_file(File.expand_path('../app_config.yaml', __FILE__))
+  APP_CONFIGS = YAML.load_file(File.expand_path('app_config.yaml', __dir__))
 
   def self.[](env = :development)
     env = env.to_sym

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'acceptance/page_objects/open_search_description_page'
 require 'acceptance/page_objects/open_search_query_page'
-require './config/app_config.rb'
+require './config/app_config'
 
 module OpenSearchSteps
   attr_reader :osdd

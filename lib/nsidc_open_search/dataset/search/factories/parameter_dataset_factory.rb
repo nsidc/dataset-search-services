@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'parameter_factory'
 require 'uri'
 
@@ -9,7 +11,7 @@ module NsidcOpenSearch
           search_params = {}
 
           if query_params[:splat] && !query_params[:splat].first.nil_or_whitespace?
-            search_params[:id] =  %("#{URI::Parser.new.escape(query_params[:splat].first)}")
+            search_params[:id] = %("#{URI::Parser.new.escape(query_params[:splat].first)}")
           end
 
           # Ensure have some default values before returning the params

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ostruct'
 
 module NsidcOpenSearch
@@ -13,13 +15,11 @@ module NsidcOpenSearch
         end
 
         def self.valids
-          [{ required: [:q, :source], optional: [] }]
+          [{ required: %i[q source], optional: [] }]
         end
 
-        private
-
         def self.create_parameter(replacement, example)
-          OpenStruct.new replacement: replacement, example: example
+          Struct.new(:replacement, :example).new(replacement, example)
         end
       end
     end

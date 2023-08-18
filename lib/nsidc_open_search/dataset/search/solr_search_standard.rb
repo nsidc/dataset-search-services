@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'solr_search_base'
 
 module NsidcOpenSearch
@@ -10,7 +12,7 @@ module NsidcOpenSearch
         def build_solr_params(search_params, config)
           {
             'q' => build_q_parameter(search_params),
-            'fq' =>  build_fq_parameter(search_params),
+            'fq' => build_fq_parameter(search_params),
             'qf' => build_qf_parameter(search_params, config),
             'pf' => build_pf_parameter(search_params, config),
             'ps' => config['phrase_slop'],
@@ -21,8 +23,8 @@ module NsidcOpenSearch
           }
         end
 
-        FIELD_QUERY_TERM_KEYS = [:spatial, :startDate, :endDate]
-        GENERIC_QUERY_TERM_KEYS = [:searchTerms, :id, :q]
+        FIELD_QUERY_TERM_KEYS = %i[spatial startDate endDate].freeze
+        GENERIC_QUERY_TERM_KEYS = %i[searchTerms id q].freeze
         OPERATOR = 'AND'
 
         def build_fields(fields, boosts)
@@ -41,7 +43,7 @@ module NsidcOpenSearch
             JSON.parse(search_params[:facetFilters]).each do |k, v|
               filters << "{!tag=#{k}}#{k}:#{get_facet_filter(v)}"
             end
-          rescue
+          rescue StandardError
             filters
           end
           filters
@@ -136,7 +138,7 @@ module NsidcOpenSearch
           elsif generic_terms.length.eql?(1) && field_terms.empty?
             # If there is only one generic term and no field terms, just
             # returned the formatted term
-            format_query_term(generic_terms.values.first, false)
+            format_query_term(generic_terms.values.first, include_params: false)
           else
             # Otherwise, build an operator separated list of the formatted terms
             operator_joined_terms(
@@ -161,8 +163,10 @@ module NsidcOpenSearch
           # construct a Lucene Spatial query with the format [southLat,westLon
           # TO northLat,eastLon]
           coords = field_terms[:spatial].split(',')
-          fail 'Invalid spatial search. Input must have the format westLon,southLat,eastLon,'\
-               'northLat' unless coords.length == 4
+          unless coords.length == 4
+            raise 'Invalid spatial search. Input must have the format westLon,southLat,eastLon,' \
+                  'northLat'
+          end
           "spatial:[#{coords[1]},#{coords[0]} TO #{coords[3]},#{coords[2]}]"
         end
 
@@ -184,15 +188,13 @@ module NsidcOpenSearch
         #   a query with the format [0,0 TO 90,enddate], which means search every
         #   thing with a start date before the given end date.
         def build_temporal_term(field_terms)
-          return if [:startDate, :endDate].none?(&field_terms.method(:key?))
+          return if %i[startDate endDate].none?(&field_terms.method(:key?))
 
           if field_terms.key?(:startDate)
             formatted_start = format_temporal_start(field_terms[:startDate])
           end
 
-          if field_terms.key?(:endDate)
-            formatted_end = format_temporal_end(field_terms[:endDate])
-          end
+          formatted_end = format_temporal_end(field_terms[:endDate]) if field_terms.key?(:endDate)
 
           "temporal:[#{formatted_start || '0'},0 TO 90,#{formatted_end || '180'}]"
         end
@@ -204,16 +206,16 @@ module NsidcOpenSearch
             else
               "#{k}:#{format_query_term(v)}"
             end
-          end.reject(&:nil?).join(" #{OPERATOR} ")
+          end.compact.join(" #{OPERATOR} ")
         end
 
-        def format_query_term(term, include_params = true)
+        def format_query_term(term, include_params: true)
           # remove quotes from phrases and split the keywords up
           unquoted = term.tr('"', ' ').gsub('(', '\(').gsub(')', '\)')
-          unquoted = unquoted.split(' ').select { |t| t.length >= 2 }
-          unquoted = unquoted.reject { |t| %w(and or).include?(t.downcase) }
+          unquoted = unquoted.split.select { |t| t.length >= 2 }
+          unquoted = unquoted.reject { |t| %w[and or].include?(t.downcase) }
 
-          str = %(#{(unquoted).join(" #{OPERATOR} ")})
+          str = unquoted.join(" #{OPERATOR} ").to_s
           include_params ? "(#{str})" : str
         end
 
@@ -252,7 +254,7 @@ module NsidcOpenSearch
         end
 
         def operator_joined_terms(terms_arr)
-          terms_arr.reject(&:nil?).join(" #{OPERATOR} ")
+          terms_arr.compact.join(" #{OPERATOR} ")
         end
       end
     end

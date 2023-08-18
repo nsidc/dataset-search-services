@@ -1,10 +1,12 @@
 #!/usr/bin/env puma
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'app_config.rb')
 
 # Puma configuration file. See https://github.com/puma/puma for more information
 # and example config files.
 directory AppConfig::APP_PATH
-env = "#{ENV['RACK_ENV']}" || 'development'
+env = ENV.fetch('RACK_ENV', nil).to_s || 'development'
 
 rackup File.join(AppConfig::APP_PATH, 'config.ru')
 bind "tcp://0.0.0.0:#{AppConfig[env][:port]}"
