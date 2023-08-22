@@ -59,11 +59,12 @@ nsidc_jenkins::jobs:
       - type: string
         name: ref
         description: git ref (branch, tag, or SHA) to checkout
-        default: master
+        default: main
     git:
       repo: "%{hiera('gitrepo')}"
       poll_scm: true
-      checkout_local: false
+      branches: main
+      checkout_local: '**'
     command: git checkout $ref
     trigger_job: "%{hiera('job_integration_install_deps')}"
 
@@ -103,11 +104,13 @@ nsidc_jenkins::jobs:
   "%{hiera('job_qa_checkout')}":
     git:
       repo: "%{hiera('gitrepo')}"
+      branches: main
+      checkout_local: '**'
     parameters:
       - type: string
         name: ref
         description: git ref (branch, tag, or SHA) to checkout
-        default: master
+        default: integration
     command: |
       git checkout $ref
     workspace: "%{hiera('workspace_qa')}"
@@ -139,6 +142,8 @@ nsidc_jenkins::jobs:
   "%{hiera('job_staging_checkout')}":
     git:
       repo: "%{hiera('gitrepo')}"
+      branches: main
+      checkout_local: '**'
     parameters:
       - type: string
         name: ref
@@ -176,6 +181,8 @@ nsidc_jenkins::jobs:
   "%{hiera('job_blue_provision')}":
     git:
       repo: "%{hiera('gitrepo')}"
+      branches: main
+      checkout_local: '**'
     parameters:
       - type: string
         name: ref
@@ -198,11 +205,13 @@ nsidc_jenkins::jobs:
   "%{hiera('job_release_bump_version')}":
     git:
       repo: "%{hiera('gitrepo')}"
+      branches: main
+      checkout_local: '**'
     parameters:
       - type: string
         name: branch
         description: git branch to checkout and tag
-        default: master
+        default: main
       - type: choice
         name: version_part
         choices:
