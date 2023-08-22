@@ -19,9 +19,9 @@ module NsidcOpenSearch
         namespace 'nsidc', 'http://nsidc.org/ns/opensearch/1.1/'
         short_name 'NSIDC Data Set OpenSearch Service'
         long_name 'Data set level OpenSearch interface for nsidc.org'
-        description 'OpenSearch description document that describes how to query our server for' \
-                    'data set level information. This service is currently in incubation; it is' \
-                    'publicly accessible but the interface is not yet stable and custom elements' \
+        description 'OpenSearch description document that describes how to query our server for ' \
+                    'data set level information. This service is currently in incubation; it is ' \
+                    'publicly accessible but the interface is not yet stable and custom elements ' \
                     'are not documented.'
         tags 'nsidc.org opensearch search data set geospatial temporal parameter'
         contact 'nsidc@nsidc.org'

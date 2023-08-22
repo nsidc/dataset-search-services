@@ -48,14 +48,14 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchRest do
     # This is basically duplicating the normal query test, verifying that we use
     # the same constraints but using a different parser/builder.
 
-    it 'generates default query with empty search2' do
+    it 'generates default query with empty search' do
       solr_search.execute base_search_parameters
       expect(rsolr).to have_received(:find).with(
         hash_including(default_search_expectations), any_args
       )
     end
 
-    it 'generates keyword query with keyword execute2' do
+    it 'generates keyword query with keyword execute' do
       solr_search.execute base_search_parameters.merge(id: 'http://one.com')
       expect(rsolr).to have_received(:find).with(
         hash_including(queries: { authoritative_id: 'http://one.com' }), any_args
@@ -63,7 +63,6 @@ describe NsidcOpenSearch::Dataset::Search::SolrSearchRest do
     end
 
     it 'preserves operators with a keyword search' do
-      # get_should_receive_expectations queries: { authoritative_id: 'abcd123' }
       solr_search.execute base_search_parameters.merge(id: 'abcd123')
       expect(rsolr).to have_received(:find).with(
         hash_including(queries: { authoritative_id: 'abcd123' }), any_args

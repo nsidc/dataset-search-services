@@ -55,7 +55,7 @@ describe NsidcOpenSearch::Dataset::Search do
         )
       end
 
-      it 'generats default query with empty keyword search' do
+      it 'generates default query with empty keyword search' do
         solr_search.execute base_search_parameters.merge(searchTerms: '')
         expect(rsolr).to have_received(:find).with(
           hash_including(default_search_expectations),

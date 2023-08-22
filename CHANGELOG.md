@@ -1,3 +1,8 @@
+## Unreleased
+
+  - Update Ruby version to 3.2.2, as well as gem dependencies
+  - Significant refactoring for compliance with Rubocop standards
+
 ## v3.6.0 (2020-07-01)
 
   - Update Ruby version to 2.6.5, as well as various gem dependencies
