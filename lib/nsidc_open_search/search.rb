@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../utils/class_module'
 require_relative 'enricher'
 require_relative 'search_adapter'
@@ -21,8 +23,8 @@ module NsidcOpenSearch
       validate!(parameters)
 
       unless valid?
-        fail ArgumentError, 'Invalid search query. The query must contain all parameters specified'\
-                            ' in the OpenSearch description document.'
+        raise ArgumentError, 'Invalid search query. The query must contain all parameters ' \
+                             'specified in the OpenSearch description document.'
       end
 
       result = exec_rest(parameters)

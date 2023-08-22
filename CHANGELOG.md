@@ -1,3 +1,8 @@
+## Unreleased
+
+  - Update Ruby version to 3.2.2, as well as gem dependencies
+  - Significant refactoring for compliance with Rubocop standards
+
 ## v3.7.0 (2023-07-12)
 
   - CI updates to reflect the change from `master` to `main` as the default

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'set'
 require File.join(File.dirname(__FILE__), '..', 'utils', 'class_module')
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tilt'
 require File.join(File.dirname(__FILE__), '..', 'utils', 'class_extensions')
 require File.join(File.dirname(__FILE__), 'osdd_base')
@@ -28,9 +30,9 @@ module OpenSearchDsl
 
       instance_eval(&block) if block
 
-      fail ArgumentError, 'Missing short name' if @short_name.nil?
-      fail ArgumentError, 'Missing description' if @description.nil?
-      fail ArgumentError, 'Missing url' if @urls.empty?
+      raise ArgumentError, 'Missing short name' if @short_name.nil?
+      raise ArgumentError, 'Missing description' if @description.nil?
+      raise ArgumentError, 'Missing url' if @urls.empty?
     end
 
     def url(&block)

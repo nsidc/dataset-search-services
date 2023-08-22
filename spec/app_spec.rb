@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'app')
 
-describe 'Nsidc OpenSearch App' do
+describe NsidcOpenSearch::App do
   include Rack::Test::Methods
 
   def app
-    @app ||= NsidcOpenSearch::App
+    @app ||= described_class
   end
 
   def stubbed_obj(obj = {}, **opts)
@@ -40,18 +42,17 @@ describe 'Nsidc OpenSearch App' do
     }
   end
 
-  def default_os_headers
-  end
+  def default_os_headers; end
 
-  it 'should provide dataset OSDD content at its endpoint' do
+  it 'provides dataset OSDD content at its endpoint' do
     get '/OpenSearchDescription', {}, 'HTTP_ACCEPT' => 'application/opensearchdescription+xml'
     expect(last_response).to be_ok
     expect(last_response.header['Content-Type']).to match '^application/opensearchdescription\+xml'
   end
 
-  it 'should provide OpenSearch results at its dataset endpoint' do
+  it 'provides OpenSearch results at its dataset endpoint' do
     solr_response = {
-      'response' =>  {
+      'response' => {
         'numFound' => 1,
         'docs' => [
           {
@@ -63,20 +64,20 @@ describe 'Nsidc OpenSearch App' do
       }
     }
 
-    rsolr = double('rsolr', find: solr_response)
+    rsolr = instance_double(RSolr::Ext::Client, find: solr_response)
     allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
     allow(RestClient).to receive(:get).and_return(iso_document_fixture)
 
     get('/OpenSearch', default_os_query_params,
         'HTTP_ACCEPT' => 'application/atom+xml',
-        'X-Requested-With' => 'spec_test'
-       )
+        'X-Requested-With' => 'spec_test')
 
     expect(last_response).to be_ok
     expect(last_response.header['Content-Type']).to match '^application/atom\+xml'
   end
 
-  it 'should provide Facets results at its facets endpoint' do
+  # rubocop:disable RSpec/ExampleLength
+  it 'provides Facets results at its facets endpoint' do
     facets_hash = [
       {
         name: 'data_center',
@@ -116,14 +117,14 @@ describe 'Nsidc OpenSearch App' do
     solr_response = {}
     allow(solr_response).to receive(:facets).and_return(stubbed_facets)
 
-    rsolr = double('rsolr', find: solr_response)
+    rsolr = instance_double(RSolr::Ext::Client, find: solr_response)
     allow(RSolr::Ext).to receive(:connect).and_return(rsolr)
 
     get('/Facets', default_os_query_params,
         'HTTP_ACCEPT' => 'application/nsidcfacets+xml',
-        'X-Requested-With' => 'spec_test'
-       )
+        'X-Requested-With' => 'spec_test')
     expect(last_response).to be_ok
     expect(last_response.header['Content-Type']).to match '^application/nsidcfacets\+xml'
   end
+  # rubocop:enable RSpec/ExampleLength
 end

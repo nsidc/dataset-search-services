@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ostruct'
 
 module NsidcOpenSearch
@@ -55,24 +57,22 @@ module NsidcOpenSearch
         def self.valids
           [{
             required: [],
-            optional: [
-              :searchTerms,
-              :spatial,
-              :startDate,
-              :endDate,
-              :startIndex,
-              :count,
-              :source,
-              :facetFilters,
-              :sortKeys
+            optional: %i[
+              searchTerms
+              spatial
+              startDate
+              endDate
+              startIndex
+              count
+              source
+              facetFilters
+              sortKeys
             ]
           }]
         end
 
-        private
-
         def self.create_parameter(replacement, example)
-          OpenStruct.new replacement: replacement, example: example
+          Struct.new(:replacement, :example).new(replacement, example)
         end
       end
     end

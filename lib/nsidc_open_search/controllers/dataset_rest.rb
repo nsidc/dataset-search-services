@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 require 'uri'
 require_relative '../routes'
@@ -7,13 +9,14 @@ module NsidcOpenSearch
   module Controllers
     module DatasetRest
       def self.registered(app)
-        app.get Routes.named(:dataset_rest), provides: [:atom, :xml] do
+        app.get Routes.named(:dataset_rest), provides: %i[atom xml] do
           dataset = DatasetRest.dataset(settings, params)
 
-          if params[:splat].first.nil_or_whitespace? || dataset.total_results == 0
+          if params[:splat].first.nil_or_whitespace? || dataset.total_results.zero?
             status 404
           else
-            dataset.to_atom(URI.escape(request.url), URI.escape(base_url))
+            parser = URI::Parser.new
+            dataset.to_atom(parser.escape(request.url), parser.escape(base_url))
           end
         end
       end

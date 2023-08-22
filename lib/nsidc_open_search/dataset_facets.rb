@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rsolr-ext'
 require_relative 'search'
 require_relative 'dataset/search/definitions/definition'

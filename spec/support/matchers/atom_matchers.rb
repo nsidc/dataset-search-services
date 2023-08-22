@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'nokogiri'
 require File.join(File.dirname(__FILE__), 'matcher_helpers')
 
 RSpec::Matchers.define :have_atom_root_element do
-  match_count(1, "#{FEED_SELECTOR}")
+  match_count(1, FEED_SELECTOR.to_s)
 end
 
 RSpec::Matchers.define :have_atom_namespace do
@@ -25,7 +27,7 @@ end
 
 RSpec::Matchers.define :have_an_id do
   match_count(1, "#{FEED_SELECTOR}/xmlns:id") &&
-    match_at_least_one("#{FEED_SELECTOR}/xmlns:id", true)
+    match_at_least_one("#{FEED_SELECTOR}/xmlns:id", text: true)
 end
 
 RSpec::Matchers.define :have_at_least_one_link do
@@ -34,17 +36,17 @@ end
 
 RSpec::Matchers.define :have_a_title do
   match_count(1, "#{FEED_SELECTOR}/xmlns:title") &&
-    match_at_least_one("#{FEED_SELECTOR}/xmlns:title", true)
+    match_at_least_one("#{FEED_SELECTOR}/xmlns:title", text: true)
 end
 
 RSpec::Matchers.define :have_an_updated do
   match_count(1, "#{FEED_SELECTOR}/xmlns:updated") &&
-    match_at_least_one("#{FEED_SELECTOR}/xmlns:updated", true)
+    match_at_least_one("#{FEED_SELECTOR}/xmlns:updated", text: true)
 end
 
 RSpec::Matchers.define :have_a_total_results do
   match_count(1, "#{FEED_SELECTOR}/os:totalResults") &&
-    match_at_least_one("#{FEED_SELECTOR}/os:totalResults", true)
+    match_at_least_one("#{FEED_SELECTOR}/os:totalResults", text: true)
 end
 
 RSpec::Matchers.define :have_a_first_link do
@@ -65,12 +67,12 @@ end
 
 RSpec::Matchers.define :have_a_start_index do
   match_count(1, "#{FEED_SELECTOR}/os:startIndex") &&
-    match_at_least_one("#{FEED_SELECTOR}/os:startIndex", true)
+    match_at_least_one("#{FEED_SELECTOR}/os:startIndex", text: true)
 end
 
 RSpec::Matchers.define :have_an_items_per_page do
   match_count(1, "#{FEED_SELECTOR}/os:itemsPerPage") &&
-    match_at_least_one("#{FEED_SELECTOR}/os:itemsPerPage", true)
+    match_at_least_one("#{FEED_SELECTOR}/os:itemsPerPage", text: true)
 end
 
 RSpec::Matchers.define :have_a_query do
@@ -155,7 +157,7 @@ RSpec::Matchers.define :have_at_least_one_entry_with_a_supporting_programs do
 end
 
 RSpec::Matchers.define :have_three_facets do
-  match_count(3, "#{FACET_SELECTOR}")
+  match_count(3, FACET_SELECTOR.to_s)
 end
 
 private
@@ -171,7 +173,7 @@ def match_count(count, selector)
   end
 end
 
-def match_at_least_one(selector, text = false)
+def match_at_least_one(selector, text: false)
   if text
     match do |actual|
       xml = get_xml actual

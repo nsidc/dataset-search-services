@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 require_relative '../routes'
 require_relative '../dataset_search'
@@ -6,7 +8,7 @@ module NsidcOpenSearch
   module Controllers
     module DatasetSearch
       def self.registered(app)
-        app.get Routes.named(:dataset_search), provides: [:atom, :xml] do
+        app.get Routes.named(:dataset_search), provides: %i[atom xml] do
           NsidcOpenSearch::DatasetSearch.new(
             settings.solr_url,
             settings.enricher_thread_count,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ClassModule
   def included(base)
     if const_defined?('ClassMethods') && const_get('ClassMethods').is_a?(Module)

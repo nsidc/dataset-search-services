@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NsidcOpenSearch
   module EntryEnrichers
     class Dummy

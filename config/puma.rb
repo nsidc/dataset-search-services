@@ -1,10 +1,12 @@
 #!/usr/bin/env puma
+# frozen_string_literal: true
+
 require_relative 'app_config'
 
 # Puma configuration file. See https://github.com/puma/puma for more information
 # and example config files.
 
-env = "#{ENV['RACK_ENV']}" || 'development'
+env = ENV.fetch('RACK_ENV', nil).to_s || 'development'
 
 rackup '/live/apps/dataset-search-services/webapps/dataset-search-services/config.ru'
 daemonize true

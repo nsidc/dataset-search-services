@@ -1,49 +1,60 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'spec_helper')
+require File.join(
+  File.dirname(__FILE__),
+  '..', 'lib', 'nsidc_open_search', 'dataset', 'search', 'definitions', 'definition'
+)
 require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'validator')
 
-describe 'validator' do
-  before :each do
-    @definition = double('dsl definition', valids: [
-      { required: [:searchterms], optional: [:bbox] },
-      { required: [:searchterms], optional: [:loc] }
-    ])
+describe NsidcOpenSearch::Validator do
+  let(:obj) { Object.new }
+  let(:definition) do
+    class_double(
+      NsidcOpenSearch::Dataset::Search::Definition, valids: [
+        { required: [:searchterms], optional: [:bbox] },
+        { required: [:searchterms], optional: [:loc] }
+      ]
+    )
+  end
 
-    @obj = Object.new
-    @obj.class.send :include, NsidcOpenSearch::Validator
-    @obj.class.send :search_definition, @definition
+  before do
+    obj = Object.new
+    obj.class.send :include, described_class
+    obj.class.send :search_definition, definition
   end
 
   describe 'is valid' do
-    it 'should be true when parameters contain a set of valid inputs' do
-      @obj.validate! searchterms: 'sea ice', loc: '10 20 30 40'
-      expect(@obj.valid?).to be true
+    it 'is true when parameters contain a set of valid inputs' do
+      obj.validate! searchterms: 'sea ice', loc: '10 20 30 40'
+      expect(obj.valid?).to be true
     end
 
-    it 'should be true when parameters do not contain all optional inputs' do
-      @obj.validate! searchterms: 'sea ice'
-      expect(@obj.valid?).to be true
+    it 'is true when parameters do not contain all optional inputs' do
+      obj.validate! searchterms: 'sea ice'
+      expect(obj.valid?).to be true
     end
 
-    it 'should be false when parameters do not contain a valid set of inputs' do
-      @obj.validate! loc: '10 20 30 40'
-      expect(@obj.valid?).to be false
+    it 'is false when parameters do not contain a valid set of inputs' do
+      obj.validate! loc: '10 20 30 40'
+      expect(obj.valid?).to be false
     end
   end
 
   describe 'valid terms' do
-    it 'should contain a list of the DSL terms when parameters contain valid inputs' do
-      @obj.validate! searchterms: 'sea ice', bbox: '10 20 30 40'
-      expect(@obj.valid_terms).to eql [:searchterms, :bbox]
+    it 'contains a list of the DSL terms when parameters contain valid inputs' do
+      obj.validate! searchterms: 'sea ice', bbox: '10 20 30 40'
+      expect(obj.valid_terms).to eql %i[searchterms bbox]
     end
 
-    it 'should contain a list of the DSL terms when parameters contain only required inputs' do
-      @obj.validate! searchterms: 'sea ice'
-      expect(@obj.valid_terms).to eql [:searchterms]
+    it 'contains a list of the DSL terms when parameters contain only required inputs' do
+      obj.validate! searchterms: 'sea ice'
+      expect(obj.valid_terms).to eql [:searchterms]
     end
 
-    it 'should be empty when the parameters do not contain valid inputs' do
-      @obj.validate! bbox: '10 20 30 40'
-      expect(@obj.valid_terms).to be_empty
+    it 'is empty when the parameters do not contain valid inputs' do
+      obj.validate! bbox: '10 20 30 40'
+      expect(obj.valid_terms).to be_empty
     end
   end
 end

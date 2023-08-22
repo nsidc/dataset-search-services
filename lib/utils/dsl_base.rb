@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DslBase
   def dsl_methods(*syms)
     syms.each { |sym| class_eval define_dsl_method_str(sym) }
@@ -5,15 +7,15 @@ module DslBase
 
   private
 
-  def define_dsl_method_str(k)
-    <<-EOE
-        def #{k}(n=nil)
+  def define_dsl_method_str(key)
+    <<-BLOCK
+        def #{key}(n=nil)
           unless n.nil?
-            @#{k}=n
+            @#{key}=n
           end
 
-          @#{k}
+          @#{key}
         end
-    EOE
+    BLOCK
   end
 end

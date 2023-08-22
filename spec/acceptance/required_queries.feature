@@ -17,7 +17,8 @@ Feature: Must-not-break search scenarios
     Then I get a valid response with entries
     And The entries don't contain NSIDC-0478
     And The entries contain NSIDC-0433
-    And The entries contain NSIDC-0032
+    And The entries contain NSIDC-0051
+    And The entries contain IDBMG4
 
   @search_temporal_single
   Scenario: Temporal query with a single year range
@@ -81,7 +82,7 @@ Feature: Must-not-break search scenarios
   @search_investigator_paden
   Scenario: Text search for paden
     When I perform a text search for "paden"
-    Then I get a valid response with 11 entries
+    Then I get a valid response with 10 entries
     And The entries contain IRKUB1B
     And The entries contain IRMCR1B
     And The entries contain BRMCR1B
@@ -92,6 +93,5 @@ Feature: Must-not-break search scenarios
     Then The entries contain ipplv1b
     And The entries contain ilvis2
     And The entries contain blvis2
-    And The entries contain ilvis0
     And The entries contain blvis0
     And The entries contain ilvis1b

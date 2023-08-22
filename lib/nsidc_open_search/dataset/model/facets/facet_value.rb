@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), '..', '..', '..', '..', 'utils', 'auto_initializer')
 
 module NsidcOpenSearch
@@ -6,10 +8,6 @@ module NsidcOpenSearch
       module Facets
         class FacetValue < AutoInitializer
           attr_accessor :name, :hits
-
-          def initialize(args)
-            super args
-          end
         end
       end
     end

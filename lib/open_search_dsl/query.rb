@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'osdd_base')
 
 module OpenSearchDsl
@@ -9,7 +11,7 @@ module OpenSearchDsl
       attr_reader :parameters
 
       def initialize(role = 'example', &block)
-        fail ArgumentError, 'Missing role' if role.nil_or_whitespace?
+        raise ArgumentError, 'Missing role' if role.nil_or_whitespace?
 
         @parameters = {}
         @role = role

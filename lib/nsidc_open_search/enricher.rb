@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'peach'
 require_relative '../utils/class_module'
 

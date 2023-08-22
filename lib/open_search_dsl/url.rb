@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'osdd_base')
 require File.join(File.dirname(__FILE__), 'template_parameter')
 
@@ -15,8 +17,8 @@ module OpenSearchDsl
 
         instance_eval(&block) if block
 
-        fail ArgumentError, 'Missing type' if @type.nil?
-        fail ArgumentError, 'Missing base url' if @base_url.nil?
+        raise ArgumentError, 'Missing type' if @type.nil?
+        raise ArgumentError, 'Missing base url' if @base_url.nil?
       end
 
       def parameter(*args)

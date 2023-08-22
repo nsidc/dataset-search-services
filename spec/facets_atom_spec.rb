@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 require_relative '../lib/nsidc_open_search/dataset/model/facets/facets_response_builder'
 require_relative '../lib/nsidc_open_search/dataset/model/facets/facet_entry'
 require_relative '../lib/nsidc_open_search/dataset/model/facets/facet_value'
 
-describe 'facets response' do
+describe NsidcOpenSearch::Dataset::Model::Facets::FacetsResponseBuilder do
   describe 'result to atom' do
-    before :each do
-      @facet_filters = '{dataCenter: ["x","y"],authors:["a"],facet_spatial_scope:["r"]}'
-      @result = NsidcOpenSearch::Dataset::Model::Facets::FacetsResponseBuilder.new(
+    let(:facet_filters) { '{dataCenter: ["x","y"],authors:["a"],facet_spatial_scope:["r"]}' }
+    let(:result) do
+      described_class.new(
         total_results: 1,
         search_parameters: {
           startIndex: '1',
           count: '10',
           searchTerms: 'sea ice',
-          facetFilters: @facet_filters
+          facetFilters: facet_filters
         },
         entries: [
           NsidcOpenSearch::Dataset::Model::Facets::FacetEntry.new(
@@ -41,9 +43,9 @@ describe 'facets response' do
       )
     end
 
-    it 'should output a valid atom format' do
-      xml = @result.to_atom(
-        "localhost/dataset?searchTerms=sea ice&facetFilters=#{@facet_filters}",
+    it 'outputs a valid atom format' do
+      xml = result.to_atom(
+        "localhost/dataset?searchTerms=sea ice&facetFilters=#{facet_filters}",
         'localhost'
       )
 

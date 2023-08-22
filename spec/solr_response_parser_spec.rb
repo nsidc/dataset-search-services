@@ -1,12 +1,16 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 require_relative '../lib/nsidc_open_search/dataset/search/parsers/solr_results_parser'
 
 describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
-  before :each do
-    @solr_response = YAML.load_file(
-      File.expand_path('../fixtures/solr_response_unordered_temporal.yaml', __FILE__)
+  let(:solr_response) do
+    YAML.load_file(
+      File.expand_path('fixtures/solr_response_unordered_temporal.yaml', __dir__)
     )
-    @facet_config = {
+  end
+  let(:facet_config) do
+    {
       'NSIDC' => {
         'facets' => {
           'name' => 'facet_temporal_duration',
@@ -18,126 +22,127 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
   end
 
   describe 'result entry' do
-    before :each do
-      @entry = NsidcOpenSearch::Dataset::Search::SolrResultsParser.new(
-        response: @solr_response,
-        services_config: @facet_config
+    let(:entry) do
+      described_class.new(
+        response: solr_response,
+        services_config: facet_config
       ).entries.first
     end
-    it 'should set id to response authoritative id' do
-      expect(@entry.id).to be @solr_response['response']['docs'][0]['authoritative_id']
+
+    it 'sets id to response authoritative id' do
+      expect(entry.id).to be solr_response['response']['docs'][0]['authoritative_id']
     end
 
-    it 'should set title to response title' do
-      expect(@entry.title).to be @solr_response['response']['docs'][0]['title']
+    it 'sets title to response title' do
+      expect(entry.title).to be solr_response['response']['docs'][0]['title']
     end
 
-    it 'should set summary' do
-      expect(@entry.summary).to eql 'Test Abstract'
+    it 'sets summary' do
+      expect(entry.summary).to eql 'Test Abstract'
     end
 
-    it 'should set parameters' do
-      expect(@entry.parameters.length).to be 2
+    it 'sets parameters' do
+      expect(entry.parameters.length).to be 2
     end
 
-    it 'should set parameter category' do
-      expect(@entry.parameters[0].category).to eql 'EARTH SCIENCE'
+    it 'sets parameter category' do
+      expect(entry.parameters[0].category).to eql 'EARTH SCIENCE'
     end
 
-    it 'should set parameter topic' do
-      expect(@entry.parameters[0].topic).to eql 'Cryosphere'
+    it 'sets parameter topic' do
+      expect(entry.parameters[0].topic).to eql 'Cryosphere'
     end
 
-    it 'should set parameter term' do
-      expect(@entry.parameters[0].term).to eql 'Snow/Ice'
+    it 'sets parameter term' do
+      expect(entry.parameters[0].term).to eql 'Snow/Ice'
     end
 
-    it 'should set parameter variable' do
-      expect(@entry.parameters[0].variable_1).to eql 'Ice Extent'
+    it 'sets parameter variable' do
+      expect(entry.parameters[0].variable_1).to eql 'Ice Extent'
     end
 
-    it 'should set parameter name' do
-      expect(@entry.parameters[0].name).to eql 'Coverage'
+    it 'sets parameter name' do
+      expect(entry.parameters[0].name).to eql 'Coverage'
     end
 
-    it 'should set keywords' do
-      expect(@entry.keywords.length).to be 3
+    it 'sets keywords' do
+      expect(entry.keywords.length).to be 3
     end
 
-    it 'should set entry url' do
-      expect(@entry.url).to eql 'http://nsidc.org/data/test'
+    it 'sets entry url' do
+      expect(entry.url).to eql 'http://nsidc.org/data/test'
     end
 
-    it 'should set data access urls' do
-      expect(@entry.data_access_urls.length).to be 1
+    it 'sets data access urls' do
+      expect(entry.data_access_urls.length).to be 1
     end
 
-    it 'should set authors' do
-      expect(@entry.authors.length).to be 2
-      expect(@entry.authors).to include('John Doe', 'Jane Doe')
+    it 'sets authors' do
+      expect(entry.authors.length).to be 2
+      expect(entry.authors).to include('John Doe', 'Jane Doe')
     end
 
-    it 'should set data centers' do
-      expect(@entry.data_centers.length).to be 2
-      expect(@entry.data_centers).to include('NSIDC', 'NOAA')
+    it 'sets data centers' do
+      expect(entry.data_centers.length).to be 2
+      expect(entry.data_centers).to include('NSIDC', 'NOAA')
     end
 
-    it 'should set spatial coverage' do
-      expect(@entry.spatial_coverages.length).to be 2
+    it 'sets spatial coverage' do
+      expect(entry.spatial_coverages.length).to be 2
     end
 
-    it 'should set bounding box coordinates' do
-      bbox = @entry.spatial_coverages[0]
+    it 'sets bounding box coordinates' do
+      bbox = entry.spatial_coverages[0]
       west, south, east, north = bbox.split(',').map(&:to_f)
-      expect(west).to eql(-180.0)
-      expect(east).to eql 180.0
-      expect(north).to eql 90.0
-      expect(south).to eql 30.98
+      expect(west).to be(-180.0)
+      expect(east).to be 180.0
+      expect(north).to be 90.0
+      expect(south).to be 30.98
     end
 
-    it 'should set temporal coverages' do
-      expect(@entry.temporal_coverages.length).to be 4
+    it 'sets temporal coverages' do
+      expect(entry.temporal_coverages.length).to be 4
     end
 
-    it 'should sort the temporal coverages by start_date' do
-      expect(@entry.temporal_coverages.first.start_date).to eql Date.parse '1978-10-01'
-      expect(@entry.temporal_coverages.last.start_date).to eql Date.parse '2004-01-01'
-      expect(@entry.temporal_coverages.last.end_date).to eql nil
+    it 'sorts the temporal coverages by start_date' do
+      expect(entry.temporal_coverages.first.start_date).to eql Date.parse '1978-10-01'
+      expect(entry.temporal_coverages.last.start_date).to eql Date.parse '2004-01-01'
+      expect(entry.temporal_coverages.last.end_date).to be_nil
     end
 
-    it 'should sort the temporal coverages by end_date if start_date is equal' do
-      expect(@entry.temporal_coverages[0].end_date).to eql Date.parse '2011-12-31'
-      expect(@entry.temporal_coverages[1].end_date).to eql Date.parse '2014-05-23'
+    it 'sorts the temporal coverages by end_date if start_date is equal' do
+      expect(entry.temporal_coverages[0].end_date).to eql Date.parse '2011-12-31'
+      expect(entry.temporal_coverages[1].end_date).to eql Date.parse '2014-05-23'
     end
 
-    it 'should treat nil end dates as greater than end dates that exist' do
-      expect(@entry.temporal_coverages[2].start_date).to eql Date.parse '2004-01-01'
-      expect(@entry.temporal_coverages[2].end_date).to eql Date.parse '2005-01-01'
+    it 'treats nil end dates as greater than end dates that exist' do
+      expect(entry.temporal_coverages[2].start_date).to eql Date.parse '2004-01-01'
+      expect(entry.temporal_coverages[2].end_date).to eql Date.parse '2005-01-01'
 
-      expect(@entry.temporal_coverages[3].start_date).to eql Date.parse '2004-01-01'
-      expect(@entry.temporal_coverages[3].end_date).to eql nil
+      expect(entry.temporal_coverages[3].start_date).to eql Date.parse '2004-01-01'
+      expect(entry.temporal_coverages[3].end_date).to be_nil
     end
 
-    it 'should set date range start and end' do
-      dr = @entry.temporal_coverages[0]
+    it 'sets date range start and end' do
+      dr = entry.temporal_coverages[0]
       expect(dr.start_date).to eql Date.parse '19781001'
       expect(dr.end_date).to eql Date.parse '20111231'
     end
 
-    it 'should set distribution formats' do
-      expect(@entry.distribution_formats.length).to be 1
+    it 'sets distribution formats' do
+      expect(entry.distribution_formats.length).to be 1
     end
 
-    it 'should set last revision date' do
-      expect(@entry.last_revision_date).to eql Date.parse '20130528'
+    it 'sets last revision date' do
+      expect(entry.last_revision_date).to eql Date.parse '20130528'
     end
 
-    it 'should set the temporal duration' do
-      expect(@entry.temporal_duration).to eql '33'
+    it 'sets the temporal duration' do
+      expect(entry.temporal_duration).to eql '33'
     end
 
-    it 'should set the spatial area' do
-      expect(@entry.spatial_area).to eql '271.83'
+    it 'sets the spatial area' do
+      expect(entry.spatial_area).to eql '271.83'
     end
   end
 end
