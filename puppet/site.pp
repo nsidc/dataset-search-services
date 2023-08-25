@@ -30,16 +30,6 @@ class { 'rbenv':
   command => "gem update --system ${rubygems_ver}",
   path    => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
 }
-# puma native extension dep
-# package { 'libssl-dev':
-#   ensure => present
-# } ->
-
-# nokogiri native extension dep
-# package { 'zlib1g-dev':
-#   ensure => present
-# }
-
 
 # vagrant must be able to write to /var/log
 # TODO: Is this stuff still necessary
