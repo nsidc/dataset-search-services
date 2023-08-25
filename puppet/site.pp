@@ -1,45 +1,44 @@
 # Load modules and classes
 lookup('classes', {merge => unique}).include
+
 $project = 'search_services'
 $app_root = "/opt/${project}"
+$ruby_ver = '3.2.2'
+$bundler_ver = '2.4.10'
+$rubygems_ver = '3.4.10'
 
-# Ensure the brightbox apt repository gets added before installing ruby
-include apt
-apt::ppa{'ppa:brightbox/ruby-ng':}
-
-package { "ruby-switch":
+package {"libssl-dev":
   ensure => present
+} ->
+package {"build-essential":
+  ensure => present
+} ->
+class { 'rbenv':
+  install_dir => '/home/vagrant/rbenv',
+  owner => 'vagrant',
+  group => 'vagrant',
 }
-package { 'ruby2.6':
-  ensure => present,
-  require => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
-} ->
-package { 'ruby2.6-dev':
-  ensure => present,
-  require => [ Class['apt'], Apt::Ppa['ppa:brightbox/ruby-ng'] ]
-} ->
-exec { 'switch-ruby' :
-  command => 'ruby-switch --set ruby2.6',
-  path => ['/usr/bin'],
-  require => Package['ruby-switch']
-}->
-exec { 'update-gem':
-  command => 'gem update --system',
-  path => ['/usr/bin']
-}->
-exec { 'bundler':
-  command => 'gem install bundler',
-  path => ['/usr/bin']
-} ->
+-> rbenv::plugin { 'rbenv/ruby-build': }
+-> rbenv::build { $ruby_ver:
+  bundler_version => $bundler_ver,
+  owner => 'vagrant',
+  group => 'vagrant',
+  global => true,
+}
+-> rbenv::gem { 'builder': ruby_version => $ruby_ver }
+-> exec { 'gem_update':
+  command => "gem update --system ${rubygems_ver}",
+  path    => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
+}
 # puma native extension dep
-package { 'libssl-dev':
-  ensure => present
-} ->
+# package { 'libssl-dev':
+#   ensure => present
+# } ->
 
 # nokogiri native extension dep
-package { 'zlib1g-dev':
-  ensure => present
-}
+# package { 'zlib1g-dev':
+#   ensure => present
+# }
 
 
 # vagrant must be able to write to /var/log
@@ -116,12 +115,13 @@ unless $environment == 'ci' {
 
   # install application gems
   exec { 'do_bundle_install':
-    cwd => "${app_root}",
-    command => 'bundle install --shebang=/usr/bin/ruby',
-    path => ['/usr/local/bin','/usr/bin', '/bin'],
+    cwd     => "${app_root}",
+    environment => "HOME=${app_root}",
+    command => "bundle _${bundler_ver}_ install",
+    path => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
     user => 'vagrant',
     group => 'vagrant',
-    require => [ Exec['bundler'] ]
+    require => [ Exec['gem_update'] ]
   } ->
 
   puma::app {"${project}":
@@ -137,7 +137,8 @@ unless $environment == 'ci' {
     max_threads => '1',
     port => '10680',
     workers  => $workers,
-    restart_command => 'bundle exec puma'
+    restart_command => '/home/vagrant/rbenv/shims/bundle exec puma',
+    bundler_path => '/home/vagrant/rbenv/shims/bundle'
   } ->
 
   # Ensure directory for restart file exists

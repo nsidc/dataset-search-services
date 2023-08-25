@@ -1,5 +1,4 @@
 # Puppet CI Resources
-
 classes:
   - nsidc_jenkins
   - nsidc_nfs
@@ -69,22 +68,29 @@ nsidc_jenkins::jobs:
     trigger_job: "%{hiera('job_integration_install_deps')}"
 
   "%{hiera('job_integration_install_deps')}":
-    command: bundle install
+    command: |
+      #!/bin/bash -l
+      bundle install
     workspace: "%{hiera('workspace_integration')}"
     trigger_job: "%{hiera('job_integration_syntax')}"
 
   "%{hiera('job_integration_syntax')}":
-    command: bundle exec rubocop
+    command: |
+      #!/bin/bash -l
+      bundle exec rubocop
     workspace: "%{hiera('workspace_integration')}"
     trigger_job: "%{hiera('job_integration_unit_tests')}"
 
   "%{hiera('job_integration_unit_tests')}":
-    command: bundle exec rake spec:unit
+    command: |
+      #!/bin/bash -l
+      bundle exec rake spec:unit
     workspace: "%{hiera('workspace_integration')}"
     trigger_job: "%{hiera('job_integration_provision')}"
 
   "%{hiera('job_integration_provision')}":
     command: |
+      #!/bin/bash -l
       ENV=integration
 
       (vagrant nsidc hijack --env=$ENV || true)
@@ -97,6 +103,7 @@ nsidc_jenkins::jobs:
 
   "%{hiera('job_integration_acceptance')}":
     command: |
+      #!/bin/bash -l
       export TARGET_ENVIRONMENT=integration
       bundle exec rake spec:acceptance
     workspace: "%{hiera('workspace_integration')}"
@@ -117,12 +124,15 @@ nsidc_jenkins::jobs:
     trigger_job: "%{hiera('job_qa_install_deps')}"
 
   "%{hiera('job_qa_install_deps')}":
-    command: bundle install
+    command: |
+      #!/bin/bash -l
+      bundle install
     workspace: "%{hiera('workspace_qa')}"
     trigger_job: "%{hiera('job_qa_provision')}"
 
   "%{hiera('job_qa_provision')}":
     command: |
+      #!/bin/bash -l
       ENV=qa
 
       (vagrant nsidc hijack --env=$ENV || true)
@@ -135,6 +145,7 @@ nsidc_jenkins::jobs:
 
   "%{hiera('job_qa_acceptance')}":
     command: |
+      #!/bin/bash -l
       export TARGET_ENVIRONMENT=qa
       bundle exec rake spec:acceptance
     workspace: "%{hiera('workspace_qa')}"
@@ -155,12 +166,15 @@ nsidc_jenkins::jobs:
     trigger_job: "%{hiera('job_staging_install_deps')}"
 
   "%{hiera('job_staging_install_deps')}":
-    command: bundle install
+    command: |
+      #!/bin/bash -l
+      bundle install
     workspace: "%{hiera('workspace_staging')}"
     trigger_job: "%{hiera('job_staging_provision')}"
 
   "%{hiera('job_staging_provision')}":
     command: |
+      #!/bin/bash -l
       ENV=staging
 
       (vagrant nsidc hijack --env=$ENV || true)
@@ -173,6 +187,7 @@ nsidc_jenkins::jobs:
 
   "%{hiera('job_staging_acceptance')}":
     command: |
+      #!/bin/bash -l
       export TARGET_ENVIRONMENT=staging
       bundle exec rake spec:acceptance
     workspace: "%{hiera('workspace_staging')}"
@@ -189,6 +204,7 @@ nsidc_jenkins::jobs:
         description: git ref (branch, tag, or SHA) to checkout
         default: staging
     command: |
+      #!/bin/bash -l
       ENV=blue
 
       git checkout $ref
@@ -219,6 +235,7 @@ nsidc_jenkins::jobs:
         - minor
         - major
     command: |
+      #!/bin/bash -l
       git checkout $branch
 
       bundle install
