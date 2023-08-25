@@ -1,5 +1,5 @@
 ---
-project: dss2
+project: dss
 gitrepo: git@github.com:nsidc/dataset-search-services.git
 
 vsphere:
