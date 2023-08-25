@@ -7,7 +7,7 @@ ENV['RACK_ENV'] = 'test'
 Bundler.require(:default, :test)
 
 # Require all support files
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 def iso_document_fixture
   File.open(File.expand_path('fixtures/iso_document.xml', __dir__), 'rb') do |iso_doc_file|

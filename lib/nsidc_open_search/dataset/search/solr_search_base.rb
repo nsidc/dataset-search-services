@@ -7,7 +7,7 @@ module NsidcOpenSearch
     module Search
       class SolrSearchBase
         def initialize(url, response_parser, response_builder, query_config, solr_client)
-          @solr = solr_client.connect(url: url)
+          @solr = solr_client.connect(url:)
           @response_parser = response_parser
           @response_builder = response_builder
           @query_configs = query_config

@@ -35,16 +35,16 @@ module OpenSearchDsl
       raise ArgumentError, 'Missing url' if @urls.empty?
     end
 
-    def url(&block)
-      @urls << Url.new(&block)
+    def url(&)
+      @urls << Url.new(&)
     end
 
-    def query(*args, &block)
-      @queries << Query.new(*args, &block)
+    def query(...)
+      @queries << Query.new(...)
     end
 
-    def image(*args)
-      @images << Image.new(*args)
+    def image(...)
+      @images << Image.new(...)
     end
 
     def namespace(prefix, url)
