@@ -2,6 +2,8 @@
 
   - Update Ruby version to 3.2.2, as well as gem dependencies
   - Significant refactoring for compliance with Rubocop standards
+  - VM configuration updates to use Puppet 7
+  - CI machine configuration to use latest Jenkins module
 
 ## v3.7.0 (2023-07-12)
 
