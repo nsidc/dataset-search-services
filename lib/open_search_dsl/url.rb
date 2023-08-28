@@ -21,8 +21,8 @@ module OpenSearchDsl
         raise ArgumentError, 'Missing base url' if @base_url.nil?
       end
 
-      def parameter(*args)
-        @template_parameters << TemplateParameter.new(*args)
+      def parameter(...)
+        @template_parameters << TemplateParameter.new(...)
       end
 
       def namesapce(prefix, url)

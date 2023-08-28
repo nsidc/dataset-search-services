@@ -69,8 +69,8 @@ module NsidcOpenSearch
             start_date, end_date = coverage.split(',').map(&method(:parse_date))
 
             NsidcOpenSearch::Dataset::Model::Search::DateRange.new(
-              start_date: start_date,
-              end_date: end_date
+              start_date:,
+              end_date:
             )
           end.sort(&method(:sort_temporal_coverages))
         end

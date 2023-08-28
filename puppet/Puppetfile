@@ -1,24 +1,30 @@
-forge "http://forge.puppetlabs.com"
+forge "https://forge.puppetlabs.com"
 
-# Module for installing packages from apt
-mod 'puppetlabs/apt', '< 2.0.0'
+# Module for installing rbenv (and by extension, ruby)
+mod "jdowning-rbenv", "3.0.0"
+
+# These two need to be pinned due to dependency conflicts otherwise
+mod "puppetlabs/concat", "<8.0.0"
+mod "puppetlabs/apt", "<=8.5.0"
 
 # Module for access to NSIDC Enterprise storage
 mod "nsidc/nsidc_nfs",
   :git => "git@bitbucket.org:/nsidc/puppet-nsidc-nfs.git",
-  :ref => 'latest'
+  :ref => 'puppet7'
 
 # Module for webserver (nginx) install
 mod "nsidc/puppet-nginx",
-    :git => 'https://github.com/nsidc/puppet-nginx'
+  :git => 'https://github.com/nsidc/puppet-nginx',
+  :ref => 'puppet7'
 
 # Modules for webserver (puma) install
 mod "nsidc/puppet-puma",
-    :git => 'https://github.com/nsidc/puppet-puma'
+  :git => 'https://github.com/nsidc/puppet-puma',
+  :ref => 'puppet7'
 
 # Module for creating NSIDC Jenkins servers
 mod "nsidc/nsidc_jenkins",
   :git => "git@bitbucket.org:/nsidc/puppet-nsidc-jenkins.git",
-  :ref => 'latest'
+  :ref => 'puppet7'
 
 
