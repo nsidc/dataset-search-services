@@ -1,4 +1,4 @@
-## Unreleased
+## v4.0.0 (2023-08-28)
 
   - Update Ruby version to 3.2.2, as well as gem dependencies
   - Significant refactoring for compliance with Rubocop standards
