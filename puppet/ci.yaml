@@ -244,7 +244,9 @@ nsidc_jenkins::jobs:
     trigger_job: "%{hiera('job_release_push')}"
 
   "%{hiera('job_release_push')}":
-    command: bundle exec rake jenkins:release:push
+    command: |
+      #!/bin/bash -l
+      bundle exec rake jenkins:release:push
     workspace: "%{hiera('workspace_release')}"
 
   "%{hiera('job_cleanup_vms')}":
