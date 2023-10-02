@@ -78,7 +78,7 @@ combinations. This list of valids is used to generate Query and Url examples in
 the OpenSearch description documents and to verify parameters in search
 requests.
 
-Complimenting the definition is a search implementation. Implementations must
+Complementing the definition is a search implementation. Implementations must
 provide an execute method which accepts a hash of valid search term. Execute
 methods must return an open search response builder.
 
@@ -118,7 +118,7 @@ methods must return an open search response builder.
 * `Dataset::Model::Facets::FacetEntry` - a single facet in the results
 * `Dataset::Model::Suggestions::SuggestionsResponseBuilder` - results of a
   suggestion search which can be serialized to JSON based on the
-  [OpenSearch Extension](http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.1)
+  [OpenSearch Extension](https://github.com/dewitt/opensearch/blob/master/mediawiki/Specifications/OpenSearch/1.1/Draft%205.wiki)
     * `Dataset::Model::Suggestions::SuggestionEntry`
 * `Dataset::Model::Suggestions::SuggestionEntry` - a single suggestion for the
   searched upon term. Contains just completion suggestion, but with the
@@ -249,5 +249,5 @@ results are ranked, but new datasets have a popularity that defaults to 5 (on a
 scale from 1-11). Increase or decrease the popularity value if the ranking of a
 specific dataset is not in the desired order.
 
-For more information on Solr relevance tuning, see the [Solr Reference
-Relevance Chapter](https://lucene.apache.org/solr/guide/8_1/relevance.html).
+For more information on Solr relevance tuning, see the [Solr Reference "Query
+Guide" Chapter](https://solr.apache.org/guide/solr/latest/query-guide/query-syntax-and-parsers.html).
