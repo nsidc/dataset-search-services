@@ -8,17 +8,16 @@ The service currently exposes four endpoints:
 * `/Facets` - facets to go with the dataset search
 * `/suggest` - retrieve suggested phrase completions for auto-suggest/auto-complete
 
-For the most part, these endpoints support queries following the OpenSearch and
-relevant OpenSearch Extension specifications. However, they each take an
-additional optional URL parameter that is not in the standard,
-`source`. [NSIDC Search](https://nsidc.org/data/search/) and
-[the Arctic Data Explorer](https://nsidc.org/acadis/search/) (ADE) each use the
-same instance of this service, and the same Solr store to retrieve metadata;
-however, the ADE contains metadata for datasets from variety of sources as well
-as from NSIDC, and a simple way to distinguish between the two applications was
-needed. The `source` parameter in queries made by NSIDC Search is set to
-`NSIDC`, and for queries from the ADE is set to `ADE` - this corresponds to the
-"source" value in the solr datastore.
+For the most part, these endpoints support queries following the
+[OpenSearch](https://github.com/dewitt/opensearch) and relevant OpenSearch
+Extension specifications. However, they each take an additional optional URL
+parameter that is not in the standard, `source`. This service was originally
+built to support both [NSIDC Search](https://nsidc.org/data/search/) and the
+Arctic Data Explorer (ADE) in a single instance of the service, using the same
+Solr store for metadata. The `source` parameter provided a simple way to
+distinguish between the two client applications.  ADE is now decommissioned, but
+the `source` value of `NSIDC` may still be used by the NSIDC data search
+application.
 
 ## Installation & Usage
 
@@ -30,10 +29,9 @@ needed. The `source` parameter in queries made by NSIDC Search is set to
 
 ### Configuration
 
-`config/app_config.yaml` contains settings for different environments to run the
-service in. Each environment other than `development` merges in the `common`
-settings. You may need to modify some settings in the appropriate section this
-file:
+`config/app_config.yaml` contains settings for different deployment environments.
+Each environment other than `development` merges in the `common` settings. You
+may need to modify some settings in the appropriate section in this file:
 
 * `relative_url_root` determines the path to access the service, e.g., with a
   value of `/api/dataset/2`, you can access the running service at
