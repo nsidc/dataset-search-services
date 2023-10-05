@@ -13,18 +13,18 @@ NSIDC:
     facet.sort: index
     facet.limit: -1
   facets:
+    # Facet for "featured" datasets; currently, this includes datasets that are in
+    # Cumulus and those with global spatial coverage (previously it's own facet)
     -
       name: facet_featured
       sort: defined_sort
       sort_order:
-        - 'Available in NASA Earthdata Cloud'
+        - 'In Earthdata Cloud'
         - 'Show Global Only'
+
     -
       name: facet_parameter
-    # Flag for Global Only facet option, moved to facet_features above
-    # -
-     # name: facet_spatial_coverage
-    #
+
     # Metadata for spatial and temporal resolution.
     # To re-instate the facet for spatial resolution, uncomment the following
     # lines and add additional sort_order options as needed.
