@@ -1,3 +1,7 @@
+## Unreleased
+
+  - Adding `Featured` facet, removing `Spatial Coverage` Facet
+
 ## v4.0.1 (2023-08-28)
 
   - Minor fix to the bump CI job script.
