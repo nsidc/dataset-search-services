@@ -1,10 +1,8 @@
 :development:
   :enricher_thread_count: 5
   :relative_url_root: /
-  :solr_url: http://dev.search-solr.glewis.dev.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://dev.search-solr.glewis.dev.int.nsidc.org:8983/solr/auto_suggest
-#  :solr_url: http://dev.search-solr.USERNAME.dev.int.nsidc.org:8983/solr/nsidc_oai
-#  :solr_auto_suggest_url: http://dev.search-solr.USERNAME.dev.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: http://dev.search-solr.USERNAME.dev.int.nsidc.org:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://dev.search-solr.USERNAME.dev.int.nsidc.org:8983/solr/auto_suggest
 
 :common:
   :enricher_thread_count: 5
