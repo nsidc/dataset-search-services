@@ -1,3 +1,7 @@
+## Unreleased
+
+  - Adding `Featured` facet, removing `Spatial Coverage` Facet
+
 ## v4.0.2 (2023-10-04)
 
   - Documentation updates.

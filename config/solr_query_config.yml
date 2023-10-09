@@ -13,11 +13,18 @@ NSIDC:
     facet.sort: index
     facet.limit: -1
   facets:
+    # Facet for "featured" datasets; currently, this includes datasets that are in
+    # Cumulus and those with global spatial coverage (previously its own facet)
+    -
+      name: facet_featured
+      sort: defined_sort
+      sort_order:
+        - 'In Earthdata Cloud'
+        - 'Show Global Only'
+
     -
       name: facet_parameter
-    -
-      name: facet_spatial_coverage
-    #
+
     # Metadata for spatial and temporal resolution.
     # To re-instate the facet for spatial resolution, uncomment the following
     # lines and add additional sort_order options as needed.
@@ -77,49 +84,3 @@ NSIDC:
   phrase_slop: 1
   boost_query: brokered:false^100 published_date:[NOW-2YEARS/DAY TO NOW/DAY]^15 #boost non-brokered datasets and datasets published in the last 2 years
   boost: product(popularity,query({!type=edismax qf=$qf pf=$pf ps=$ps bq=$bq bf=sum(1,product(tan(div(popularity,8)),50))^55 v=$q boost=})) #scale documents by how well they satisfy the query and their popularity
-ADE:
-  query_fields:
-    - title
-    - summary
-    - keywords
-    - parameters
-    - authors
-  facet_defaults:
-    facet.sort: count
-    facet.limit: -1
-  facets:
-    -
-      name: facet_temporal_duration
-      sort: defined_sort
-      sort_order:
-        - '< 1 year'
-        - '1+ years'
-        - '5+ years'
-        - '10+ years'
-        - 'Not specified'
-    -
-      name: facet_spatial_scope
-      sort: defined_sort
-      sort_order:
-        - 'Less than 1 degree of latitude change | Local'
-        - 'Between 1 and 170 degrees of latitude change | Regional'
-        - 'Coverage from over 85 degrees North to -85 degrees South | Global'
-    -
-      name: facet_data_center
-  query_field_boosts:
-    title: 40
-    summary: 20
-    parameters: 4
-  phrase_fields:
-    - title
-    - summary
-    - keywords
-    - parameters
-    - sortKeys
-  phrase_field_boosts:
-    title: 40
-    summary: 20
-    parameters: 4
-  phrase_slop: 2
-  boost_query: published_date:[NOW-2YEARS/DAY TO NOW/DAY]^10 #boost non-brokered datasets and datasets published in the last 2 years
-  sort: score,,0
