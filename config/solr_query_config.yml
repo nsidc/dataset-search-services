@@ -14,7 +14,7 @@ NSIDC:
     facet.limit: -1
   facets:
     # Facet for "featured" datasets; currently, this includes datasets that are in
-    # Cumulus and those with global spatial coverage (previously it's own facet)
+    # Cumulus and those with global spatial coverage (previously its own facet)
     -
       name: facet_featured
       sort: defined_sort
