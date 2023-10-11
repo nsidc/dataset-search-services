@@ -1,4 +1,4 @@
-## Unreleased
+## v5.1.0 (2023-10-11)
 
   - Splitting `Featured` facet into `Storage Location` and 
     `Spatial Coverage` facets
