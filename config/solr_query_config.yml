@@ -13,15 +13,10 @@ NSIDC:
     facet.sort: index
     facet.limit: -1
   facets:
-    # Facet for "featured" datasets; currently, this includes datasets that are in
-    # Cumulus and those with global spatial coverage (previously its own facet)
     -
-      name: facet_featured
-      sort: defined_sort
-      sort_order:
-        - 'In Earthdata Cloud'
-        - 'Show Global Only'
-
+      name: facet_storage_location
+    -
+      name: facet_spatial_coverage
     -
       name: facet_parameter
 
