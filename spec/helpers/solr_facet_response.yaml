@@ -50,15 +50,17 @@ facet_counts:
     - Non Global
     - 329
     facet_sensor:
-    - Special Sensor Microwave Imager/Sounder | SSMIS
+    - Microwave Imager/Sounder | SSMIS
     - 25
     - Special Sensor Microwave/Imager
     - 50
-    - Imaging Radar Systems, Real and Synthetic Aperture | IMAGING RADAR SYSTEMS
+    - Radar Imaging Systems | IMAGING RADAR SYSTEMS
     - 100
-    - Radio Detection and Ranging | RADAR
+    - Radio Detection | RADAR
     - 75
-    - " | no long name"
+    - " | a short name"
+    - 75
+    - " | ONE MORE SHORT NAME"
     - 75
   facet_dates: {}
   facet_ranges: {}

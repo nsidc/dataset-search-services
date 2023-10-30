@@ -80,7 +80,7 @@ module NsidcOpenSearch
           # them with the default operator. Strip quotes from phrase query
           # strings and remove any operators.  Operators are removed to simplify
           # parsing of the string and inserting operators.
-          # TODO: Handle inserting operators while preseving existing operators
+          # TODO: Handle inserting operators while preserving existing operators
           # and strip quoted strings
           # NOTE: BWB (6/2014) - I think this may no longer be needed due to
           #       removing constrains drop down, not confident I know all edge

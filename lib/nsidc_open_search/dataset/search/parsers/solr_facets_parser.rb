@@ -62,11 +62,9 @@ module NsidcOpenSearch
             x_long_name, x_short_name = x.value.split(' | ')
             y_long_name, y_short_name = y.value.split(' | ')
 
-            if x_short_name.nil? || y_short_name.nil?
-              x_long_name <=> y_long_name
-            else
-              x_short_name <=> y_short_name
-            end
+            facet_x = x_short_name || x_long_name
+            facet_y = y_short_name || y_long_name
+            facet_x.downcase <=> facet_y.downcase
           end
           RSolr::Ext::Response::Facets::FacetField.new(facet.name, result)
         end

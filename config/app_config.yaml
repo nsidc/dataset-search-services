@@ -1,8 +1,8 @@
 :development:
   :enricher_thread_count: 5
   :relative_url_root: /api/dataset/2
-  :solr_url: http://http://blue.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://http://blue.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
 
 :common:
   :enricher_thread_count: 5
@@ -15,8 +15,8 @@
   :std_out_log: /var/log/search_services.stdout.log
 
 :integration:
-  :solr_url: http://http://blue.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://http://blue.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
+  :solr_auto_suggest_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
 
 :qa:
   :solr_url: http://qa.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
