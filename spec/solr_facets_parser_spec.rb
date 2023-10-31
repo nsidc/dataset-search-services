@@ -22,11 +22,12 @@ describe NsidcOpenSearch::Dataset::Search::SolrResultsParser do
 
     it 'sorts facets by short name' do
       expect(facet_result.entries[2].items.map(&:name)).to eql [
-        'Imaging Radar Systems, Real and Synthetic Aperture | IMAGING RADAR SYSTEMS',
-        'Radio Detection and Ranging | RADAR',
-        'Special Sensor Microwave Imager/Sounder | SSMIS',
-        ' | no long name',
-        'Special Sensor Microwave/Imager'
+        ' | a short name',
+        'Radar Imaging Systems | IMAGING RADAR SYSTEMS',
+        ' | ONE MORE SHORT NAME',
+        'Radio Detection | RADAR',
+        'Special Sensor Microwave/Imager',
+        'Microwave Imager/Sounder | SSMIS'
       ]
     end
   end
