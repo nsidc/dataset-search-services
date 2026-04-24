@@ -160,8 +160,6 @@ RSpec::Matchers.define :have_three_facets do
   match_count(3, FACET_SELECTOR.to_s)
 end
 
-private
-
 FEED_SELECTOR =  '/xmlns:feed'
 ENTRY_SELECTOR = '/xmlns:feed/xmlns:entry'
 FACET_SELECTOR = '/xmlns:feed/nsidc:facet'

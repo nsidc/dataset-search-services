@@ -5,8 +5,8 @@ require_relative '../lib/nsidc_open_search/helpers/app_helpers'
 
 class AppHelperTestClass
   include NsidcOpenSearch::AppHelpers
-  attr_accessor :request
-  attr_accessor :settings
+
+  attr_accessor :request, :settings
 end
 
 describe NsidcOpenSearch::AppHelpers do

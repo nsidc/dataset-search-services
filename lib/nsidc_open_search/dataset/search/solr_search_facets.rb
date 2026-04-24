@@ -10,7 +10,7 @@ module NsidcOpenSearch
 
         # override
         def build_solr_params(search_params, config)
-          super(search_params, config).merge(
+          super.merge(
             'start' => '0',
             'rows' => '0',
             'facet' => 'true',
@@ -32,11 +32,9 @@ module NsidcOpenSearch
         end
 
         def get_facet_fields(config)
-          facets = []
-          config['facets'].each do |f|
-            facets << "{!ex=#{f['name']}}#{f['name']}"
+          config['facets'].map do |f|
+            "{!ex=#{f['name']}}#{f['name']}"
           end
-          facets
         end
 
         def get_facet_override_parameters(facet_config)

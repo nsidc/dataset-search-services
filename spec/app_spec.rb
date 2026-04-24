@@ -106,8 +106,10 @@ describe NsidcOpenSearch::App do
       {
         name: 'author',
         items: [
-          value: 'Mark Serreze',
-          hits: '25'
+          {
+            value: 'Mark Serreze',
+            hits: '25'
+          }
         ]
       }
     ]

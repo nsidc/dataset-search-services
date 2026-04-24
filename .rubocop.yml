@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-rake
   - rubocop-rspec
 
@@ -58,14 +58,17 @@ Naming/VariableNumber:
 RSpec/ExampleLength:
   Max: 25
 
-RSpec/FilePath:
-  SpecSuffixOnly: true
-
 RSpec/MultipleExpectations:
   Max: 10
 
 RSpec/MultipleMemoizedHelpers:
   Max: 10
+
+RSpec/Output:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
 
 Style/Documentation:
   Enabled: false

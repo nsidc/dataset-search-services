@@ -52,9 +52,8 @@ module OpenSearchSteps
   end
 
   step 'the values should contain:' do |values|
-    expected_values = []
-    values.hashes.each do |vhash|
-      expected_values.push(vhash['Value'])
+    expected_values = values.hashes.map do |vhash|
+      vhash['Value']
     end
     expect(osdd.url_template_parameters).to match_array(expected_values)
   end

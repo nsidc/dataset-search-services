@@ -12,7 +12,7 @@ module NsidcOpenSearch
             source: DEFAULT_SOURCE,
             count: DEFAULT_ITEMS_PER_PAGE,
             startIndex: DEFAULT_START_INDEX
-          }.merge(super(query_params, valid_terms))
+          }.merge(super)
         end
       end
     end

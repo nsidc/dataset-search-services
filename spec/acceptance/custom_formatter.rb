@@ -7,7 +7,7 @@ class CustomFormatter < RSpec::Core::Formatters::BaseTextFormatter
   RSpec::Core::Formatters.register self, :example_passed, :example_failed, :start_dump
 
   def initialize(output)
-    super(output)
+    super
     @output = output
   end
 

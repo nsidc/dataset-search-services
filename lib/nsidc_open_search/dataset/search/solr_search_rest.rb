@@ -10,7 +10,7 @@ module NsidcOpenSearch
         def build_solr_params(search_params, _config)
           # get a list of fields to query
           {
-            :queries => { authoritative_id: (search_params[:id]).to_s },
+            :queries => { authoritative_id: search_params[:id].to_s },
             'rows' => '1',
             'start' => '0'
           }
