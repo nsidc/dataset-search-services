@@ -1,5 +1,5 @@
 ---
-project: dss
+project: dss-edb-693
 gitrepo: git@github.com:nsidc/dataset-search-services.git
 
 vsphere:

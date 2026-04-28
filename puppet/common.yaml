@@ -2,4 +2,6 @@ lookup_options:
   '^.*':
     merge: deep
 
-classes: []
+classes:
+  - apt
+  - nsidc_nfs

@@ -10,4 +10,5 @@ hierarchy:
     paths:
       - "/vagrant/puppet/%{environment}.yaml"
       - /vagrant/puppet/common.yaml
+      - scm_creds
       - /vagrant/vagrant-nsidc.yaml
