@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), 'spec_helper')
 require File.join(File.dirname(__FILE__), '..', 'lib', 'nsidc_open_search', 'app')
+require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe NsidcOpenSearch::App do
   include Rack::Test::Methods
@@ -47,7 +47,7 @@ describe NsidcOpenSearch::App do
   it 'provides dataset OSDD content at its endpoint' do
     get '/OpenSearchDescription', {}, 'HTTP_ACCEPT' => 'application/opensearchdescription+xml'
     expect(last_response).to be_ok
-    expect(last_response.header['Content-Type']).to match '^application/opensearchdescription\+xml'
+    expect(last_response.headers['content-type']).to match '^application/opensearchdescription\+xml'
   end
 
   it 'provides OpenSearch results at its dataset endpoint' do
@@ -73,7 +73,7 @@ describe NsidcOpenSearch::App do
         'X-Requested-With' => 'spec_test')
 
     expect(last_response).to be_ok
-    expect(last_response.header['Content-Type']).to match '^application/atom\+xml'
+    expect(last_response.headers['content-type']).to match '^application/atom\+xml'
   end
 
   # rubocop:disable RSpec/ExampleLength
@@ -126,7 +126,7 @@ describe NsidcOpenSearch::App do
         'HTTP_ACCEPT' => 'application/nsidcfacets+xml',
         'X-Requested-With' => 'spec_test')
     expect(last_response).to be_ok
-    expect(last_response.header['Content-Type']).to match '^application/nsidcfacets\+xml'
+    expect(last_response.headers['content-type']).to match '^application/nsidcfacets\+xml'
   end
   # rubocop:enable RSpec/ExampleLength
 end

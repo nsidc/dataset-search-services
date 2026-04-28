@@ -1,3 +1,8 @@
+## Unreleased
+
+  - EDB-693: Sustainment updates.
+    Add note that non-vm deployments are untested
+
 ## v5.2.0 (2023-10-31)
 
   - Refine facet `short_name_sort` to compare strings case-insensitively.

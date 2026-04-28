@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'tilt'
-require File.join(File.dirname(__FILE__), '..', 'utils', 'class_extensions')
 require File.join(File.dirname(__FILE__), 'osdd_base')
 require File.join(File.dirname(__FILE__), 'url')
 require File.join(File.dirname(__FILE__), 'image')

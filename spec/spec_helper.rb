@@ -4,6 +4,7 @@ require 'bundler/setup'
 
 ENV['RACK_ENV'] = 'test'
 
+require_relative '../lib/nsidc_open_search/app'
 Bundler.require(:default, :test)
 
 # Require all support files
