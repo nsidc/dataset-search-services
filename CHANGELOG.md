@@ -1,4 +1,4 @@
-## Unreleased
+## v5.3.0 (2026-04-30)
 
   - Sustainment updates:
       - Update Ruby to 3.4.9
