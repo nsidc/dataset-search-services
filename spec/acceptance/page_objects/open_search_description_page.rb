@@ -5,7 +5,7 @@ require 'nokogiri'
 
 class OpenSearchDescriptionPage
   def initialize(url)
-    @osdd_response = RestClient.get(url, 'X-Requested-With' => 'AcceptanceTest')
+    @osdd_response = RestClient.get(url, 'X-Requested-With' => 'spec_test')
     @doc = Nokogiri::XML @osdd_response.body
     @search_url_index = 1
   end

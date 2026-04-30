@@ -1,7 +1,10 @@
 ## Unreleased
 
-  - EDB-693: Sustainment updates.
-    Add note that non-vm deployments are untested
+  - Sustainment updates:
+      - Update Ruby to 3.4.9
+      - Bump various gems to their most recent (or as recent as possible) versions, with associated refactoring.
+      - Modify VM configuration to include multiple CPUs for puma worker use.
+      - Semantic changes as per latest Rubocop.
 
 ## v5.2.0 (2023-10-31)
 
