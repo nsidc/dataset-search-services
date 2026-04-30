@@ -5,7 +5,7 @@ require 'nokogiri'
 
 class OpenSearchDescriptionPage
   def initialize(url)
-    @osdd_response = RestClient.get(url, 'X-Requested-With' => 'AcceptanceTest')
+    @osdd_response = RestClient.get(url, 'X-Requested-With' => 'spec_test')
     @doc = Nokogiri::XML @osdd_response.body
     @search_url_index = 1
   end
@@ -40,7 +40,7 @@ class OpenSearchDescriptionPage
     example_query = @doc.at_xpath('//xmlns:Query[@role="example"]')
     params = {}
     # ignore all namespaced parameters and just fill in search terms and index
-    example_query.attributes.reject { |akey| akey.eql?('role') }.each do |_akey, aval|
+    example_query.attributes.reject { |akey| akey.eql?('role') }.each_value do |aval|
       if aval.namespace.nil?
         params[aval.name] = aval.value
       else

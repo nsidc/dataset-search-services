@@ -6,21 +6,6 @@ module NsidcOpenSearch
   module Dataset
     module Search
       class SolrSearchDataset < SolrSearchStandard
-        private
-
-        # override
-        def build_solr_params(search_params, config)
-          # SOLR has a 0 based index but OpenSearch has a 1 based index, so adjust for solr
-          start = search_params[:startIndex].to_i - 1
-          count = search_params[:count].to_i
-
-          super(search_params, config).merge(
-            'start' => (start if start.positive?),
-            'rows' => (count if count.positive?),
-            'sort' => build_sort_parameter(search_params)
-          )
-        end
-
         # Fields we support sorting on; keys are the fields as they appear in the OpenSearch feed,
         # the values are the corresponding fields that are stored in Solr. If the OpenSearch query
         # wants to sort on a field that is not a key here, it is simply ignored.
@@ -32,6 +17,21 @@ module NsidcOpenSearch
         }.freeze
 
         DEFAULT_SORT = 'score desc'
+
+        private
+
+        # override
+        def build_solr_params(search_params, config)
+          # SOLR has a 0 based index but OpenSearch has a 1 based index, so adjust for solr
+          start = search_params[:startIndex].to_i - 1
+          count = search_params[:count].to_i
+
+          super.merge(
+            'start' => (start if start.positive?),
+            'rows' => (count if count.positive?),
+            'sort' => build_sort_parameter(search_params)
+          )
+        end
 
         def build_sort_parameter(search_params)
           return DEFAULT_SORT unless search_params.key?(:sortKeys)

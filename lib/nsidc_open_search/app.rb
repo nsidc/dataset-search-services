@@ -49,7 +49,7 @@ module NsidcOpenSearch
       response.headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, Content-Type, ' \
                                                          'Cache-Control, Accept, AUTHORIZATION'
 
-      query_string = request.env['rack.request.query_string'].gsub('&', '&amp;')
+      query_string = request.env['rack.request.query_string']&.gsub('&', '&amp;') || ''
 
       # NOTE: that Puma does not play nice here, it overrides rack default env methods.
       # request.env will only be used for the tests or if the app is running with other server.

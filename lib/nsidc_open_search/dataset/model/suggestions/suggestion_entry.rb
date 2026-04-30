@@ -11,7 +11,7 @@ module NsidcOpenSearch
 
           def initialize(args)
             @value = []
-            super args
+            super
           end
         end
       end

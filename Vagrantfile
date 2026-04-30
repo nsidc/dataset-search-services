@@ -1,9 +1,16 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+require 'vagrant-nsidc/plugin'
 
 Vagrant.configure(2) do |config|
-  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ["/puppet/modules/*", "/puppet/.tmp/*"]
+  config.vm.synced_folder ".", "/vagrant", type: "rsync",
+    rsync__exclude: ["/puppet/modules/*", "/puppet/.tmp/*", ".git", ".ruby-version"]
 
+  memory_gb = 6
+  config.vm.provider :vsphere do |vsphere|
+    vsphere.memory_mb = 1024 * memory_gb
+    vsphere.cpu_count = 3
+  end
   config.vm.provision :shell do |s|
     s.name = 'apt-get update'
     s.inline = 'apt-get update'

@@ -6,6 +6,10 @@ module NsidcOpenSearch
   module Dataset
     module Search
       class SolrSearchStandard < SolrSearchBase
+        FIELD_QUERY_TERM_KEYS = %i[spatial startDate endDate].freeze
+        GENERIC_QUERY_TERM_KEYS = %i[searchTerms id q].freeze
+        OPERATOR = 'AND'
+
         private
 
         # override
@@ -22,10 +26,6 @@ module NsidcOpenSearch
             'boost' => config['boost']
           }
         end
-
-        FIELD_QUERY_TERM_KEYS = %i[spatial startDate endDate].freeze
-        GENERIC_QUERY_TERM_KEYS = %i[searchTerms id q].freeze
-        OPERATOR = 'AND'
 
         def build_fields(fields, boosts)
           fields.map do |field|

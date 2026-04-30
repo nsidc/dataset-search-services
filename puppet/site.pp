@@ -3,9 +3,9 @@ lookup('classes', {merge => unique}).include
 
 $project = 'search_services'
 $app_root = "/opt/${project}"
-$ruby_ver = '3.2.2'
-$bundler_ver = '2.4.10'
-$rubygems_ver = '3.4.10'
+$ruby_ver = '3.4.9'
+$bundler_ver = '4.0.10'
+$rubygems_ver = '4.0.10'
 
 package {"libssl-dev":
   ensure => present
@@ -17,6 +17,11 @@ class { 'rbenv':
   install_dir => '/home/vagrant/rbenv',
   owner => 'vagrant',
   group => 'vagrant',
+}
+-> exec { 'rbenv-build-prepare-git':
+  command => 'git config --global --add safe.directory /home/vagrant/rbenv/plugins/ruby-build',
+  path => ['/usr/local/bin', '/usr/bin', '/bin'],
+  environment => ['HOME=/home/vagrant'],
 }
 -> rbenv::plugin { 'rbenv/ruby-build': }
 -> rbenv::build { $ruby_ver:
@@ -31,29 +36,17 @@ class { 'rbenv':
   path    => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
 }
 
-# vagrant must be able to write to /var/log
-# TODO: Is this stuff still necessary
-if $environment == 'ci' {
-  exec {'vagrant syslog membership':
-    unless => '/bin/grep -q "syslog\\S*vagrant" /etc/group',
-    command => '/usr/sbin/usermod -aG syslog vagrant',
-    require => User['vagrant']
+if ! defined (User['vagrant']) {
+  @user { 'vagrant':
+    ensure => present,
+    groups => ['syslog', 'vagrant']
   }
 } else {
-  user { 'vagrant':
-    groups  => ['syslog'],
-    ensure  => present
+  User <| title == 'vagrant' |> {
+    groups => ['syslog', 'vagrant']
   }
 }
-
-file { '/var/run/puma':
-  path => '/var/run/puma',
-  ensure => directory,
-  mode => '775',
-  group => 'syslog'
-}
-## END OF TODO QUESTION
-
+realize(User['vagrant'])
 
 unless $environment == 'ci' {
   # nginx configuration
@@ -86,11 +79,9 @@ unless $environment == 'ci' {
     default => $environment
   }
 
-  $workers = $environment ? {
-    'dev' => '2',
-    'integration' => '4',
-    default => '10'
-  }
+  # Set this to the number of CPUs available, regardless of environment.
+  # See VM configuration in Vagrantfile.
+  $workers = '3'
 
   # install the app in /opt/app_name
   file { 'create_deploy_directory':

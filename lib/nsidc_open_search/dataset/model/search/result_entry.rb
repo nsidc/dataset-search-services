@@ -25,7 +25,7 @@ module NsidcOpenSearch
             @temporal_coverages = []
             @distribution_formats = []
 
-            super args
+            super
           end
         end
       end

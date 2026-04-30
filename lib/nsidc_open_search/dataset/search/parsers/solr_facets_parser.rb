@@ -46,7 +46,7 @@ module NsidcOpenSearch
         end
 
         def select_facet(facet)
-          @config['facets'].find { |this| (this['name'] == facet.name) }
+          @config['facets'].find { |this| this['name'] == facet.name }
         end
 
         def defined_sort(facet, facet_config)

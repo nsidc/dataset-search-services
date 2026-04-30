@@ -19,7 +19,7 @@ module NsidcOpenSearch
           def build_search_url_with_index(current_search_url, start_index)
             return if start_index.nil? || start_index.zero?
 
-            current_search_url.dup.gsub!(/startIndex=([^&]+)/, "startIndex=#{start_index}".dup)
+            current_search_url.dup.gsub!(/startIndex=([^&]+)/, "startIndex=#{start_index}")
           end
         end
       end

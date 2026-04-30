@@ -9,9 +9,8 @@ nsidc_nfs::sharemounts:
     project: sw
     share: packages
 
-# Jenkins Plugins
-nsidc_jenkins::plugins:
-  simple-theme-plugin: {}
+# Run Jenkins as vagrant user
+nsidc_jenkins::use_vagrant: true
 
 job_integration_checkout: "%{hiera('project')}_A01_Integration_Checkout_Project"
 job_integration_install_deps: "%{hiera('project')}_A02_Integration_Install_Dependencies"

@@ -13,8 +13,7 @@ class OpenSearchQueryPage
     parameters.each do |pkey, pvalue|
       query_url.sub!("{#{pkey}?}", CGI.escape(pvalue))
     end
-    puts "Querying: #{query_url}"
-    @response = RestClient.get(query_url, 'X-Requested-With' => 'AceptanceTest')
+    @response = RestClient.get(query_url, 'X-Requested-With' => 'spec_test')
     @response_doc = Nokogiri::XML @response.body
   end
 
@@ -31,10 +30,6 @@ class OpenSearchQueryPage
   end
 
   def result_entries_authoritative_ids
-    auth_ids = []
-    @response_doc.xpath('//xmlns:entry/nsidc:datasetId').each do |auth_field|
-      auth_ids << auth_field.text
-    end
-    auth_ids
+    @response_doc.xpath('//xmlns:entry/nsidc:datasetId').map(&:text)
   end
 end

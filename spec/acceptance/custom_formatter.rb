@@ -7,7 +7,7 @@ class CustomFormatter < RSpec::Core::Formatters::BaseTextFormatter
   RSpec::Core::Formatters.register self, :example_passed, :example_failed, :start_dump
 
   def initialize(output)
-    super(output)
+    super
     @output = output
   end
 
@@ -16,7 +16,7 @@ class CustomFormatter < RSpec::Core::Formatters::BaseTextFormatter
   end
 
   def example_failed(notification)
-    failed = notification.example.metadata.keys.select { |k| k.to_s.include? 'search_' }.to_s || ''
+    failed = notification.example.metadata.keys.select { |k| k.to_s.include? 'search_' } || ''
     @output << RSpec::Core::Formatters::ConsoleCodes.wrap("F#{failed}\n", :failure)
   end
 
