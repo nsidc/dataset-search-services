@@ -54,6 +54,10 @@ the tags:
 
     export LIST_TAGS=true; bundle exec rake spec:acceptance; unset LIST_TAGS
 
+<a id="ci_acceptance">**NOTE:**</a> The Ops tests look for a `blue` subdirectory in the CI machine
+workspaces. Ensure all environments are rebuilt after creating a fresh CI
+machine.
+
 ### RuboCop
 
 [RuboCop](https://github.com/bbatsov/rubocop) is a style checker for Ruby,
@@ -69,6 +73,12 @@ Guard can be used to automatically restart the puma server or run RuboCop and un
 * `bundle exec rake guard:specs` - automatically re-run unit tests
 * `bundle exec rake guard:puma` - automatically restart the puma server
 * `bundle exec rake guard` - automatically re-run RuboCop and the unit tests
+
+### Continuous Integration
+
+This repository includes configuration to build a CI machine running Jenkins.
+After building a new machine, ensure a new `blue` machine is built to support
+[the Ops acceptance test environment](#ci_acceptance).
 
 ## Design
 
