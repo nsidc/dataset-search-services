@@ -93,5 +93,4 @@ Feature: Must-not-break search scenarios
     Then The entries contain ipplv1b
     And The entries contain ilvis2
     And The entries contain blvis2
-    And The entries contain blvis0
     And The entries contain ilvis1b

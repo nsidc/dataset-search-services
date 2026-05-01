@@ -1,3 +1,8 @@
+## Unreleased
+
+  - Remove out-of-date `BLVIS0` request in acceptance tests.
+  - Add reminder to recreate a `blue` workspace after building a new CI machine.
+
 ## v5.3.0 (2026-04-30)
 
   - Sustainment updates:
