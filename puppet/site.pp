@@ -60,7 +60,7 @@ unless $environment == 'ci' {
     command => 'mkdir -p /etc/nginx/ssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/CN=nsidc"'
   } ->
   nginx::resource::vhost { 'dss' :
-    www_root => $application_root,
+    www_root => $app_root,
     proxy => 'http://localhost:10680',
     ssl => true,
     ssl_cert => '/etc/nginx/ssl/nginx.crt',
