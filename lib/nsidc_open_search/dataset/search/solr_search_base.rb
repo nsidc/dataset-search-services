@@ -6,8 +6,12 @@ module NsidcOpenSearch
       class SolrSearchBase
         def initialize(url, response_parser, response_builder, query_config, solr_client)
           @solr = solr_client.connect(url:)
-          @solr.connection.ssl.verify = false
-          @solr.connection.ssl.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          if @solr.respond_to?(:connection)
+            # If there is a connection object, make sure it's set to ignore self-signed certs
+            # For tests, the mock objects don't have a connection method, so we don't need to do this for testing
+            @solr.connection.ssl.verify = false
+            @solr.connection.ssl.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          end
           @response_parser = response_parser
           @response_builder = response_builder
           @query_configs = query_config
