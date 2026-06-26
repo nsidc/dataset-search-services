@@ -6,6 +6,8 @@ $app_root = "/opt/${project}"
 $ruby_ver = '3.4.9'
 $bundler_ver = '4.0.10'
 $rubygems_ver = '4.0.10'
+$rbenv_home = '/home/vagrant'
+$rbenv_dir = "${rbenv_home}/rbenv"
 
 package {"libssl-dev":
   ensure => present
@@ -14,27 +16,54 @@ package {"build-essential":
   ensure => present
 } ->
 class { 'rbenv':
-  install_dir => '/home/vagrant/rbenv',
-  owner => 'vagrant',
-  group => 'vagrant',
-}
--> exec { 'rbenv-build-prepare-git':
-  command => 'git config --global --add safe.directory /home/vagrant/rbenv/plugins/ruby-build',
-  path => ['/usr/local/bin', '/usr/bin', '/bin'],
-  environment => ['HOME=/home/vagrant'],
+  install_dir => $rbenv_dir,
+  owner       => 'vagrant',
+  group       => 'vagrant',
+  require     => User['vagrant'],
 }
 -> rbenv::plugin { 'rbenv/ruby-build': }
+-> notify {'starting rbenv build': }
 -> rbenv::build { $ruby_ver:
   bundler_version => $bundler_ver,
   owner => 'vagrant',
   group => 'vagrant',
   global => true,
 }
--> rbenv::gem { 'builder': ruby_version => $ruby_ver }
--> exec { 'gem_update':
-  command => "gem update --system ${rubygems_ver}",
-  path    => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
+-> notify {'done with rbenv build': }
+-> file { "${rbenv_dir}/version":
+  ensure => 'file',
+  mode   => '0644',
+  owner => 'vagrant',
+  group => 'vagrant',
 }
+-> file { "${rbenv_dir}/shims/bundle":
+  ensure => 'file',
+  mode   => '0755',
+  owner => 'vagrant',
+  group => 'vagrant',
+}
+# class { 'rbenv':
+#   install_dir => '/home/vagrant/rbenv',
+#   owner => 'vagrant',
+#   group => 'vagrant',
+# }
+# -> exec { 'rbenv-build-prepare-git':
+#   command => 'git config --global --add safe.directory /home/vagrant/rbenv/plugins/ruby-build',
+#   path => ['/usr/local/bin', '/usr/bin', '/bin'],
+#   environment => ['HOME=/home/vagrant'],
+# }
+# -> rbenv::plugin { 'rbenv/ruby-build': }
+# -> rbenv::build { $ruby_ver:
+#   bundler_version => $bundler_ver,
+#   owner => 'vagrant',
+#   group => 'vagrant',
+#   global => true,
+# }
+# -> rbenv::gem { 'builder': ruby_version => $ruby_ver }
+# -> exec { 'gem_update':
+#   command => "gem update --system ${rubygems_ver}",
+#   path    => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
+# }
 
 if ! defined (User['vagrant']) {
   @user { 'vagrant':
@@ -49,8 +78,18 @@ if ! defined (User['vagrant']) {
 realize(User['vagrant'])
 
 unless $environment == 'ci' {
-  # nginx configuration
+  exec { 'open port 443':
+    command => 'iptables -A INPUT -p tcp --dport 443 -j ACCEPT',
+    path => ['/usr/local/bin','/usr/bin', '/bin', '/usr/sbin'],
+    user => 'root',
+  } ->
+  exec { 'save port changes':
+    command => 'iptables-save --file /etc/iptables/rules.v4',
+    path => ['/usr/local/bin','/usr/bin', '/bin', '/usr/sbin'],
+    user => 'root',
+  }
 
+  # nginx configuration
   class { 'nginx' :
     gzip => 'off'
   }
@@ -99,10 +138,11 @@ unless $environment == 'ci' {
     cwd     => "${app_root}",
     environment => "HOME=${app_root}",
     command => "bundle _${bundler_ver}_ install",
-    path => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
+    path => ["${rbenv_dir}/shims", '/usr/local/bin','/usr/bin', '/bin'],
     user => 'vagrant',
     group => 'vagrant',
-    require => [ Exec['gem_update'] ]
+    require => [ File["${rbenv_dir}/shims/bundle"] ],
+    # require => [ Exec['gem_update'] ]
   } ->
 
   puma::app {"${project}":
@@ -118,8 +158,8 @@ unless $environment == 'ci' {
     max_threads => '1',
     port => '10680',
     workers  => $workers,
-    restart_command => '/home/vagrant/rbenv/shims/bundle exec puma',
-    bundler_path => '/home/vagrant/rbenv/shims/bundle'
+    restart_command => "${rbenv_dir}/shims/bundle exec puma",
+    bundler_path => "${rbenv_dir}/shims/bundle",
   } ->
 
   # Ensure directory for restart file exists

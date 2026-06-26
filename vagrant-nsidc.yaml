@@ -4,5 +4,5 @@ gitrepo: git@github.com:nsidc/dataset-search-services.git
 
 vsphere:
   template:
-    default: jammy64-nsidc-puppet7
-    ci: jammy64-docker-puppet7-jenkins2
+    default: noble64-nsidc-sec-puppet8
+    ci: noble64-sec-docker-puppet8-jenkins2

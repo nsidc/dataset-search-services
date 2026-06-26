@@ -6,6 +6,8 @@ module NsidcOpenSearch
       class SolrSearchBase
         def initialize(url, response_parser, response_builder, query_config, solr_client)
           @solr = solr_client.connect(url:)
+          @solr.connection.ssl.verify = false
+          @solr.connection.ssl.verify_mode = OpenSSL::SSL::VERIFY_NONE
           @response_parser = response_parser
           @response_builder = response_builder
           @query_configs = query_config
