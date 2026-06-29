@@ -42,28 +42,6 @@ class { 'rbenv':
   owner => 'vagrant',
   group => 'vagrant',
 }
-# class { 'rbenv':
-#   install_dir => '/home/vagrant/rbenv',
-#   owner => 'vagrant',
-#   group => 'vagrant',
-# }
-# -> exec { 'rbenv-build-prepare-git':
-#   command => 'git config --global --add safe.directory /home/vagrant/rbenv/plugins/ruby-build',
-#   path => ['/usr/local/bin', '/usr/bin', '/bin'],
-#   environment => ['HOME=/home/vagrant'],
-# }
-# -> rbenv::plugin { 'rbenv/ruby-build': }
-# -> rbenv::build { $ruby_ver:
-#   bundler_version => $bundler_ver,
-#   owner => 'vagrant',
-#   group => 'vagrant',
-#   global => true,
-# }
-# -> rbenv::gem { 'builder': ruby_version => $ruby_ver }
-# -> exec { 'gem_update':
-#   command => "gem update --system ${rubygems_ver}",
-#   path    => ['/home/vagrant/rbenv/shims', '/usr/local/bin','/usr/bin', '/bin'],
-# }
 
 if ! defined (User['vagrant']) {
   @user { 'vagrant':
@@ -94,16 +72,38 @@ unless $environment == 'ci' {
     gzip => 'off'
   }
 
+  $nginx_hostname = $environment ? {
+    'blue'       => "${project}.${domain}",
+    'production' => "${project}.${domain}",
+    default      => "${environment}.${project}.${domain}"
+  }
+
   exec { 'make_cert':
     path => ['/bin', '/usr/bin'],
     command => 'mkdir -p /etc/nginx/ssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/CN=nsidc"'
   } ->
-  nginx::resource::vhost { 'dss' :
-    www_root => $app_root,
-    proxy => 'http://localhost:10680',
-    ssl => true,
-    ssl_cert => '/etc/nginx/ssl/nginx.crt',
-    ssl_key => '/etc/nginx/ssl/nginx.key',
+  nginx::resource::vhost { $nginx_hostname :
+    # www_root => $app_root,
+    ensure           => present,
+    cors             => true,
+    server_name      => [$nginx_hostname],
+    ssl              => true,
+    listen_port      => 443,
+    ssl_port         => 443,
+    ssl_cert         => '/etc/nginx/ssl/nginx.crt',
+    ssl_key          => '/etc/nginx/ssl/nginx.key',
+    proxy            => 'http://localhost:10680',
+    proxy_set_header => [ 'Host $host',
+      'X-Real-IP $remote_addr',
+      'X-Forwarded-For $proxy_add_x_forwarded_for',
+      'X-Forwarded-Proto https' ],
+    add_header       => {
+      'Access-Control-Allow-Origin'  => '*',
+      'Access-Control-Allow-Methods' => 'OPTIONS,HEAD,GET,PUT,POST,DELETE',
+      'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Range'
+    },
+    proxy_read_timeout => '180',
+    require => [ Exec['make_cert'] ]
   }
 
 
@@ -142,7 +142,6 @@ unless $environment == 'ci' {
     user => 'vagrant',
     group => 'vagrant',
     require => [ File["${rbenv_dir}/shims/bundle"] ],
-    # require => [ Exec['gem_update'] ]
   } ->
 
   puma::app {"${project}":
