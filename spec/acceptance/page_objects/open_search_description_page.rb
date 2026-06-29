@@ -19,7 +19,8 @@ class OpenSearchDescriptionPage
   end
 
   def url_template_hostname
-    url_template_value.match('http://([^/]*)/')[@search_url_index]
+    puts "URL TEMPLATE VALUE: #{url_template_value}"
+    url_template_value.match('https://([^/]*)/')[@search_url_index]
   end
 
   def url_template_parameters

@@ -17,7 +17,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
   xml.author do
     xml.name 'nsidc.org'
     xml.email 'nsidc@nsidc.org'
-    xml.uri 'http://nsidc.org'
+    xml.uri 'https://nsidc.org'
   end
   xml.id current_search_url
   xml.link 'href' => current_search_url, 'rel' => 'self'

@@ -16,7 +16,7 @@ module NsidcOpenSearch
       OpenSearchDsl::OpenSearchDescriptionDocument.new do
         namespace 'time', 'http://a9.com/-/opensearch/extensions/time/1.0/'
         namespace 'geo', 'http://a9.com/-/opensearch/extensions/geo/1.0/'
-        namespace 'nsidc', 'http://nsidc.org/ns/opensearch/1.1/'
+        namespace 'nsidc', 'https://nsidc.org/ns/opensearch/1.1/'
         short_name 'NSIDC Data Set OpenSearch Service'
         long_name 'Data set level OpenSearch interface for nsidc.org'
         description 'OpenSearch description document that describes how to query our server for ' \
@@ -29,7 +29,7 @@ module NsidcOpenSearch
         input_encoding 'UTF-8'
         output_encoding 'UTF-8'
         attribution '&#169; 2011 National Snow and Ice Data Center.'
-        image 'http://nsidc.org/favicon.ico', 16, 16, 'image/jpeg'
+        image 'https://nsidc.org/favicon.ico', 16, 16, 'image/jpeg'
         image 'http://nsidc.org/images/logo_nsidc_76x60.jpg', 60, 75, 'image/jpeg'
 
         dataset_definition.valids.each do |terms|

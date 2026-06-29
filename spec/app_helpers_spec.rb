@@ -23,20 +23,20 @@ describe NsidcOpenSearch::AppHelpers do
   end
 
   it 'produces a base_url' do
-    allow(request_stub).to receive_messages(base_url: 'http://integration.nsidc.org',
+    allow(request_stub).to receive_messages(base_url: 'https://integration.nsidc.org',
                                             referrer: nil)
 
-    expect(app_helper.base_url).to eql 'http://integration.nsidc.org/api'
+    expect(app_helper.base_url).to eql 'https://integration.nsidc.org/api'
   end
 
   it 'produces a http base_url with http referrer' do
-    allow(request_stub).to receive_messages(base_url: 'http://nsidc.org', referrer: 'http://nsidc.org/api/dataset')
+    allow(request_stub).to receive_messages(base_url: 'https://nsidc.org', referrer: 'https://nsidc.org/api/dataset')
 
-    expect(app_helper.base_url).to eql 'http://nsidc.org/api'
+    expect(app_helper.base_url).to eql 'https://nsidc.org/api'
   end
 
   it 'produces a https base_url with https referrer' do
-    allow(request_stub).to receive_messages(base_url: 'http://nsidc.org', referrer: 'https://nsidc.org/api/dataset')
+    allow(request_stub).to receive_messages(base_url: 'https://nsidc.org', referrer: 'https://nsidc.org/api/dataset')
 
     expect(app_helper.base_url).to eql 'https://nsidc.org/api'
   end

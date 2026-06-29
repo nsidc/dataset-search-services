@@ -18,7 +18,7 @@ module OpenSearchSteps
   end
 
   step 'I request the open search description document' do
-    osdd_url = "http://#{@host}#{@path}"
+    osdd_url = "https://#{@host}#{@path}"
     @osdd = OpenSearchDescriptionPage.new(osdd_url)
   end
 
@@ -48,6 +48,8 @@ module OpenSearchSteps
   end
 
   step 'it should have a template with this environments hostname' do
+    puts "OSDD HOST: #{osdd.url_template_hostname}"
+    puts "HOST: #{@host}"
     expect(osdd.url_template_hostname).to eq(@host)
   end
 
