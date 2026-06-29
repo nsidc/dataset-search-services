@@ -83,7 +83,6 @@ unless $environment == 'ci' {
     command => 'mkdir -p /etc/nginx/ssl && openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt -subj "/CN=nsidc"'
   } ->
   nginx::resource::vhost { $nginx_hostname :
-    # www_root => $app_root,
     ensure           => present,
     cors             => true,
     server_name      => [$nginx_hostname],
