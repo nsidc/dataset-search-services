@@ -6,8 +6,7 @@ $app_root = "/opt/${project}"
 $ruby_ver = '3.4.9'
 $bundler_ver = '4.0.10'
 $rubygems_ver = '4.0.10'
-$rbenv_home = '/home/vagrant'
-$rbenv_dir = "${rbenv_home}/rbenv"
+$rbenv_dir = "/home/vagrant/rbenv"
 
 package {"libssl-dev":
   ensure => present
