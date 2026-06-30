@@ -8,7 +8,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
          'xmlns:os' => 'http://a9.com/-/spec/opensearch/1.1/',
          'xmlns:dif' => 'http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/',
          'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
-         'xmlns:nsidc' => 'http://nsidc.org/ns/opensearch/1.1/',
+         'xmlns:nsidc' => 'https://nsidc.org/ns/opensearch/1.1/',
          'xmlns:time' => 'http://a9.com/-/opensearch/extensions/time/1.0/',
          'xmlns:geo' => 'http://a9.com/-/opensearch/extensions/geo/1.0/',
          'xmlns:georss' => 'http://www.georss.org/georss' do
@@ -17,7 +17,7 @@ xml.feed 'xmlns' => 'http://www.w3.org/2005/Atom',
   xml.author do
     xml.name 'nsidc.org'
     xml.email 'nsidc@nsidc.org'
-    xml.uri 'http://nsidc.org'
+    xml.uri 'https://nsidc.org'
   end
   xml.id current_search_url
   xml.link 'href' => current_search_url, 'rel' => 'self'

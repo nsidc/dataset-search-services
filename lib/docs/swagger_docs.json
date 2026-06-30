@@ -1,7 +1,7 @@
 {
   "apiVersion":"1.0.0",
 	"swaggerVersion":"1.2",
-	"basePath":"http://nsidc.org/api/dataset/2",
+	"basePath":"https://nsidc.org/api/dataset/2",
 	"info":{
 		"title":"Dataset Search Services",
 		"description":"Dataset Search Services provides multiple endpoints used by the Arctic Data Explorer and NSIDC Search to perform searches on a Solr backend. Different endpoints provide searches for datasets, facet information for a dataset search, and suggested search terms based on a partially entered keyword."

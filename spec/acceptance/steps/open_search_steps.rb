@@ -18,7 +18,7 @@ module OpenSearchSteps
   end
 
   step 'I request the open search description document' do
-    osdd_url = "http://#{@host}#{@path}"
+    osdd_url = "https://#{@host}#{@path}"
     @osdd = OpenSearchDescriptionPage.new(osdd_url)
   end
 

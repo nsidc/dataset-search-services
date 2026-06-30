@@ -1,3 +1,11 @@
+## Unreleased
+
+  - Update VM to use the nsidc security-hardened template, as well as updating
+    provisioning to use puppet 8 compatible modules
+  - Updating references to Solr to use standard SSL port instead of the direct
+    solr port
+  - Modifications to a few tests due to updated datasets and protocols
+
 ## v5.3.1 (2026-05-01)
 
   - Remove out-of-date `BLVIS0` request in acceptance tests.

@@ -1,8 +1,11 @@
 :development:
   :enricher_thread_count: 5
   :relative_url_root: /
-  :solr_url: http://dev.search-solr.USERNAME.dev.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://dev.search-solr.USERNAME.dev.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: https://dev.search-solr.USERNAME.dev.int.nsidc.org/solr/nsidc_oai
+  :solr_auto_suggest_url: https://dev.search-solr.USERNAME.dev.int.nsidc.org/solr/auto_suggest
+# You can use the below for testing if you don't want to set up a dev machine
+#  :solr_url: https://integration.search-solr.apps.int.nsidc.org/solr/nsidc_oai
+#  :solr_auto_suggest_url: https://integration.search-solr.apps.int.nsidc.org/solr/auto_suggest
 
 :common:
   :enricher_thread_count: 5
@@ -15,18 +18,18 @@
   :std_out_log: /var/log/search_services.stdout.log
 
 :integration:
-  :solr_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://integration.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: https://integration.search-solr.apps.int.nsidc.org/solr/nsidc_oai
+  :solr_auto_suggest_url: https://integration.search-solr.apps.int.nsidc.org/solr/auto_suggest
 
 :qa:
-  :solr_url: http://qa.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://qa.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: https://qa.search-solr.apps.int.nsidc.org/solr/nsidc_oai
+  :solr_auto_suggest_url: https://qa.search-solr.apps.int.nsidc.org/solr/auto_suggest
 
 :staging:
-  :solr_url: http://staging.search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://staging.search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: https://staging.search-solr.apps.int.nsidc.org/solr/nsidc_oai
+  :solr_auto_suggest_url: https://staging.search-solr.apps.int.nsidc.org/solr/auto_suggest
 
 :production:
-  :solr_url: http://search-solr.apps.int.nsidc.org:8983/solr/nsidc_oai
-  :solr_auto_suggest_url: http://search-solr.apps.int.nsidc.org:8983/solr/auto_suggest
+  :solr_url: https://search-solr.apps.int.nsidc.org/solr/nsidc_oai
+  :solr_auto_suggest_url: https://search-solr.apps.int.nsidc.org/solr/auto_suggest
 
