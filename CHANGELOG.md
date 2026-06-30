@@ -1,4 +1,4 @@
-## Unreleased
+## v6.0.0 (2026-06-30)
 
   - Update VM to use the nsidc security-hardened template, as well as updating
     provisioning to use puppet 8 compatible modules
